@@ -1,0 +1,67 @@
+<form #heroForm="ngForm" (ngSubmit)="newSearch()" novalidate class="form-inline">
+  <div class="filter-group">
+    <!-- filter controls -->
+    <div class="form-group">
+      <label class="filter-label" for="cboFilter">Filter: </label>
+      <select id="cboFilter" [(ngModel)]="search.field" name="field" class="form-control" (change)="changeFilterField($event)">
+        <option value="" selected>Select</option>
+        <ng-template ngFor let-option [ngForOf]="filterFields">
+          <option [value]="option.value">{{option.text}}</option>
+        </ng-template>
+      </select>
+    </div>
+
+    <!-- suggestion controls -->
+    <div class="form-group">
+      <auto-suggestion *ngIf="!isMonthSelect" #autoSuggestion [source]="filterOptions" [inline-mode]="true" [accept-user-input]="false"
+        ([ngModel])="search.keywords" (listSelected)="onListSelectedUpdate($event)" place-holder="Enter keywords" min-chars="1"
+        [remote]="isRemoteSuggestion" (remoteSuggest)="doRemoteSuggest($event)"></auto-suggestion>
+      <month-suggestion #monthSuggestion *ngIf="isMonthSelect" (addSuggestionEvent)="onListSelectedUpdate($event)"></month-suggestion>
+    </div>
+
+    <!-- date range controls -->
+    <div class="form-group date-time-filter">
+      <div class="date-range">
+        <label for="cboDateRange">Time Range: </label>
+        <select [(ngModel)]="dateRange" id="cboDateRange" name="dateRange" class="form-control" (change)="doSearchTime($event)">
+          <option value="" selected>All</option>
+          <ng-template ngFor let-option [ngForOf]="listDateRanges">
+            <option *ngIf="option" value="{{option.value}}">{{option.text}}</option>
+          </ng-template>
+        </select>
+        <button *ngIf="isMinimizeFilterDateRange" type="button" class="btn btn-danger" (click)="showFilterDateRange()">Show filter box</button>
+      </div>
+      <div class="filter-date-range" [hidden]="!(dateRange == 'customDate' && !isMinimizeFilterDateRange)">
+        <div class="form-group">
+          <label class="control-label">From:</label>
+          <div class="picker">
+            <mbc-datepicker placeholder="From Date" [fControl]="fromDate" name="fromDate" [disableSince]="false"></mbc-datepicker>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">To:</label>
+          <div class="picker">
+            <mbc-datepicker placeholder="To Date" [fControl]="toDate" name="toDate" [disableSince]="false"></mbc-datepicker>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label"></label>
+          <div class="filter">
+            <button type="button" class="btn btn-danger" (click)="filterDateRange()">Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- search controls -->
+  <div class="search-group">
+    <div class="form-group">
+      <label for="quickSearchValue" class="pull-left quick-search-label">Search: </label>
+      <input type="textbox" placeholder="Enter Keywords" [(ngModel)]="search.quickSearchValue" name="quickSearchValue" class="quickSearchValue form-control">
+      <button type="submit" class="quick-search-btn"><i class="fa fa-search"></i></button>
+    </div>
+    <button type="button" class="btn btn-rounded btn-default pull-right11" (click)="resetSearch()" style="width:80px;">Reset</button>
+  </div>
+
+</form>

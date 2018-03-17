@@ -1,0 +1,61 @@
+<form #infoForm="ngForm" novalidate>
+  <div class="panel-body">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>Campaign information</strong></h3>
+      </div>
+      <div class="panel-body">
+        <!--ID & Status-->
+        <div class="row" *ngIf="campaign.id">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-xs-12 control-label">UUID: {{campaign.id}}</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="col-xs-12 control-label">Status:
+                <campaign-status></campaign-status>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mbc-form-group">
+          <!--Campaign Name-->
+          <div class="row">
+            <div class="col-md-12">
+              <text-input [(ngModel)]="campaign.info.name" name="name" required
+                title="*Campaign Name" placeholder="Enter campaign name here"
+                #campaignName="ngModel" [parentControl]="campaignName.control"
+                asyncExistValidator [originalValue]="originalName" nospace
+              ></text-input>
+            </div>
+          </div>
+
+          <!--Campaign Label-->
+          <div class="row">
+            <div class="col-md-12">
+              <text-input [(ngModel)]="campaign.info.label" name="label" required title="*Campaign Label" placeholder="Enter campaign label here"
+                #campaignLabel="ngModel" [parentControl]="campaignLabel.control" nospace></text-input>
+            </div>
+          </div>
+          <!-- Start Date & End Date -->
+          <div class="row">
+            <div class="col-md-6">
+              <datetime-picker [(ngModel)]="campaign.info.startActiveDateTime" mode="daytime"
+                name="startActiveDateTime" title="Start Date" placeholder="Enter campaign start date here"
+                #campaignStartDate="ngModel" [parentControl]="campaignStartDate.control"
+                formatteddate [endDate]="campaign.info.endActiveDateTime"></datetime-picker>
+            </div>
+            <div class="col-md-6">
+              <datetime-picker [(ngModel)]="campaign.info.endActiveDateTime" mode="daytime"
+                name="endActiveDateTime" title="End Date" placeholder="Enter campaign end date here"
+                #campaignEndDate="ngModel" [parentControl]="campaignEndDate.control"
+                formatteddate [startDate]="campaign.info.startActiveDateTime"></datetime-picker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

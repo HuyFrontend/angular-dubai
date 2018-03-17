@@ -1,0 +1,51 @@
+@import '~sass/conf/colors';
+:host /deep/ .tab-container {
+    .nav-tabs {
+        margin-top: 0;
+        .disabled {
+            color: $cl-text-disabled;
+        }
+    }
+    .tab-content {
+        background: $cl-text-white;
+        padding: 0;
+        border-radius: 5px;
+    }
+    .form-group {
+        .check {
+            padding-right: 20px;
+        }
+    }
+}
+
+:host /deep/ .page-form {
+    .row {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .row:last-child {
+        border-bottom: none;
+    }
+    .panel {
+        .panel-body {
+            padding: 15px 5px;
+        }
+    }
+}
+
+:host /deep/ .form-group {
+    .error {
+        display: none;
+    }
+}
+
+:host /deep/ .has-error {
+    .error {
+        display: block;
+    }
+    
+    .help-block,
+    .control-label {
+        color: $cl-text-help-block;
+    }
+}

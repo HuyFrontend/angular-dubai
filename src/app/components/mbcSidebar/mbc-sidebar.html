@@ -1,0 +1,71 @@
+<div class="page-sidebar" [ngStyle]="{ height: sidebarHeight + 'px'}" (window:resize)="onResize($event)">
+  <ul class="x-navigation" [class.x-navigation-open]="isMenuCollapsed | async">
+    <li class="xn-logo">
+      <a routerLink="/">MBC</a>
+      <a routerLink="/" (click)="toggleMenu()" class="x-navigation-control"></a>
+    </li>
+    <li class="xn-title hide">Navigation</li>
+    <li class="xn-title btn-create-new">
+      <button type="submit" class="btn btn-danger btn-block" (click)="toggleCreateNew(true)">Create New</button>
+      <div class="ui-navigation-modal animated" *ngIf="isCreateNewCollapsed | async" (mouseleave)="toggleCreateNew(false)">
+        <ul>
+          <li>
+            <a routerLink="/content/article" (click)="toggleCreateNew(false)">
+              <span class="fa fa-columns" ></span>
+              <span class="xn-text">Article</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/content/post" (click)="toggleCreateNew(false)">
+              <span class="fa fa-columns"></span>
+              <span class="xn-text">Post</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/pages/create" (click)="toggleCreateNew(false)">
+              <span class="fa fa-files-o"></span>
+              <span class="xn-text">Page</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/page-groups/create" (click)="toggleCreateNew(false)">
+              <span class="fa fa-files-o"></span>
+              <span class="xn-text">Page Group</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/campaigns/create" (click)="toggleCreateNew(false)">
+              <span class="fa fa-bullhorn"></span>
+              <span class="xn-text">Campaign</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/apps/create" (click)="toggleCreateNew(false)">
+              <span class="fa fa-dashboard"></span>
+              <span class="xn-text">App</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li routerLinkActive="active" class="hide">
+      <a routerLink="dashboard"><span class="fa fa-dashboard"></span> <span class="xn-text">Dashboard</span></a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="content"><span class="fa fa-columns"></span><span class="xn-text">Contents Manager</span></a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="campaigns"><span class="fa fa-bullhorn"></span><span class="xn-text">Campaign Manager</span></a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="apps"><span class="fa fa-dashboard"></span><span class="xn-text">Apps Manager</span></a>
+    </li>
+    <li>
+      <a style="cursor: pointer;" (click)="isCollapsed=!isCollapsed"><span class="fa fa-files-o"></span> <span class="xn-text">Pages Manager</span></a>
+      <ul [collapse]="isCollapsed">
+        <li class=""><a routerLink="pages"><span class="xn-text">Pages</span></a></li>
+        <li><a routerLink="page-groups"><span class="xn-text">Page Groups</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</div>

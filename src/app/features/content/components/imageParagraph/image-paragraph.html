@@ -1,0 +1,47 @@
+<div class="form-group" [formGroup]="parentFormGroup">
+	<div class="row">
+		<div class="col-md-6" *ngIf="showTitle">
+			<div class="form-group">
+				<label class="control-label">Paragraph Title</label>
+				<input maxlength="250" type="text" class="form-control" placeholder="Enter Title Here" (onLostFocus)="onTextParagraphChanged($event)"
+					formArrayState="paragraphs" [idx]="idx" idxField="title" formControlName="title" [attr.readonly]="isReadOnly ? true : null"/>
+				<span class="help-block">Enter Title Here</span>
+			</div>
+		</div>
+		<div class="col-md-6" *ngIf="showLabel">
+			<div class="form-group">
+				<label class="control-label">Label</label>
+				<input maxlength="250" type="text" class="form-control" placeholder="Add Label Here" (onLostFocus)="onTextParagraphChanged($event)"
+					formArrayState="paragraphs" [idx]="idx" idxField="label" formControlName="label" [attr.readonly]="isReadOnly ? true : null"/>
+				<span class="help-block">Enter Label</span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<label class="control-label">Paragraph Description</label>
+				<p-editor #quillEditor type="editor" (onTextChange)="onTextParagraphChanged($event)"
+					placeholder="Enter Description Here" formControlName="description" [style]="{'height':'240px'}">
+					<p-header>
+						<span class="ql-formats">
+							<button class="ql-underline"></button>
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-link"></button>
+              <button class="ql-list" value="bullet"></button>
+						</span>
+					</p-header>
+				</p-editor>
+				<span class="help-block">Enter Description</span>
+			</div>
+		</div>
+  </div>
+  <div class="row image-wrapper">
+		<image-upload-widget class="image-control"
+			[persistSizes]="true"
+			[isFormSubmitted]="isFormSubmitted" [options]="imageOptions"
+			[imageInput]='parentFormGroup.controls.image.value'
+			(imageChange)='onImageChange(parentFormGroup.controls.image, $event)' [isReadOnly]="isReadOnly"></image-upload-widget>
+	</div>
+</div>

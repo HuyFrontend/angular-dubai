@@ -1,0 +1,11 @@
+<div class="month-suggestion">
+  <div *ngIf="listSelected.length > 0" class="tagsinput">
+    <span class="tag" *ngFor="let item of listSelected; let i = index">
+      <span>{{item.value}}</span>
+      <a (click)="onRemove(i)" title="Remove"></a>
+    </span>
+  </div>
+  <div class="month-picker">
+    <datetime-picker #datetimePicker guideText=" " isInputDisabled="true" isSuggestion="true" dateFormat="MMM-YYYY" mode="month" (dateChangeEvent)="onDateSelected($event)"></datetime-picker>
+  </div>
+</div>

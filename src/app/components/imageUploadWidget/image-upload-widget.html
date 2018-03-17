@@ -1,0 +1,136 @@
+<div class="panel panel-default paragraph-headline" [class.panel-collapsed]="isCollapsed" [class.panel-expanded]="!isCollapsed">
+    <div class="panel-heading heading-toggle" *ngIf="options.isCollapsable">
+        <p class="panel-title">
+            <span>{{ title }} </span>
+        </p>
+        <ul class="panel-controls">
+            <li *ngFor="let button of options.actionButtons">
+                <a (click)="button.callback(button.param)" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                        <span class="fa action-button" title="{{button.title}}" [ngClass]="button.fontAwesomeClass" [ngStyle]="button.style"></span>
+                </a>
+            </li>
+            <li>
+                <a class="btn-collapse-expand" (click)="onCollapsed()" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                    <span class="fa" [class.fa-expand]="isCollapsed" [class.fa-compress]="!isCollapsed" title="Collapse/Expand"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <span class="error-message" *ngIf="isFormSubmitted && options.isRequired && !flags.isHaveImage">This image is required.</span>
+        <div class="row">
+            <div class="image-block">
+                <div class="row form-group" [hidden]="!flags.isHaveImage">
+                    <div class="col-xs-3">
+                        <label class="check">
+                            <input type="radio" name="ratioRadioCheckbox + '_' + {{instanceId}}" value="original"
+                                (change)="$event.stopPropagation()" (click)="onChangeRatio('original')"
+                                [checked]="currentRatio == 'original'" [disabled] = "isDisableRatio()"/> Original
+                        </label>
+                    </div>
+                    <div class="col-xs-3">
+                        <label class="check">
+                            <input type="radio" name="ratioRadioCheckbox + '_' + {{instanceId}}" value="16_16"
+                                (change)="$event.stopPropagation()" (click)="onChangeRatio('16_16')"
+                                [checked]="currentRatio == '16_16'" [disabled] = "isDisableRatio()"/> 16:16
+                        </label>
+                    </div>
+                    <div class="col-xs-3">
+                        <label class="check">
+                            <input type="radio" name="ratioRadioCheckbox + '_' + {{instanceId}}" value="16_9"
+                                (change)="$event.stopPropagation()" (click)="onChangeRatio('16_9')"
+                                [checked]="currentRatio == '16_9'" [disabled] = "isDisableRatio()"/> 16:9
+                        </label>
+                    </div>
+                    <div class="col-xs-3">
+                        <label class="check">
+                            <input type="radio" name="ratioRadioCheckbox + '_' + {{instanceId}}" value="27_40"
+                                (change)="$event.stopPropagation()" (click)="onChangeRatio('27_40')"
+                                [checked]="currentRatio == '27_40'" [disabled] = "isDisableRatio()"/> 27:40
+                        </label>
+                    </div>
+                </div>
+                <div class="image-placeholder">
+                    <div class="loader" *ngIf="uploader.isUploading">
+                    </div>
+                    <label class="error upload-error" *ngIf="errorUploading">{{errorUploading}}</label>
+                    <div [hidden]="currentRatio !== 'original'">
+                        <img #imgOriginal (load)="onImageLoad($event, imgOriginal)" [src]="imageInfo?.url" class="thumbnail inline"/>
+                        <span *ngIf="imgOriginal.fileSize && flags.isHaveImage">Resolution: {{imgOriginal.naturalWidth}}x{{imgOriginal.naturalHeight}} Size: {{imgOriginal.fileSize}}KB Type: {{imgOriginal.fileType}}</span>
+                    </div>
+                    <div [hidden]="currentRatio !== '16_9'">
+                        <img #img16_9 (load)="onImageLoad($event, img16_9)" [src]="imageInfo?.url16_9" class="thumbnail inline" />
+                        <span *ngIf="img16_9.fileSize && flags.isHaveImage">Resolution: {{img16_9.naturalWidth}}x{{img16_9.naturalHeight}} Size: {{img16_9.fileSize}}KB Type: {{img16_9.fileType}}</span>
+                    </div>
+                    <div [hidden]="currentRatio !== '16_16'">
+                        <img #img16_16 (load)="onImageLoad($event, img16_16)" [src]="imageInfo?.url16_16" class="thumbnail inline" />
+                        <span *ngIf="img16_16.fileSize && flags.isHaveImage">Resolution: {{img16_16.naturalWidth}}x{{img16_16.naturalHeight}} Size: {{img16_16.fileSize}}KB Type: {{img16_16.fileType}}</span>
+                    </div>
+                    <div [hidden]="currentRatio !== '27_40'">
+                        <img #img27_40 (load)="onImageLoad($event, img27_40)" [src]="imageInfo?.url27_40" class="thumbnail inline" />
+                        <span *ngIf="img27_40.fileSize && flags.isHaveImage">Resolution: {{img27_40.naturalWidth}}x{{img27_40.naturalHeight}} Size: {{img27_40.fileSize}}KB Type: {{img27_40.fileType}}</span>
+                    </div>
+                    <span class="upload-image-here-txt" *ngIf="!flags.isHaveImage">Upload Image Here</span>
+                    <div class="buttons-wrapper" [class.have-image]="flags.isHaveImage" [class.hidden]="isReadOnly">
+                        <label class="btn btn-danger btn-block" for="{{uploaderId ? uploaderId : getId()}}">Upload</label>
+                        <input type="file" id="{{getId()}}" ng2FileSelect [style.display]="'none'" [uploader]="uploader" accept="image/*"/>
+                        <input type="button" class="btn btn-danger btn-block" value="Use Existing" (click)="openSearchWidget()"/>
+                    </div>
+                    <span class="fa fa-times-circle remove-button" title="Remove image" (click)="openConfirmPopup()" *ngIf="options.isAbleToClearImage && flags.isHaveImage" [style.pointerEvents]="isReadOnly? 'none' : 'auto'"></span>
+                </div>
+
+            </div>
+            <div class="metadata-block" [hidden]="options.isHideMetadata">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Image Description</label>
+                            <p-editor #quillEditor type="editor" (onTextChange)="onEditorTextChanged($event)"
+                                placeholder="Enter Description Here" [readonly]="!isMetadataEnable"
+                                [(ngModel)]="imageInfo.metadata.description" [style]="{'height':'100px'}">
+                                <p-header>
+                                    <span class="ql-formats">
+                                        <button class="ql-link"></button>
+                                    </span>
+                                </p-header>
+                            </p-editor>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="control-label">Tag Pages</label>
+                        <div>
+                            <mbc-multiple-suggestion  placeholder="Enter Pages Name Here" display="displayName"
+                                key="entityId"
+                                (change)="$event.stopPropagation()"
+                                [isReadOnly]="!isMetadataEnable || isReadOnly"
+                                [selectedValue]="imageInfo.tagToPages"
+                                (onRemoveItem)="onTagRemoved($event)"
+                                (onAddedItem)="onTagAdded($event)"
+                                (onQuery)="onQueryTagToPages($event)">
+                            </mbc-multiple-suggestion>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Source Label</label>
+                            <input maxlength="250" type="text" placeholder="Enter Label Here" class="form-control" [readonly]="!isMetadataEnable || isReadOnly"
+                                (ngModelChange)="onInputChange()"
+                                [(ngModel)]="imageInfo.metadata.sourceLabel"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Source Link</label>
+                            <input maxlength="250" type="text" placeholder="Enter Link Here" class="form-control" [readonly]="!isMetadataEnable || isReadOnly"
+                                (ngModelChange)="onInputChange()"
+                                [(ngModel)]="imageInfo.metadata.sourceLink"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <mbc-confirmation #confirmPopup message="Data will be removed. Do you want to continue?" (yesAction)="clearImage()"></mbc-confirmation>
+        </div>
+        <search-widget #searchWidget (onAdded)= onSelectImage($event)></search-widget>
+    </div>
+</div>
+<div class="clear-both"></div>

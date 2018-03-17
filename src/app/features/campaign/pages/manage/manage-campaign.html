@@ -1,0 +1,65 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-3 col-lg-3">
+        <button type="button" class="btn btn-danger" (click)="createCampaign()">New Campaign</button>
+        <bulk-action [bulkActions]="bulkActions" (onBulkAction)="doBulkAction($event)"></bulk-action>
+      </div>
+      <div class="col-sm-9 col-md-9">
+        <search-criteria [filterFields]="filterFields"
+                        [filterOptions]="filterOptions"
+                        defaultOrderBy = "publishedDateTime"
+                        (onChangeFilterField)="changeFilterField($event)"
+          (onSearch)="newSearch($event)"></search-criteria>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <data-table [records]="pages" (loadMore)="loadMore($event)" (sort)="sort($event)" (itemSelectChange)="pageSelectedChange($event)"
+      [loading]="loading" [has-more]="hasMore">
+      <header title="Title" name="info.name"></header>
+      <header title="Editor" name="editor" [sortable]="false"></header>
+      <header title="Start Date" name="info.startActiveDateTime"></header>
+      <header title="End Date" name="info.endActiveDateTime"></header>
+      <header title="Placement" name="result.type" [sortable]="false"></header>
+      <header title="Users" name="users" [sortable]="false"></header>
+      <header title="Impression" name="impression" [sortable]="false"></header>
+      <header title="Clicks" name="clicks" [sortable]="false"></header>
+      <header title="History" name="clicks" [sortable]="false"></header>
+      <header title="Publish Date" name="publishedDateTime"></header>
+      <header title="Status" name="status"></header>
+
+      <column value="info.name" type="link" [getLink]="getDetailUrl"></column>
+      <column value="editor"></column>
+      <column value="info.startActiveDateTime" [formatter]="dateFormatter"></column>
+      <column value="info.endActiveDateTime" [formatter]="dateFormatter"></column>
+      <column value="placements"></column>
+      <column value="users"></column>
+      <column value="impression"></column>
+      <column value="clicks"></column>
+      <column value="history"></column>
+      <column value="publishedDateTime" [formatter]="dateFormatter"></column>
+      <column value="status" type="status" [formatter]="campaignStatusFormatter"></column>
+
+      <table-action name="edit" title="Edit" (doAction)="editCampaign($event)"></table-action>
+      <table-action name="copy" title="Copy" (doAction)="copyCampaign($event)"></table-action>
+      <table-action name="publish" title="Publish" (doAction)="confirmPublish($event)" [condition]="showPublishCondition"></table-action>
+      <table-action name="publishNow" title="Publish Now" (doAction)="confirmPublishNow($event)" [condition]="showPublishNowCondition"></table-action>
+      <table-action name="unpublish" title="Un-Publish" (doAction)="confirmUnpublish($event)" [condition]="showUnpublishCondition"></table-action>
+      <table-action name="cancel" title="Cancel Schedule" (doAction)="confirmCancel($event)" [condition]="showCancelCondition"></table-action>
+      <table-action name="delete" title="Delete" (doAction)="confirmDelete($event)"></table-action>
+    </data-table>
+
+  </div>
+</div>
+
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onPublish($event)"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="onUnPublish($event)"></mbc-confirmation>
+<mbc-confirmation #confirmCancelPopup message="{{message.CONFIRM_CANCEL_SCHEDULE}}" (yesAction)="onCancel($event)"></mbc-confirmation>
+<mbc-confirmation #confirmPublishNowPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onPublishNow($event)"></mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onDelete($event)"></mbc-confirmation>
+<mbc-confirmation #confirmPublishBulkPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onPublishBulk($event)"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishBulkPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="onUnpublishBulk($event)"></mbc-confirmation>
+<mbc-confirmation #confirmCancelBulkPopup message="{{message.CONFIRM_CANCEL_SCHEDULE}}" (yesAction)="onCancelBulk($event)"></mbc-confirmation>
+<mbc-confirmation #confirmDeleteBulkPopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onDeleteBulk($event)"></mbc-confirmation>
+<mbc-confirmation #confirmEndDateInThePast type="okOnly" message="{{message.ERROR_CAMPAIGN_END_DATE_IN_PAST}}"></mbc-confirmation>

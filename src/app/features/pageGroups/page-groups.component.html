@@ -1,0 +1,67 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-2 col-md-2">
+                <button type="submit" class="btn btn-danger" routerLink="/page-groups/create">Add New Group</button>
+                <bulk-action [bulkActions]="bulkActions" (onBulkAction)="doBulkAction($event)"></bulk-action>
+            </div>
+             <div class="col-sm-8 col-md-10">
+                <search-criteria
+                  #searchCriteria
+                  [filterFields]="filterFields" [filterOptions]="filterOptions"
+                  (onChangeFilterField)="changeFilterField($event)"
+                  (onSearch)="newSearch($event)"
+                  [isRemoteSuggestion] = "false">
+                </search-criteria>
+             </div>
+        </div>
+    </div>
+    <div class="panel-body">
+      <data-table [records]="pages" (loadMore)="loadMore($event)" (sort)="sort($event)"
+        (itemSelectChange)="itemSelectedChange($event)" [loading]="loading" [has-more]="hasMore">
+        <header title="Creator" name="creator" [sortable]="false"></header>
+        <header title="Internal Unique Page Group Name" name="data.title"></header>
+        <header title="Creation Date" name="createdAt"></header>
+        <header title="Publish Date" name="publishedDate"></header>
+        <header title="Type" name="data.type"></header>
+        <header title="Pages" name="noPages"></header>
+        <header title="Status" name="status"></header>
+
+        <column value="creator"></column>
+        <column value="data.title" type="link" [getLink]="getDetailUrl"></column>
+        <column value="createdDate" [formatter]="dateFormatter"></column>
+        <column value="publishedDate" [formatter]="dateFormatter"></column>
+        <column value="data.type"></column>
+        <column value="data.noPages"></column>
+        <column value="status" type="status"></column>
+
+        <table-action name="publish" title="Publish" (doAction)="publish($event)" [condition]="showPublishCondition"></table-action>
+        <table-action name="edit" title="Edit" (doAction)="editPage($event)"></table-action>
+        <table-action name="unpublish" title="Un-publish" (doAction)="confirmUnpublish($event)" [condition]="showUnpublishCondition"></table-action>
+        <table-action name="delete" title="Delete" (doAction)="confirmDelete($event)"></table-action>
+      </data-table>
+    </div>
+</div>
+<mbc-confirmation #confirmPublishPopup
+  message="{{message.CONFIRM_PUBLISH}}"
+  (yesAction)="activatePageGroups($event)"></mbc-confirmation>
+
+  <mbc-confirmation #confirmDeletePopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDelete($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmDeleteBulkPopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDeleteBulk($event)"></mbc-confirmation>
+
+<mbc-confirmation #activatedPopup
+    type="okOnly"
+    message="The page is successfully activated. This Page Group now is available to add the page children."></mbc-confirmation>
+
+<mbc-confirmation #confirmUnpublishPopup
+    message="{{message.CONFIRM_UNPUBLISH}}"
+    (yesAction)="unpublishPageGroup($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmUnpublishBulkPopup
+    message="{{message.CONFIRM_UNPUBLISH}}"
+    (yesAction)="unpublishBulkPageGroups($event)"></mbc-confirmation>

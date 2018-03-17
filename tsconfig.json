@@ -1,0 +1,74 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "noEmit": true,
+        "noEmitHelpers": false, //change to false
+        "strictNullChecks": false,
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "types": [
+            // "hammerjs",
+            "node"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "features": ["src/app/features"],
+            "features/*": ["src/app/features/*"],
+            "modules": ["src/app/modules"],
+            "modules/*": ["src/app/modules/*"],
+            "guards": ["src/app/guards"],
+            "guards/*": ["src/app/guards/*"],
+            "components": ["src/app/components"],
+            "components/*": ["src/app/components/*"],
+            "pipes": ["src/app/pipes"],
+            "pipes/*": ["src/app/pipes/*"],
+            "core": ["src/app/core"],
+            "core/*": ["src/app/core/*"],
+            "state": ["src/app/core/state"],
+            "state/*": ["src/app/core/state/*"],
+            "models": ["src/app/core/models"],
+            "models/*": ["src/app/core/models/*"],
+            "configs": ["src/app/core/configs"],
+            "configs/*": ["src/app/core/configs/*"],
+            "providers": ["src/app/core/providers"],
+            "providers/*": ["src/app/core/providers/*"],
+            "services": ["src/app/core/services"],
+            "services/*": ["src/app/core/services/*"],
+            "constant": ["src/app/core/constant"],
+            "constant/*": ["src/app/core/constant/*"],
+            "utils": ["src/app/core/utils"],
+            "utils/*": ["src/app/core/utils/*"],
+            "data": ["src/app/data"],
+            "data/*": ["src/app/data/*"],
+            "directives": ["src/app/core/directives"],
+            "directives/*": ["src/app/core/directives/*"]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "src/**/*.spec.ts",
+        "src/**/*.e2e.ts",
+        "aot"
+    ],
+    "awesomeTypescriptLoaderOptions": {
+        "forkChecker": true,
+        "useWebpackText": true
+    },
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

@@ -1,0 +1,65 @@
+{
+	"rules": {
+		// Custom
+		"trailing-comma": [
+			true,
+			{
+				"multiline": {
+					"objects": "ignore",
+					"arrays": "ignore",
+					"functions": "never",
+					"typeLiterals": "ignore"
+				}
+			}
+		],
+		// "interface-name": [
+		// 	false,
+		// 	"always-prefix"
+		// ],
+		// "import-destructuring-spacing": false,
+		// "invoke-injectable": false,
+		// "no-access-missing-member": false,
+		// "no-attribute-parameter-decorator": false,
+		// "no-forward-ref": false,
+		// "no-input-rename": false,
+		// "no-output-rename": false,
+		// "pipe-naming": [
+		// 	false,
+		// 	"camelCase",
+		// 	"my"
+		// ],
+		// "templates-use-public": false,
+		// "use-host-property-decorator": false,
+		// "use-input-property-decorator": false,
+		// "use-life-cycle-interface": false,
+		// "use-output-property-decorator": false,
+		// "use-pipe-transform-interface": false,
+		// General
+		"no-console": [
+			true,
+			"time",
+			"timeEnd",
+			"trace"
+		],
+		"max-line-length": [
+			true,
+			120
+		],
+		// "no-string-literal": false,
+		// "no-use-before-declare": false,
+		// "object-literal-sort-keys": false,
+		// "ordered-imports": false,
+		"quotemark": [
+			true,
+			"single",
+			"avoid-escape"
+		],
+		"variable-name": [
+			true,
+			"allow-leading-underscore",
+			"allow-pascal-case",
+			"ban-keywords",
+			"check-format"
+		]
+	}
+}

@@ -1,0 +1,51 @@
+<div class="row">
+    <p class="col-xs-12"><span class="help-block">Click on Button to select the post type</span></p>
+    <div class="row">
+        <div class="col-md-2">
+            <a class="btn btn-default btn-block btn-rounded btn-post {{isActiveClass('text')}}" (click)="changeParagraph({type: 'text'})" type="button" [class.disabled]="isReadOnly">Text</a>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-default btn-block btn-rounded btn-post {{isActiveClass('image')}}" (click)="changeParagraph({type: 'image'})" type="button" [class.disabled]="isReadOnly">Image</a>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-default btn-block btn-rounded btn-post {{isActiveClass('embed')}}" (click)="changeParagraph({type: 'embed'})" type="button" [class.disabled]="isReadOnly">Link</a>
+        </div>
+        <!-- <div class="col-md-2">
+            <a class="btn btn-default btn-block btn-rounded btn-post {{isActiveClass('live')}}" (click)="changeParagraph({type: 'live'})" type="button">Live</a>
+        </div> -->
+    </div>
+</div>
+
+<div *ngIf="formGroup && post && post.paragraphs">
+    <div class="panel-heading heading-toggle" *ngIf="post.paragraphs[0].type !== 'image'">
+        <p class="panel-title">
+            <span *ngIf="post.paragraphs[0].type === 'text'">Text Post</span>
+            <!-- <span *ngIf="post.paragraphs[0].type === 'image'">Image Post</span> -->
+            <span *ngIf="post.paragraphs[0].type === 'embed'">Link Post</span>
+            <span *ngIf="post.paragraphs[0].type === 'live'">Live Post</span>
+        </p>
+    </div>
+    <div class="panel-body">
+        <div [ngSwitch]="post.paragraphs[0].type">
+            <ng-template ngSwitchCase="embed">
+                <embedded-paragraph #embeddedParagraph [show-title]="false" [autosave]="false" parentType="post"
+                  [idx]="0" [parent-form-group]="formGroup" [isReadOnly]="isReadOnly">
+                </embedded-paragraph>
+            </ng-template>
+            <ng-template ngSwitchCase="live">
+                <embedded-paragraph #streamParagraph [show-title]="false" [autosave]="false" parentType="post"
+                  [idx]="0" [parent-form-group]="formGroup">
+                </embedded-paragraph>
+            </ng-template>
+            <ng-template ngSwitchCase="image">
+                <image-post #imagePostParagraph [isFormSubmitted]="isFormSubmitted" [postStatus]="post.status" [parent-form-group]="formGroup" [isRequiredAlbumTitle]="isRequiredAlbumTitle" [featureOnStream]="post.featureOnStream" [isReadOnly]="isReadOnly"></image-post>
+            </ng-template>
+            <ng-template ngSwitchDefault>
+                <text-paragraph #textParagraph [show-title]="false" [autosave]="false" parentType="post"
+                  [idx]="0" [parent-form-group]="formGroup" [isReadOnly]="isReadOnly">
+                </text-paragraph>
+            </ng-template>
+        </div>
+    </div>
+</div>
+<mbc-confirmation #confirmChange message="Changes will be updated and the previous paragraph information will be erased. Update occurs at saving. Do you want to proceed?" (yesAction)="confirmChangeParagraph($event)"></mbc-confirmation>

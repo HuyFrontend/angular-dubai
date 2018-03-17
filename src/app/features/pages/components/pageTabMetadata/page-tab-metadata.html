@@ -1,0 +1,104 @@
+<div class="panel-body" [formGroup]="metaGroup">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>{{pageTypeName | pageTypeByLang}} Types</strong></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [class.has-error]="(isFormSubmitted && metaGroup.controls.pageSubType.invalid) || (metaGroup.controls.pageSubType.dirty && metaGroup.controls.pageSubType.invalid)">
+                        <label class="col-xs-12 control-label">*Sub Type</label>
+                        <div class="col-xs-12">
+                            <select class="form-control col-xs-12" #subTypeSelect formControlName="pageSubType" [attr.disabled]="shouldBeDisabled()">
+                                <option value="">Select</option>
+                                <option *ngFor="let pageSubType of pageSubTypes" [value]="pageSubType.code">{{ pageSubType.names | pageTypeByLang }}</option>
+                            </select>
+                            <label class="error" for="title">This field is required.</label>
+                            <span class="help-block">Select Page Sub Type</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--div class="row">
+              <div class="col-md-6">
+                  <div class="form-group" [class.has-error]="(isFormSubmitted && metaGroup.controls.fullName.invalid) || (metaGroup.controls.fullName.dirty && metaGroup.controls.fullName.invalid)">
+                      <label class="col-xs-12 control-label">*Full Name</label>
+                      <div class="col-xs-12">
+                          <input type="text" class="form-control" formControlName="fullName" placeholder="Enter Full Name Here"/>
+                          <label class="error" for="title">This field is required.</label>
+                          <span class="help-block">Enter Full Name Here</span>
+                      </div>
+                  </div>
+              </div>
+            </div-->
+        </div>
+    </div>
+    <profile-subtype
+      #profileSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></profile-subtype>
+    <show-subtype
+      #showSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></show-subtype>
+    <channel-subtype
+      #channelSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></channel-subtype>
+    <events-subtype
+      #eventsSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></events-subtype>
+    <section-subtype
+      #sectionSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></section-subtype>
+    <business-subtype
+      #businessSubType
+      [pageType]="pageType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></business-subtype>
+    <award-subtype
+      #awardSubType
+      [pageType]="pageType"
+      [subType]="curSubType"
+      [subTypeText]="subTypeText"
+      [subTypeData]="pageSubTypeData"
+      [subTypeGroup]="metaGroup.controls.pageSubTypeData"
+      [isFormSubmitted]="isFormSubmitted"
+    ></award-subtype>
+</div>
+
+<mbc-confirmation #mbcConfirm
+  message="Changing sub-type might erase some values of the current sub-type. You can also choose to keep the common values. What is your intention?"
+  yesTitle="Keep Common Values"
+  noTitle="Clear Common Values"
+  cancelTitle="Cancel"
+  type="YesNoCancel"
+  (yesAction)="onClickConfirmPopupYes($event)"
+  (noAction)="onClickConfirmPopupNo($event)"
+  (cancelAction)="onClickConfirmPopupCancel($event)">
+</mbc-confirmation>

@@ -1,0 +1,57 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'award'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Title & Category -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.title.invalid) || (subTypeGroup.controls.title.dirty && subTypeGroup.controls.title.invalid)">
+            <label class="col-xs-12 control-label">*Title</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Title Here"
+                display="names" key="code"
+                formControlName="title"
+                [suggestionList]="listTitle"
+              ></single-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Enter Title</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Category</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Category Here"
+                display="names" key="code"
+                formControlName="category"
+                [suggestionList]="listCategory"
+              ></single-suggestion>
+              <span class="help-block">Please Enter Category</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter More Information Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

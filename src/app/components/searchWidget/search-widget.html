@@ -1,0 +1,93 @@
+<section class="search-widget" [@popupAnimation]='popupState'>
+  <div class="search-widget-header row search-header">
+    <div class="col-md-4 icon-remove">
+      <div class="btn-remove">
+        <button class="btn btn-danger btn-sm" type="button" (click)="hidePopup()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-3 title">
+      <div class="widget-title">
+        <span>Search Digital Assets</span>
+      </div>
+    </div>
+    <div class="col-md-5 date-group">
+        <div class="col-md-6">
+          <datetime-picker [(ngModel)]="startDate" name="uploadFrom" title="" #uploadFrom="ngModel" formatteddate placeholder="Upload From" isHideGuideText="true"></datetime-picker>
+        </div>
+        <div class="col-md-6">
+          <datetime-picker [(ngModel)]="endDate" name="uploadTo" title="" #uploadTo="ngModel" formatteddate placeholder="To" isHideGuideText="true"></datetime-picker>
+        </div>
+    </div>
+  </div>
+  <div class="search-widget-body">
+    <aside class="search-controls">
+      <form #seachForm (ngSubmit)="searchImage()" (keyup.enter)="searchImage()">
+      <p>
+        <label>Title</label>
+        <input class="form-control" type="text" placeholder="Search by Title" name="title" [(ngModel)]="title"/>
+      </p>
+      <p>
+        <label>Description</label>
+        <input class="form-control" type="text" placeholder="Search by Description" name="description" [(ngModel)]="description"/>
+      </p>
+      <p>
+        <label>Authoring Pages</label>
+        <mbc-multiple-suggestion #suggestPage class="input-page" placeholder="Search by Authoring Pages" display="displayName" key="entityId"
+            [selectedValue]="listAuthoPageSelected" (onRemoveItem)="onRemoveAuthoPage($event)" (onAddedItem)="onAddedAuthoPage($event)" (onQuery)="onQueryAuthoPage($event)">
+        </mbc-multiple-suggestion>
+      </p>
+      <p>
+        <label>Tagged Pages</label>
+        <mbc-multiple-suggestion #suggestPage class="input-page" placeholder="Search by Tagged Pages" display="displayName" key="entityId"
+            [selectedValue]="listTagPageSelected" (onRemoveItem)="onRemovePage($event)" (onAddedItem)="onAddedPage($event)" (onQuery)="onQueryTagPage($event)">
+        </mbc-multiple-suggestion>
+      </p>
+      <p>
+        <label>Image Interest</label>
+        <mbc-multiple-suggestion placeholder="Search by Image Interest" display="value" key="id" [selectedValue]="listInterestsSelected"
+            (onRemoveItem)="onRemoveInterest($event)" (onAddedItem)="onAddedInterest($event)" (onQuery)="onQueryInterest($event)"
+            (onSelectedChanged)="onInterestSelectedChanged($event)">
+        </mbc-multiple-suggestion>
+      </p>
+      <p>
+        <label>Used Playlist</label>
+        <input [disabled]="true" class="form-control" type="text" placeholder="Search by Used Playlist" name="usedPlaylist" />
+      </p>
+      <p>
+        <label>Image Editor</label>
+        <input [disabled]="true" class="form-control" type="text" placeholder="Search by Image Editor" name="imageEditor" />
+      </p>
+      <p>
+        <button class="btn btn-danger" style="float:right" type="submit">Go</button>
+      </p>
+      </form>
+    </aside>
+    <div class="search-result" #searchResult on-scroll="onScroll($event)">
+      <div class="col-md-12 select-images" *ngIf="isTypeSelectMultiple && listFoundImages.length">
+        <button [class.disabled]="!selectedListImageInfo.length" class="btn-selected btn btn-danger btn-sm pull-right" type="button" on-click="addList()">
+          <span class="">Add Selected Images</span>
+        </button>
+      </div>
+      <div class="col-md-12 no-result" *ngIf="!listFoundImages.length && isSearchSubmitted">
+        <div class="panel panel-default">
+          <div class="message">No images found.</div>
+        </div>
+      </div>
+      
+      <card
+          [isTypeSelectMultiple]="isTypeSelectMultiple"
+          *ngFor="let cardImage of listFoundImages; let i = index"
+          [attr.public_id]="i" [imageInfo]="cardImage"
+          (onAdded)="onItemAdded($event)"
+          (onSelectedItem)="onSelectOrRemoveItem($event)">
+        </card>
+        
+      <div class="loading-more multi-loader" *ngIf="isShowLoading"></div>
+    </div>
+  </div>
+</section>
+<div class="overlay" [@overlayAnimation]='overlayState' (click)="hidePopup()"></div>
+
+<mbc-confirmation #confirmPopup message="Current image will be updated with this new image. Do you want to continue?" (yesAction)="onConfirmChoosingImage($event)"></mbc-confirmation>

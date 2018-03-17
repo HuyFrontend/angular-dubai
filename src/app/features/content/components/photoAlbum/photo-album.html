@@ -1,0 +1,93 @@
+<div class="form-group">
+    <div class="row album-metadata-wrapper" *ngIf="isShowInfo">
+        <div class="col-xs-12">
+            <div class="form-group" [class.has-error]="isrequiredAlbumTitle">
+                <label class="control-label">Title</label>
+                <input maxlength="250" type="text" placeholder="Enter Title Here" class="form-control"
+                    (change)="$event.stopPropagation()" [(ngModel)]="photoAlbumInfo.title" (ngModelChange)="isRequiredAlbumTitle = false"
+                    (blur)="onTitleChanged()" name="albumTitle" [readonly]="isReadOnly"
+                />
+                <label class="error" *ngIf="isRequiredAlbumTitle">This field is mandatory for publishing this photo album.</label>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="control-label">Tag Pages</label>
+            <div>
+                <mbc-multiple-suggestion placeholder="Enter Pages Here" display="displayName" key="entityId" [selectedValue]="photoAlbumInfo.tagToPages"
+                    (onRemoveItem)="onTagRemoved($event)" (onAddedItem)="onTagAdded($event)" (change)="$event.stopPropagation()"
+                    (onQuery)="onQueryTagToPages($event)" [isReadOnly]="isReadOnly">
+                </mbc-multiple-suggestion>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <p-editor #quillEditor type="editor" placeholder="Enter Description Here" [(ngModel)]="photoAlbumInfo.description" [style]="{'height':'100px'}"
+                    (onTextChange)="onEditorTextChanged($event)" [readonly]="isReadOnly">
+                    <p-header>
+                        <span class="ql-formats">
+							<button class="ql-link"></button>
+						</span>
+                    </p-header>
+                </p-editor>
+            </div>
+        </div>
+    </div>
+    <div class="row feature-on-stream">
+        <div class="col-md-12">
+            <label class="check">
+                <input [(ngModel)]="featureOnStream" (ngModelChange)="changeStream()" type="checkbox" name="featureOnStream" [disabled]="isReadOnly"/>
+                <span class="label-text">Feature this content in streams</span>
+            </label>
+        </div>
+        <div class="row">
+          <span class="error-message" *ngIf="isFormSubmitted && photoAlbumInfo.images.length == 0">Image is required.</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <label class="btn btn-danger btn-block" for="fileupload" [class.disabled]="isReadOnly">Upload Multiple Images</label>
+            <input type="file" id="fileupload" multiple ng2FileSelect [style.display]="'none'" [uploader]="uploader" accept="image/*" [disabled]="isReadOnly"/>
+        </div>
+        <div class="col-xs-4">
+            <input type="button" (click)="onUploadMultipleImages()" class="btn btn-danger btn-block" value="Set Multiple Images From DAM" [disabled]="isReadOnly"/>
+        </div>
+        <div class="col-xs-3" [class.col-xs-3]="photoAlbumInfo.images.length > 0" [class.col-xs-4]="photoAlbumInfo.images.length === 0">
+            <input type="button" class="btn btn-danger btn-block" (click)="confirmDeleteAllImageControl()" value="Clear All Album Images" [disabled]="photoAlbumInfo.images.length === 0 || isReadOnly"/>
+        </div>
+        <div class="col-xs-1" *ngIf="photoAlbumInfo.images.length > 0">
+            <a class="btn-expand-collapse pull-right" (click)="onCollapseExpandAll()" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+				<span class="fa all"
+					[class.fa-expand]="flags.isCollapsedAll"
+					[class.fa-compress]="!flags.isCollapsedAll" title="Collapse/Expand All"></span>
+			</a>
+        </div>
+    </div>
+
+    <div class="multi-loader" *ngIf="uploader.isUploading"></div>
+    <div class="row">
+      <div class="col-xs-12">
+        <label class="error upload-error" *ngIf="errorUploading" [innerHTML] = "errorUploading"></label>
+      </div>
+    </div>
+    <div class="row" [dragula]='"bag-one"' [dragulaModel]='photoAlbumInfo.images'>
+        <image-upload-widget class="image-control col-xs-12"
+            *ngFor="let albumImage of photoAlbumInfo.images; let i = index" [attr.image-index]="i"
+            [options]="{ actionButtons: imageControlDataArray[i].actionButtons, isAbleToClearImage: false }"
+            [isCollapsed]="imageControlDataArray[i].isCollapsed"
+            [imageInput]='albumImage'
+            [title]="'Photo ' + (i+1) + (albumImage.metadata.sourceLabel ? ' - ': '') + albumImage.metadata.sourceLabel"
+            (setDefault)="setDefaultImage(i)"
+            (imageChange)="onImageChange($event, i)"
+            (isCollapsedChange)="onImageCollapseChange($event, i)"
+            [@flyInOut]="'in'"
+            (isUploadMultiple)="onUploadMultipleImages($event)"
+            [isReadOnly]="isReadOnly"
+            uploaderId = "fileupload">
+        </image-upload-widget>
+    </div>
+    <mbc-confirmation #switchDefaultImageConfirmPopup message="Current value will be updated with this new value. Do you want to continue?" (yesAction)="setDefaultImage($event)"></mbc-confirmation>
+    <mbc-confirmation #deleteImageConfirmPopup message="Data will be removed. Do you want to continue?" (yesAction)="onDeleteImageControl($event)"></mbc-confirmation>
+    <mbc-confirmation #deleteAllImageConfirmPopup message="Data will be removed. Do you want to continue?" (yesAction)="onDeleteAllImageControl()"></mbc-confirmation>
+    <search-widget #searchWidget (onSelectedListImageInfo)= onSelectedList($event) isTypeSelectMultiple="true"></search-widget>
+</div>

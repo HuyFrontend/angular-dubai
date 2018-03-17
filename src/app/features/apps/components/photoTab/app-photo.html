@@ -1,0 +1,8 @@
+<form #photoForm="ngForm" novalidate>
+  <div class="form-group image-wrapper">
+
+      <image-upload-widget class="image-control" [imageInput]="app.photo" [isCollapsed]="false" [title]="'App Photo'" [persistSizes]="true"
+        (imageChange)="onImageChange($event)" [isReadOnly]="app.info.status === appStatus.PENDING">
+      </image-upload-widget>
+    </div>
+</form>

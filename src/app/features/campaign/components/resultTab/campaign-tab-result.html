@@ -1,0 +1,7 @@
+<form #resultForm="ngForm" novalidate>
+  <div class="panel-body">
+    <campaign-result-option #resultOption></campaign-result-option>
+    <campaign-placement #placement *ngIf="campaign.result.type && campaign.result.mode" [isSubmitting] = "isSubmitting"></campaign-placement>
+    <campaign-recommendation *ngIf="campaign.result.type && campaign.result.mode"></campaign-recommendation>
+  </div>
+</form>

@@ -1,0 +1,26 @@
+<div class="search-item col-md-4">
+  <div class="card">
+    <div class="card-multiple" *ngIf="isTypeSelectMultiple else typeSingle">
+      <div class="add-checkbox">
+        <input type="checkbox" name="selectedImage" [(ngModel)]="isSelectedItem" on-click="changeSelectedItem()"/>
+        <span>Select</span>
+      </div>
+      <div class="card-controls">
+        <button class="btn btn-danger btn-sm" type="button" (click)="addOneItem()"> {{ cardAction.add }}</button>
+      </div>
+    </div>
+    <ng-template #typeSingle>
+      <div class="card-controls">
+        <button class="btn btn-danger btn-sm" type="button" (click)=addImage() >Add</button>
+      </div>
+    </ng-template>
+    <div class="card-image" #imageElement [class.active]="isSelectedItem">
+      <img class="img-responsive" src="{{imageInfo.url}}" alt="">
+    </div>
+    <div class="card-details">
+      <h5 class="card-title">{{imageInfo.context?.entityDataTitle}}</h5>
+      <div class="card-description" [innerHTML]="imageInfo.context?.description"></div>
+      <p class="upload-date"><span>Upload Date:</span><strong>{{imageInfo.uploaded_at}}</strong></p>
+    </div>
+  </div>
+</div>

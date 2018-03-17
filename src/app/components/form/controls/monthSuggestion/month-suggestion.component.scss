@@ -1,0 +1,25 @@
+.month-suggestion {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+
+  .tagsinput {
+    float: left;
+    width: auto;
+    background: none;
+    max-width: 280px;
+    margin-right: 7px;
+
+    .tag {
+      margin-top: 3px;
+    }
+  }
+  .month-picker {
+    float: left;
+    height: 31px;
+  }
+    .col-xs-12 {
+      padding-left: 0;
+      padding-right: 0;
+    }
+}

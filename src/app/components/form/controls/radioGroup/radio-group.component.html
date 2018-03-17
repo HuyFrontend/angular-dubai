@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label class="col-xs-12 control-label">{{title}}</label>
+  <div class="col-xs-12">
+      <div class="input-group">
+          <label class="check" *ngFor="let item of dataSource">
+            <input type="radio" name="{{name}}" [(ngModel)]="value" value="{{item.value}}" (change)="onChange(item.value)"/> {{item.display}}
+          </label>
+        </div>
+    <span class="help-block">{{guideText}}</span>
+  </div>
+</div>

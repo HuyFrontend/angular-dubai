@@ -1,0 +1,33 @@
+.add-item {
+    position: relative;
+    select {
+        float: left;
+        width: 65%;
+        height: 30px;
+    }
+    .accountId {
+        float: left;
+        width: 75%;
+    }
+    button {
+        float: right;
+        width: 20%;
+    }
+}
+
+.cell-social-name {
+    width: 25%;
+}
+
+.cell-social-account-id {
+    margin-left: 2%;
+    width: 50%; 
+}
+
+.cell-social-button {
+    margin-left: 2%;
+    width: 20%;  
+}
+.social-network-management thead{
+    background-color: darkgray;
+}

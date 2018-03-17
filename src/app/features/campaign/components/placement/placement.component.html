@@ -1,0 +1,54 @@
+<form #resultForm="ngForm" novalidate>
+<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>*Placement and Placement Mode</strong></h3>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group"><br>
+                    <label class="control-label pull-left" style="padding-top:10px;">Placement Mode</label>
+                    <div class="btn-input-page-container pull-left">
+                            <select-input *ngIf="campaign.result.type=='CONTENT'"
+                                        [(ngModel)]="campaign.result.placementMode"
+                                        name="placementMode"
+                                        [datasource]= "modeContent"
+                                        (selectInputChange)="onPlacementModeChange($event)">
+                            </select-input>
+                            <select-input *ngIf="campaign.result.type=='PAGE'"
+                                    [(ngModel)]="campaign.result.placementMode"
+                                    name="placementMode"
+                                    [datasource]= "modePage"
+                                    (selectInputChange)="onPlacementModeChange($event)">
+                            </select-input>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row page-list-data">
+            <data-table [records]="campaign.result.placements" [has-more]="false" [(ngModel)]="campaign.result.placements" name="placements"
+                        [loading]="false" [item-remove] = "true"
+                        (removeItemHandler)="removePlacement($event)"
+                        [addNew] = "true"
+                        (addNewHandler)="addNewHandler()"
+                        [hideCheckbox]="true">
+                <header title="Placement Destination" name="site" [sortable]="false"></header>
+                <header title="Placement Order" name="site" [sortable]="false"></header>
+                <header title="Pin" name="site" [sortable]="false"></header>
+                <header title="Actions" name="action" [sortable]="false"></header>
+
+            <column value="destination" type="selectbox" [datasource]="placementList" defaultText="Choose Destination"></column>
+            <column value="placementOrder" type="selectbox" [datasource]="orderList" [disabled]="isStreamCard()" [defaultValue]="0" defaultText="Choose Placement Order"></column>
+            <column value="pinable" type="checkbox" [disabled]="isStreamCard()"></column>
+            <column type="action"></column>
+          </data-table>
+          <label *ngIf="!isValid() && isSubmitting" class="error" style="padding-left:10px;">Please choose a placement mode and placements for this campaign before saving</label>
+        </div>
+</div>
+</form>
+
+<mbc-confirmation #confirmChangePlacementMode
+[message]="message.CONFIRM_CHANGE_CAMPAIGN_PLACEMENT_MODE"
+(yesAction)="onPlacementModeChangeYes($event)"
+(noAction)="onPlacementModeChangeNo($event)">
+</mbc-confirmation>
+

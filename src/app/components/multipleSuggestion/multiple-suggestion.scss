@@ -1,0 +1,20 @@
+.multi-suggestion {
+  position: relative;
+}
+
+.suggestions {
+  .dropdown-menu,
+  .list-items {
+    max-height: 223px;
+    overflow-y: auto;
+  }
+}
+
+div.tagsinput {
+  background: #F9F9F9;
+}
+
+.has-error .tagsinput {
+  border: 1px solid #b64645;
+}
+

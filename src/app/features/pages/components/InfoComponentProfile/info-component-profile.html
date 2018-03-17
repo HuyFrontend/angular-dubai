@@ -1,0 +1,120 @@
+<div class="info-component-profile-wrapper">
+  <div class="row">
+
+    <div class="form-group col-md-5">
+      <label class="col-xs-12 control-label">Component Title</label>
+      <input class="form-control" title="Component title" placeholder="Enter Label Here" [(ngModel)]="icData.title" (ngModelChange)="onTitleChange()"/>
+    </div>
+
+    <div class="form-group col-md-3 col-checkbox">
+      <checkbox title="Show data on Stream" [(ngModel)]="icData.showDataOnStream" (ngModelChange)="onInfoControlChanged()">
+      </checkbox>
+    </div>
+  </div>
+
+  <div class="row table">
+    <div class="col-xs-12">
+      <h3 class="panel-title"><strong>Linked Data</strong></h3>
+    </div>
+    <div class="col-xs-12 table-responsive">
+      <table class="table table-bordered table-striped table-actions linked-data-table">
+        <thead>
+          <tr>
+            <th>Has A</th>
+            <th>Profile</th>
+            <th>Relates To</th>
+            <th>Linked Value</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let linkedData of icData.linkDataBOList; let i = index">
+            <td>
+              <select class="form-control col-xs-12" [(ngModel)]="linkedData.linkedItem1.linkType"
+                (change)="onPageSubTypeChanged(linkedData)">
+                <option [ngValue]="undefined" disabled selected>Select</option>
+                <option *ngFor="let subType of subTypes" [ngValue]="subType.code">{{ subType.name }}</option>
+              </select>
+            </td>
+
+            <td>
+              <single-suggestion
+                [selectedValue]="linkedData.linkedItem1.page2"
+                [isReadOnly]="!linkedData.linkedItem1.linkType"
+                placeholder="Select a page"
+                display="displayName"
+                key="entityId"
+                (onQuery)="onQueryItem1Page2($event, linkedData.linkedItem1.linkType)"
+                (onSelectedChanged)="onItem1Page2Change($event, linkedData)">
+              </single-suggestion>
+            </td>
+
+            <td>
+              <select class="form-control" [(ngModel)]="linkedData.linkedItem2.linkType" [disabled]="!linkedData.linkedItem1.page2"
+                (change)="$event.stopPropagation(); onRelationSelectboxChange(linkedData.linkedItem2.linkType, linkedData)">
+                <option [ngValue]="null" disabled selected>Select</option>
+                <option *ngFor="let linkType of linkTypes2" [ngValue]="linkType.value">{{ linkType.text }}</option>
+              </select>
+            </td>
+
+            <td *ngIf="linkedData.linkedItem2.linkType && linkedData.linkedItem2.linkType !== 'METADATA'">
+
+              <mbc-multiple-suggestion
+                [selectedValue] = "linkedData.linkedItem2.page2 ? [linkedData.linkedItem2.page2] : null"
+                [isReadOnly]="!linkedData.linkedItem1.page2"
+                [acceptUserInput]="true"
+                [maxItem]="1"
+                placeholder="Select a Character name"
+                display="displayName" key="entityId"
+                (onQuery)="onQueryItem2($event, linkedData, i)"
+                (onRemoveItem)="onRemoveItem2Page2($event, linkedData, i)"
+                (onAddedItem)="onAddItem2Page2($event, linkedData, i)"
+              ></mbc-multiple-suggestion>
+            </td>
+
+            <td *ngIf="linkedData.linkedItem2.linkType && linkedData.linkedItem2.linkType == 'METADATA'">
+              <mbc-multiple-suggestion
+                [selectedValue] = "linkedData.linkedItem2.linkProperties.metadata"
+                [isReadOnly]="!linkedData.linkedItem1.page2"
+                placeholder="Select metadata"
+                display="text"
+                key="code"
+                (onQuery)="onQueryItem2($event, linkedData, i)"
+                (onRemoveItem)="onRemoveItem2MetaData($event, linkedData, i)"
+                (onAddedItem)="onAddItem2Metadata($event, linkedData, i)"
+              ></mbc-multiple-suggestion>
+            </td>
+
+            <td *ngIf="!linkedData.linkedItem2.linkType">
+
+            </td>
+
+            <td>
+              <action-cell class="action-wrapper" [remove]="icData.linkDataBOList.length > 1" [up]="i !== 0" [down]="i !== icData.linkDataBOList.length - 1"
+                (removeAction)="onRemoveRow(i)"
+                (moveUpAction)="movePageHandler(i, -1)"
+                (moveDownAction)="movePageHandler(i, 1)">
+              </action-cell>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr >
+            <td colspan="5" *ngIf="isAbleToAddLinkedData()">
+              <a (click)="addNewLinkedData()">Add new</a>
+            </td>
+            <td colspan="5" *ngIf="!isAbleToAddLinkedData()" class="not-able-to-add-row">
+                <a>Add new</a>
+              </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-xs-12">
+      <span class="error-message" *ngIf="isFormSubmitted && !isLinkedDataValid()">Linked data is invalid.</span>
+    </div>
+  </div>
+
+</div>
+
+<mbc-confirmation #subtypeChangeConfirmPopup message="Data will be removed. Do you want to continue?" (yesAction)="commitChangingPageSubType($event)" (noAction)="revertChangingPageSubType($event)"></mbc-confirmation>

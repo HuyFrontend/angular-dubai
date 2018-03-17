@@ -1,0 +1,14 @@
+@import 'conf/conf';
+
+.sidebar-collapsed {
+    .page-content {
+        margin-left: 50px;
+    }
+}
+.hide {
+    display: none;
+}
+
+body.disable-scroll {
+  overflow-y: hidden;
+}

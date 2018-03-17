@@ -1,0 +1,152 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><strong>Infomation Components</strong></h3>
+  </div>
+  <div class="panel-body">
+    <div class="row info-components-wrapper">
+      <div class="col-xs-10 left-panel">
+        <p><strong>Components</strong> - Order of component dictates the order on the front-end. You can also drag to and or remove a component from a group</p>
+        <div class="row">
+          <div class="col-xs-12 drop-zone upper-bracket" [dragula]='"bag-ic"' [dragulaOptions]="dragDropOptions" [dragulaModel]="infoComponentsUpper">
+            <div *ngFor="let ic of infoComponentsUpper; let i = index" [attr.icIndex]="i">
+
+              <div class="panel panel-default component-page-groups">
+                <div class="panel-heading row">
+                  <div class="col-md-10">
+                    <h3 class="panel-title">
+                      <strong [ngSwitch]="ic.type">
+                          <ng-template ngSwitchCase="pageGroup">Page Group</ng-template>
+                          <ng-template ngSwitchCase="profile">Profile</ng-template>
+                          <ng-template ngSwitchCase="show">Show</ng-template>
+                      </strong>
+                    </h3>
+                  </div>
+                  <div class="col-md-2 action">
+                    <action-cell class="action-wrapper" [remove]="true" [up]="i !== 0" [down]="i !== infoComponentsUpper?.length - 1"
+                      (removeAction)="removeActionComponent(i, true)"
+                      (moveUpAction)="moveUpActionComponent(i, true)"
+                      (moveDownAction)="moveDownActionComponent(i, true)"></action-cell>
+                  </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div [ngSwitch]="ic.type">
+
+                    <ng-template ngSwitchCase="pageGroup">
+                      <info-page-groups
+                        [dataInput]="ic.data"
+                        [mainPageEntityId]="pageEntityId"
+                        (infoComponentChange)="onItemChange($event, i, true)"
+                        [isFormSubmitted]="isFormSubmitted"
+                        [pageGroup]="pageGroup">
+                      </info-page-groups>
+                    </ng-template>
+                    <ng-template ngSwitchCase="profile">
+                      <info-component-profile
+                        (infoComponentChange)="onItemChange($event, i, true)"
+                        [dataInput]="ic.data"
+                        [mainPageEntityId]="pageEntityId"
+                        [isFormSubmitted]="isFormSubmitted"
+                        [pageInfo]="info">
+                      </info-component-profile>
+                    </ng-template>
+                    <ng-template ngSwitchCase="show">
+                        <info-component-show
+                          (infoComponentChange)="onItemChange($event, i, true)"
+                          [dataInput]="ic.data"
+                          [mainPageEntityId]="pageEntityId"
+                          [isFormSubmitted]="isFormSubmitted"
+                          [pageInfo]="info">
+                        </info-component-show>
+                      </ng-template>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-12 metadata-bar">
+            <strong>Meta data area:</strong> Drag and drop the info components above or under this bar to place them in FO - Page About Tab
+          </div>
+
+          <div class="col-xs-12 drop-zone lower-bracket" [dragula]='"bag-ic"' [dragulaOptions]="dragDropOptions" [dragulaModel]="infoComponentsLower">
+            <div *ngFor="let ic of infoComponentsLower; let i = index" [ngSwitch]="ic.type" [attr.icIndex]="i">
+              <div class="panel panel-default component-page-groups">
+                <div class="panel-heading row">
+                  <div class="col-md-10">
+                    <h3 class="panel-title">
+                      <strong [ngSwitch]="ic.type">
+                          <ng-template ngSwitchCase="pageGroup">Page Group</ng-template>
+                          <ng-template ngSwitchCase="profile">Profile</ng-template>
+                          <ng-template ngSwitchCase="show">Show</ng-template>
+                      </strong>
+                    </h3>
+                  </div>
+                  <div class="col-md-2 action">
+                      <action-cell class="action-wrapper"
+                        [remove]="true" [up]="i !== 0" [down]="i !== infoComponentsLower?.length - 1"
+                        (removeAction)="removeActionComponent(i, false)"
+                        (moveUpAction)="moveUpActionComponent(i, false)"
+                        (moveDownAction)="moveDownActionComponent(i, false)">
+                      </action-cell>
+                  </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div [ngSwitch]="ic.type">
+
+                    <ng-template ngSwitchCase="pageGroup">
+                      <info-page-groups
+                        [dataInput]="ic.data"
+                        [mainPageEntityId]="pageEntityId"
+                        (infoComponentChange)="onItemChange($event, i, false)"
+                        [isFormSubmitted]="isFormSubmitted"
+                        [pageGroup]="pageGroup">
+                      </info-page-groups>
+                    </ng-template>
+                    <ng-template ngSwitchCase="profile">
+                      <info-component-profile
+                        (infoComponentChange)="onItemChange($event, i, false)"
+                        [dataInput]="ic.data"
+                        [mainPageEntityId]="pageEntityId"
+                        [isFormSubmitted]="isFormSubmitted"
+                        [pageInfo]="info">
+                      </info-component-profile>
+                    </ng-template>
+                    <ng-template ngSwitchCase="show">
+                        <info-component-show
+                          (infoComponentChange)="onItemChange($event, i, false)"
+                          [dataInput]="ic.data"
+                          [mainPageEntityId]="pageEntityId"
+                          [isFormSubmitted]="isFormSubmitted"
+                          [pageInfo]="info">
+                        </info-component-show>
+                      </ng-template>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-2 right-panel">
+        <label>Drag components and fill them</label>
+        <div class="ic-type-bracket" [dragula]='"bag-ic"' [dragulaOptions]="dragDropOptions" [dragulaModel]="infoComponentTypes">
+          <div *ngFor="let icType of infoComponentTypes" class="drag-drop-btn" [ngClass]="{'disabled': icType.isDisabled}" [attr.icType]="icType.type">
+            {{icType.title}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mbc-confirmation #confirmRemovalPopup message="Data will be removed. Do you want to continue?" (yesAction)="onConfirmRemovingActionComponent($event)"></mbc-confirmation>

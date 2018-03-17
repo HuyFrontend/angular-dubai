@@ -1,0 +1,248 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'events'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Event Type & Event Name -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.eventName.invalid) || (subTypeGroup.controls.eventName.dirty && subTypeGroup.controls.eventName.invalid)">
+            <label class="col-xs-12 control-label">*Event Name</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="eventName" placeholder="Enter Event Name Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Event Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Type</label>
+            <div class="col-xs-12">
+              <span class="label label-primary">{{subTypeText}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">About Event</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter About Event Here" maxlength="500" rows="10" class="form-control" formControlName="aboutEvent"></textarea>
+              <span class="help-block">Enter About Event Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Season Title & Event Season -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Season Title</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="eventSeasonTitle" placeholder="Enter Event Season Title Here"/>
+              <span class="help-block">Enter Event Season Title Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Season</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="eventSeason" placeholder="Enter Event Season Here"/>
+              <span class="help-block">Enter Event Season Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Year & Live/Recorded -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.eventYear.errors && subTypeGroup.controls.eventYear.errors.invalidFormat) || (subTypeGroup.controls.eventYear.dirty && subTypeGroup.controls.eventYear.errors && subTypeGroup.controls.eventYear.errors.invalidFormat)">
+            <label class="col-xs-12 control-label">Event Year</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Input Event Year" *ngIf="subTypeData" [date]="subTypeData.eventYear" [fControl]="subTypeGroup.controls.eventYear"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.eventYear.errors && subTypeGroup.controls.eventYear.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select Event Year</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.liveRecorded.invalid) || (subTypeGroup.controls.liveRecorded.dirty && subTypeGroup.controls.liveRecorded.invalid)">
+            <label class="col-xs-12 control-label">*Live/Recorded</label>
+            <div class="col-xs-12">
+              <label>Live</label>
+              <input type="radio" name="liveRecorded" value="live" formControlName="liveRecorded">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label>Recorded</label>
+              <input type="radio" name="liveRecorded" value="recorded" formControlName="liveRecorded">
+              <label class="error">This field is required.</label>
+              <span class="help-block help-block-gender">Select Live/Recorded</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start & End Date -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.startDate.errors && subTypeGroup.controls.startDate.errors.invalidFormat) || (subTypeGroup.controls.startDate.dirty && subTypeGroup.controls.startDate.errors && subTypeGroup.controls.startDate.errors.invalidFormat)">
+            <label class="col-xs-12 control-label">Start Date</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Input Start Date" *ngIf="subTypeData" [date]="subTypeData.startDate" [fControl]="subTypeGroup.controls.startDate"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.startDate.errors && subTypeGroup.controls.startDate.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select Start Date</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.endDate.errors && subTypeGroup.controls.endDate.errors.invalidFormat) || (subTypeGroup.controls.endDate.dirty && subTypeGroup.controls.endDate.errors && subTypeGroup.controls.endDate.errors.invalidFormat)">
+            <label class="col-xs-12 control-label">End Date</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Input End Date" *ngIf="subTypeData" [date]="subTypeData.endDate" [fControl]="subTypeGroup.controls.endDate"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.endDate.errors && subTypeGroup.controls.endDate.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select End Date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Time</label>
+            <div class="col-xs-12">
+              <select multiple class="form-control" formControlName="time">
+                <option *ngFor="let time of listTime" [value]="time.code">{{ time.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Country & City -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Country</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="country">
+                <option value="">Select</option>
+                <option *ngFor="let country of listCountry" [value]="country.code">{{ country.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Country</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">City</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="city">
+                <option value="">Select</option>
+                <option *ngFor="let city of listCity" [value]="city.code">{{ city.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select City</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Venue Name & Size -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Venue Name</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="venueName" placeholder="Enter Venue Name Here"/>
+              <span class="help-block">Enter Venue Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Venue Size</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="venueSize" placeholder="Enter Venue Size Here"/>
+              <span class="help-block">Enter Venue Size Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Venue Address - GPS Location -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Venue Address - GPS Location</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="venueAddress" placeholder="Enter Venue Address - GPS Location Here"/>
+              <span class="help-block">Enter Venue Address - GPS Location Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Venue Name & Size -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Information - Email</label>
+            <div class="col-xs-12">
+              <input type="email" maxlength="250" class="form-control" formControlName="eventEmail" placeholder="Enter Event Information - Email Here"/>
+              <span class="help-block">Enter Event Information - Email Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Information - Phone</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="eventPhone" placeholder="Enter Event Information - Phone Here"/>
+              <span class="help-block">Enter Event Information - Phone Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SM Link & Shahid ID -->
+      <div class="row" >
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Event Website</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="eventWebsite" placeholder="Enter Event Website Here"/>
+              <span class="help-block">Enter Event Website Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">SM Link</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="smLink" placeholder="Enter SM Link Here"/>
+              <span class="help-block">Enter SM Link Here</span>
+            </div>
+          </div>
+        </div>
+        <!--div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Shahid ID</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="shahidId" placeholder="Enter Shahid ID Here"/>
+              <span class="help-block">Enter Shahid ID Here</span>
+            </div>
+          </div>
+        </div-->
+      </div>
+
+    </div>
+  </div>
+</div>

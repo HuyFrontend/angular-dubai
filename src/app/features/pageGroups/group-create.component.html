@@ -1,0 +1,179 @@
+<form (ngSubmit)="onSubmit(pageGroupForm.value, pageGroupForm.valid)"
+      class="mbc-form page-form"
+      novalidate
+      [formGroup]="pageGroupForm">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="btn-area">
+        <li>
+          <button class="btn btn-danger btn-block" type="submit">Save</button>
+        </li>
+        <li class="" *ngIf="!pageGroup.entityId || (pageGroup && pageGroup.entityId && pageGroup.groupStatus !== pageGroupStatus.LIVE)">
+          <button type="button" class="btn btn-danger btn-block" (click)="confirmSaveAndPublish($event)">Publish</button>
+        </li>
+        <li *ngIf="pageGroup && pageGroup.entityId">
+          <button type="button" class="btn btn-danger btn-block">Copy</button>
+        </li>
+        <li *ngIf="pageGroup && pageGroup.entityId && (pageGroup.groupStatus === pageGroupStatus.LIVE || pageGroup.groupStatus === pageGroupStatus.UPDATED)">
+          <button type="button" class="btn btn-danger btn-block" (click)="confirmUnpublish($event)">Un-publish</button>
+        </li>
+        <li *ngIf="pageGroup && pageGroup.entityId">
+          <button type="button" class="btn btn-danger btn-block" (click)="confirmDelete($event)" >Delete</button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-danger btn-block" (click)="onBeforeClose()">Close</button>
+        </li>
+      </ul>
+
+      <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>{{action}} Page Group</strong></h3>
+          </div>
+          <div class="panel-body">
+            <!--ID & Status-->
+            <div *ngIf="pageGroup && pageGroup.entityId">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-xs-12 control-label">UUID: {{pageGroup.entityId}}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-xs-12 control-label">Status:
+                    <data-status [status]="pageGroup.groupStatus.toUpperCase()"> </data-status>
+                  </label>
+                </div>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group" [class.has-error]="pageGroupForm.controls.type.invalid && (pageGroupForm.controls.type.dirty || isFormSubmitted)">
+                  <label class="col-xs-12 control-label">*Page Type</label>
+                  <div class="col-xs-12">
+                    <select [attr.disabled]="pageGroup.groupStatus === 'live' || pageGroup.groupStatus === 'modified' || pageGroup.groupStatus === 'inactive' || listPagesInGroup.length > 0 ? true : null" class="form-control col-xs-12" formControlName="type">
+                      <option [selected]="true" value="">Select</option>
+                      <option *ngFor="let pageType of pageTypes" [value]="pageType.code">{{  pageType.names | pageTypeByLang }}</option>
+                    </select>
+                    <label class="error">This field is required.</label>
+                    <span class="help-block">Select Page Type</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group" [class.has-error]="(isFormSubmitted && pageGroupForm.controls.title.invalid) || (pageGroupForm.controls.title.dirty && pageGroupForm.controls.title.invalid)">
+                  <label class="col-xs-12 control-label">*Internal unique page group name</label>
+                  <div class="col-xs-12">
+                    <input nospace maxlength="250" type="text" class="form-control" formControlName="title" placeholder="Internal unique page group name"
+                    />
+                    <label class="error" for="title" *ngIf="pageGroupForm.controls.title.hasError('required') || pageGroupForm.controls.title.hasError('nospace')">This field is required.</label>
+                    <label class="error" for="title" *ngIf="pageGroupForm.controls.title.hasError('asyncInvalid')">This value already exists. Please choose another value.</label>
+                    <span class="help-block">Enter internal unique page group name</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="col-xs-12">
+                    <input type="checkbox" formControlName="followAllPages" id="followAllPages" />
+                    <label for="followAllPages">If a user follow one page in the group, follow the rest of pages in the group</label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-xs-12">
+                    <input type="checkbox" formControlName="instantPublishAllPages" id="instantPublishAllPages" />
+                    <label for="instantPublishAllPages">If a user turn of instance publishing for a page in the group. Turn of instant publishing to the rest of page in the group</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="panel panel-default" *ngIf="pageGroup && pageGroup.entityId">
+          <div class="panel-heading">
+              <h3 class="panel-title"><strong>Page List Management</strong></h3>
+          </div>
+
+          <div class="row">
+              <div class="col-md-12" [class.has-error]="invalidTagToPages">
+                  <div class="form-group"><br>
+                      <label class="col-xs-12 control-label">*Pages</label>
+                      <div class="col-xs-12 btn-input-page-container">
+                          <mbc-multiple-suggestion #suggestPage class="input-page"
+                              placeholder="Enter Page name Here"
+                              display="value" key="id"
+                              [selectedValue]="listPageSelected"
+                              (onRemoveItem)="onRemovePage($event)"
+                              (onAddedItem)="onAddedPage($event)"
+                              (onQuery)="onQueryPage($event)">
+                          </mbc-multiple-suggestion>
+                          <button type="button" class="btn btn-danger btn-block btn-page" (click)="addPageToGroup()">Add to Group</button>
+                          <div class="clearfix"></div>
+                          <label class="error">This field is required.</label>
+                          <span *ngIf="existedPage" class="help-block page-span">There are some pages have added already!</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row page-list-data">
+              <!-- Hide this button on this sprint-->
+              <button *ngIf="listPagesInGroup.length > 0" type="button" class="btn btn-danger btn-block detach-page-btn" (click)="detachPages()">Detach Pages</button><br>
+              <data-table [records]="listPagesInGroup" [has-more]="false"
+                          [loading]="false" (itemSelectChange)="itemSelectChange($event)"
+                          [item-remove] = "true" [item-up] = "true" [item-down] = "true"
+                          [item-default] = "true" (removeItemHandler)="detachPage($event)"
+                          [display-loader] = "displayLoader"
+                          (moveUpItemHandler)="movePageHandler($event, -1)"
+                          (moveDownItemHandler)="movePageHandler($event, 1)"
+                          (defaultItemHandler)="defaultPageHandler($event)">
+                  <header title="Site (s)" name="site" [sortable]="false"></header>
+                  <header title="Page title" name="pageTitle" [sortable]="false"></header>
+                  <header title="Type" name="type" [sortable]="false"></header>
+                  <header title="Sub Type" name="subType" [sortable]="false"></header>
+                  <header title="Publish Date" name="publishDate" [sortable]="false"></header>
+                  <header title="Status" name="status" [sortable]="false"></header>
+                  <header title="Actions" name="action" [sortable]="false"></header>
+
+              <input type="checkbox">
+              <column value="site"></column>
+              <column value="pageTitle"></column>
+              <column value="type"></column>
+              <column value="subType"></column>
+              <column value="publishDate" [formatter]="dateFormatter"></column>
+              <column value="status" type="status"></column>
+              <column type="action">
+              </column>
+            </data-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="activatePageGroups($event)">
+</mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="unpublishPageGroup($event)">
+</mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onDelete($event)">
+</mbc-confirmation>
+<mbc-confirmation #confirmShortcutPublishPopup message="This page group will be published. Do you want to continue?" (yesAction)="activatePageGroups($event)">
+</mbc-confirmation>
+<mbc-confirmation #activatedPopup type="okOnly" message="The page is successfully published. This Page Group now is available to add the page children.">
+</mbc-confirmation>
+<mbc-confirmation #confirmDetachPages message="" (yesAction)="removeRelationshipsFromPage($event)">
+</mbc-confirmation>
+<mbc-confirmation #confirmDetachPageSuccess message="This page group will be published. Do you want to continue?" type='okOnly'>
+</mbc-confirmation>
+<mbc-confirmation #confirmSetDefaultPage message="" (yesAction)="updateDefaultPage($event)">
+</mbc-confirmation>
+<mbc-confirmation #confirmSaveAndPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onSaveAndPublish()"></mbc-confirmation>
+<mbc-confirmation #confirmClosePopup message="{{message.CONFIRM_CLOSE}}" (yesAction)="onClose()"></mbc-confirmation>

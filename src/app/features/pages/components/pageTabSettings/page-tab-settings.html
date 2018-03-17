@@ -1,0 +1,217 @@
+<div class="panel-body" [formGroup]="settingsGroup">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>Page Settings</strong></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Show menu tabs</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="showMenuTabs" formControlName="showMenuTabs" [checked]="settingsGroup.controls.showMenuTabs.value" [value]="yesChoice"/> Yes</label>
+                                <label class="check"><input type="radio" name="showMenuTabs" formControlName="showMenuTabs" [checked]="!settingsGroup.controls.showMenuTabs.value" [value]="noChoice"/> No</label>
+                            </div>
+                            <span class="help-block">Choose menu tabs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Show content bundles</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input name="showContentBundles" type="radio" formControlName="showContentBundles" [value]="yesChoice" [checked]="settingsGroup.controls.showContentBundles.value"/> Yes</label>
+                                <label class="check"><input name="showContentBundles" type="radio" formControlName="showContentBundles" [value]="noChoice" [checked]="!settingsGroup.controls.showContentBundles.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose content bundles</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Hide Page Tabs</label>
+                        <div class="col-xs-12">
+                            <select multiple class="form-control col-xs-12" formControlName="hidePageTabs">
+                                <option [disabled]="!settingsGroup.controls.showMenuTabs.value" *ngFor="let pageTab of hidePageTabs" [value]="pageTab.code">{{ pageTab.names | pageTypeByLang }}</option>
+                            </select>
+                            <span class="help-block">Select tabs to hide</span>
+                            <button class="btn btn-danger btn-sm btn-reset-settings" (click)="onResetHidePageSettingsHandler($event)">Reset hide page settings</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Feature on main Menu</label>
+                        <div class="col-xs-12">
+                            <select multiple class="form-control col-xs-12" formControlName="featureOnMainMenu" name="featureOnMainMenu">
+                                <option value="MBC.net">MBC.net</option>
+                                <option value="Prosports.net">Prosports.net</option>
+                                <option value="Women">Women</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Autos">Autos</option>
+                            </select>
+                            <span class="help-block">Feature on main Menu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Select Landing Tab</label>
+                        <div class="col-xs-12">
+                            <select class="form-control col-xs-12" formControlName="selectLandingTab" name="selectLandingTab">
+                                <option *ngFor="let pageTab of landingTabs" [value]="pageTab.code">{{ pageTab.names | pageTypeByLang }}</option>
+                            </select>
+                            <span class="help-block">Choose landing tabs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Allow users to follow this page</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="allowUsersFollowPage" formControlName="allowUsersFollowPage" [value]="yesChoice" [checked]="settingsGroup.controls.allowUsersFollowPage.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="allowUsersFollowPage" formControlName="allowUsersFollowPage" [value]="noChoice" [checked]="!settingsGroup.controls.allowUsersFollowPage.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose follow page option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Allow users to write on this page Fan Hub</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="allowUsersWritePageFanHub" formControlName="allowUsersWritePageFanHub" [value]="yesChoice" [checked]="settingsGroup.controls.allowUsersWritePageFanHub.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="allowUsersWritePageFanHub" formControlName="allowUsersWritePageFanHub" [value]="noChoice" [checked]="!settingsGroup.controls.allowUsersWritePageFanHub.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose users write page Fan Hub option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Allow users to search this page</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="allowUsersSearch" formControlName="allowUsersSearch" [value]="yesChoice" [checked]="settingsGroup.controls.allowUsersSearch.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="allowUsersSearch" formControlName="allowUsersSearch" [value]="noChoice" [checked]="!settingsGroup.controls.allowUsersSearch.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose users search this page option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Hide this page</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="hide" formControlName="hide" [value]="yesChoice" [checked]="settingsGroup.controls.hide.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="hide" formControlName="hide" [value]="noChoice" [checked]="!settingsGroup.controls.hide.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose hide page option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Enable instant Publishing on this page</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="enableInstantPublishing" formControlName="enableInstantPublishing" [value]="yesChoice" [checked]="settingsGroup.controls.enableInstantPublishing.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="enableInstantPublishing" formControlName="enableInstantPublishing" [value]="noChoice" [checked]="!settingsGroup.controls.enableInstantPublishing.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose enable instant publishing page option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Allow users to tag this page</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="allowTag" formControlName="allowTag" [value]="yesChoice" [checked]="settingsGroup.controls.allowTag.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="allowTag" formControlName="allowTag" [value]="noChoice" [checked]="!settingsGroup.controls.allowTag.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose users tag this page option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Enable Editoral Approval Workflow</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="enableEditorialApprovalWorkflow" formControlName="enableEditorialApprovalWorkflow" [value]="yesChoice" [checked]="settingsGroup.controls.enableEditorialApprovalWorkflow.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="enableEditorialApprovalWorkflow" formControlName="enableEditorialApprovalWorkflow" [value]="noChoice" [checked]="!settingsGroup.controls.enableEditorialApprovalWorkflow.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose Editoral Approval Workflow option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-xs-12 control-label">Searchable</label>
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <label class="check"><input type="radio" name="searchable" formControlName="searchable" [value]="yesChoice" [checked]="settingsGroup.controls.searchable.value"/> Yes</label>
+                                <label class="check"><input type="radio" name="searchable" formControlName="searchable" [value]="noChoice" [checked]="!settingsGroup.controls.searchable.value"/> No</label>
+                            </div>
+                            <span class="help-block">Choose users searchable option</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [class.has-error]="isFormSubmitted && settingsGroup.controls.accentColor.errors">
+                        <label class="col-xs-12 control-label">Accent Color</label>
+                        <div class="col-xs-12 input-group input-colors">
+                          <div class="color-wrap">
+                              <input type="text" color-hexa-value-only class="form-control" [(ngModel)]="accentColor" formControlName="accentColor" placeholder="Hex Color Code"/>
+                              <p-colorPicker #accentColorPicker class="color-picker-prime" [(ngModel)]="accentColor" formControlName="accentColor"></p-colorPicker>
+                          </div>
+                          <label class="error" *ngIf="settingsGroup.controls.accentColor.hasError('minlength')">Accent color must be at least 3 characters</label>
+                          <span class="help-block">Enter Accent Color Code Here</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [class.has-error]="isFormSubmitted && settingsGroup.controls.headerColor.errors">
+                        <label class="col-xs-12 control-label">Header Color</label>
+                        <div class="col-xs-12 input-group input-colors">
+                          <div class="color-wrap">
+                            <input type="text" color-hexa-value-only class="form-control" [(ngModel)]="headerColor" formControlName="headerColor" placeholder="Hex Color Code" color-hexa-value-only/>
+                            <p-colorPicker #headerColorPicker class="color-picker-prime" [(ngModel)]="headerColor" formControlName="headerColor"></p-colorPicker>
+                          </div>
+                          <label class="error" *ngIf="settingsGroup.controls.headerColor.hasError('minlength')">Header color must be at least 3 characters</label>
+                          <span class="help-block">Enter Header Color Code Here</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

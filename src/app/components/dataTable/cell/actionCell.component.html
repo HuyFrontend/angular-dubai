@@ -1,0 +1,16 @@
+<div class="loader" *ngIf="displayLoader">
+</div>
+<div class="action-cell" *ngIf="!displayLoader">
+	<a (click)="moveUpAction.emit()" *ngIf="up">
+		<span class="fa fa-arrow-up" title="Up"></span>
+	</a>
+	<a (click)="moveDownAction.emit()" *ngIf="down">
+		<span class="fa fa-arrow-down" title="Down"></span>
+	</a>
+	<a (click)="removeAction.emit()" *ngIf="remove">
+		<span class="glyphicon glyphicon-remove" title="Detach"></span>
+	</a>
+	<a (click)="defaultAction.emit()" *ngIf="default">
+		<span class="glyphicon glyphicon-ok-circle" title="Default" [class.is-default] = "isDefaut"></span>
+	</a>
+</div>

@@ -1,0 +1,1 @@
+export * from './mbc-page-title.component';

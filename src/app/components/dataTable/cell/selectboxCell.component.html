@@ -1,0 +1,7 @@
+<select class="form-control select" [disabled]="disabled" [(ngModel)]="value" [name]="name" (change)="onSelectionChange($event)">
+        <option *ngIf="isHaveDefault" value="{{defaultValue}}" selected>{{defaultText}}</option>
+        <option
+          *ngFor="let item of datasource"
+          value="{{item.value}}"
+        >{{item.text}}</option>
+ </select>

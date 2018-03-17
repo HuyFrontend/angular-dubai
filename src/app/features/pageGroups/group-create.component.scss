@@ -1,0 +1,43 @@
+@import '~sass/conf/colors';
+:host /deep/ .page-form {
+    .panel-body {
+        padding: 15px 0px;
+    }
+    .btn.btn-page{
+        margin-right: 0px;
+    }
+    .page-list-management-icon{
+        font-size: 25px;
+        padding-right: 20px;
+        cursor: pointer;
+    }
+    .page-list-data{
+        padding-left: 10px;
+    }
+    .table-responsive{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .btn-input-page-container{
+        padding-right: 0px;
+    }
+}
+.input-page {
+    width: 70% !important;   
+    float: left;
+}
+
+.btn-page {
+    width: 27%;
+    float: right;
+    margin-left: 3%;
+}
+
+.page-span {
+    float: left;
+}
+
+.detach-page-btn {
+    width: 150px;
+    margin-left: 10px;
+}

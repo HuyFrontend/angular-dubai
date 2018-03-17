@@ -1,0 +1,9 @@
+<div class="form-group bulk-action">
+	  <label for="cboBulk">Actions: </label>
+	  <select id="cboBulk" name="bulkUpdate" class="form-control" (change)="doBulkAction($event)">
+		  <option value="" selected>Select</option>
+		  <ng-template ngFor let-option [ngForOf]="bulkActions">
+			<option *ngIf="option.isValid && option.isValid()" [value]="option.value">{{option.text}}</option>
+		  </ng-template>
+	  </select>
+</div>

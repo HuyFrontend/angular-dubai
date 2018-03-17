@@ -1,0 +1,49 @@
+{
+    "info": {
+        "type": "\u3689\u92BB",
+        "language": "\uD20D\u4AB0\u9448\u7E20",
+        "internalUniquePageName": "\u0C7D",
+        "title": "\u3B48",
+        "customURL": "\u2B9B\u71A7",
+        "pageGroup": "",
+        "website": "\u7FC8\u35F3",
+        "geoTargeting": "",
+        "geoSuggestions":[],
+        "logoURL": "http://foo429117788.com",
+        "posterURL": "http://foo1688899588.com",
+        "coverURL": "http://foo-1786483808.com"
+    },
+    "settings": {
+        "showMenuTabs": false,
+        "showContentBundles": true,
+        "hidePageTabs": ["\u477B"],
+        "featureOnMainMenu": ["\uE199"],
+        "selectLandingTab": "\uA3CC",
+        "allowUsersFollowPage": true,
+        "allowUsersWritePageFanHub": true,
+        "allowUsersSearch": true,
+        "hide": false,
+        "enableInstantPublishing": true,
+        "allowTag": true,
+        "enableEditorialApprovalWorkflow": true,
+        "searchable": true,
+        "accentColor": "\uE141\uAA65\u88D1",
+        "headerColor": "\u13E5"
+    },
+    "meta": {
+        "fullName": "\u00B5\u3544",
+        "pageSupType": "\u2771",
+        "occupation": "\uBA8B",
+        "title": "\u1264",
+        "dateOfBirth": "2012-02-12",
+        "ripDate": "2011-01-11",
+        "age": 15,
+        "placeOfResident": "\uCC74\u7E64",
+        "nationality": "\u90F6",
+        "gender": "\uC113",
+        "horoscope": "\uDC2E\uB9E6",
+        "realName": "",
+        "socialNetwork": ["\u4564"],
+        "about": ""
+    }
+}

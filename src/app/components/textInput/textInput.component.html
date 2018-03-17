@@ -1,0 +1,22 @@
+<div class="form-group"
+  [class.has-error]="parentControl && parentControl.invalid && (model.dirty || model.touched || parentControl.dirty)">
+  <label class="col-xs-12 control-label">{{title}}</label>
+  <div class="col-xs-12" [ngSwitch]="readOnly">
+    <input *ngSwitchDefault [type]="type" placeholder="{{placeholder}}" class="form-control"
+      [(ngModel)]="value"
+      [attr.maxLength]="maxLength ? maxLength : null"
+    />
+    <input *ngSwitchCase="true" [type]="type" placeholder="{{placeholder}}" class="form-control"
+      [(ngModel)]="value"
+      [attr.maxLength]="maxLength ? maxLength : null"
+      readonly
+    />
+    <validation
+      *ngIf="parentControl && parentControl.invalid"
+      [messages]="parentControl.errors"
+      [requiredMessage]="requiredMessage">
+    </validation>
+
+    <span class="help-block" *ngIf="!hideHelpText">{{guideText}}</span>
+  </div>
+</div>

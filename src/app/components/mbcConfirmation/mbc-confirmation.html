@@ -1,0 +1,21 @@
+<div class="modal page-confirmation fade" bsModal #confirmationModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content {{customClass}}" [style.width.px]="width" [style.height.px]="height">
+            <div class="modal-header">
+
+                <h4 class="modal-title pull-left">{{title}}</h4>
+            </div>
+            <div class="modal-body" [innerHTML]="message">
+            </div>
+            <div *ngIf="displayComment" class="confirm-comment">
+                <textarea [(ngModel)]="comment" maxlength="2000"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button *ngIf="type === 'YesNo' || type === 'YesNoCancel'" type="button" class="btn" [class.btn-primary]= "isDisplayYesBtn()" [class.btn-none]= "!isDisplayYesBtn()" (click)="onYes()">{{yesTitle}}</button>
+              <button *ngIf="type === 'YesNo' || type === 'YesNoCancel'" type="button" class="btn btn-primary" (click)="onNo()">{{noTitle}}</button>
+              <button *ngIf="type === 'YesNoCancel'" type="button" class="btn btn-primary" (click)="onCancel()">{{cancelTitle}}</button>
+              <button *ngIf="type === 'okOnly'" type="button" class="btn btn-primary" (click)="onOK()">{{okTitle}}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'business'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Name & Founded -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.name.invalid) || (subTypeGroup.controls.name.dirty && subTypeGroup.controls.name.invalid)">
+            <label class="col-xs-12 control-label">*Name</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="name" placeholder="Enter Name Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.founded.invalid) || (subTypeGroup.controls.founded.dirty && subTypeGroup.controls.founded.invalid)">
+            <label class="col-xs-12 control-label">*Founded Date</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Select Founded Date Here" *ngIf="subTypeData" [date]="subTypeData.founded" [fControl]="subTypeGroup.controls.founded" required="true"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.founded.errors && subTypeGroup.controls.founded.errors.required">This field is required</label>
+              <label class="error" *ngIf="subTypeGroup.controls.founded.errors && subTypeGroup.controls.founded.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select Founded Date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HQ Country & Website -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.hqCountry.invalid) || (subTypeGroup.controls.hqCountry.dirty && subTypeGroup.controls.hqCountry.invalid)">
+            <label class="col-xs-12 control-label">*HQ Country</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="hqCountry">
+                <option value="">Select</option>
+                <option *ngFor="let country of listCountry" [value]="country.code">{{ country.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select HQ Country</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Company Website</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="companyWebsite" placeholder="Enter Company Website Here"/>
+              <span class="help-block">Enter Company Website Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Country & City -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.country.invalid) || (subTypeGroup.controls.country.dirty && subTypeGroup.controls.country.invalid)">
+            <label class="col-xs-12 control-label">*Country</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="country">
+                <option value="">Select</option>
+                <option *ngFor="let country of listCountry" [value]="country.code">{{ country.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select Country</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.city.invalid) || (subTypeGroup.controls.city.dirty && subTypeGroup.controls.city.invalid)">
+            <label class="col-xs-12 control-label">*City</label>
+            <div class="col-xs-12">
+              <select class="form-control col-xs-12" formControlName="city">
+                <option value="">Select</option>
+                <option *ngFor="let city of listCity" [value]="city.code">{{ city.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select City</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industry & Sub Industry -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.industry.invalid) || (subTypeGroup.controls.industry.dirty && subTypeGroup.controls.industry.invalid)">
+            <label class="col-xs-12 control-label">*Industry</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Industry Here"
+                display="names" key="code"
+                formControlName="industry"
+                [suggestionList]="listIndustry"
+              ></single-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Enter Industry</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.subIndustry.invalid) || (subTypeGroup.controls.subIndustry.dirty && subTypeGroup.controls.subIndustry.invalid)">
+            <label class="col-xs-12 control-label">*Sub Industry</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Sub Industry Here"
+                display="names" key="code"
+                formControlName="subIndustry"
+                [suggestionList]="listSubIndustry"
+              ></single-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Enter Sub Industry</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter More Information Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Social Media</label>
+            <div class="col-xs-12">
+              <social-network [socialNetworks]="subTypeGroup.controls.socialNetwork"></social-network>
+              <span class="help-block">Enter Social Media Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

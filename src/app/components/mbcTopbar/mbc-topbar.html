@@ -1,0 +1,63 @@
+<ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+    <!-- TOGGLE NAVIGATION -->
+    <li class="xn-icon-button">
+        <a href (click)="toggleMenu()" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+    </li>
+    <!-- END TOGGLE NAVIGATION -->
+    <!-- POWER OFF -->
+    <li class="xn-icon-button pull-right last" [class.active]="isOpenLogOutPopup | async">
+        <a href="#" (click)="onLogout()">
+            <span class="fa fa-power-off"></span>
+        </a>
+        <!--<ul class="xn-drop-left animated zoomIn" (mouseleave)="onLeaveLogoutPopup()" (focusout)="onLeaveLogoutPopup()">
+            <li><a href="pages-lock-screen.html"><span class="fa fa-lock"></span> Lock Screen</a></li>
+            <li><a href (click)="onLogout()" class="mb-control"><span class="fa fa-sign-out"></span> Sign Out</a></li>
+        </ul>-->
+    </li>
+    <!-- END POWER OFF -->
+    <!-- MESSAGES -->
+    <!--<li class="xn-icon-button pull-right" [class.active]="isOpenNotificationPopup | async">
+        <a href="#" (click)="toggleNotificationPopup()">
+            <span class="fa fa-comments"></span>
+            <span class="informer informer-danger">4</span>
+        </a>
+        <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging" (focusout)="onLeaveNotification()">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="fa fa-comments"></span> Messages</h3>
+                <div class="pull-right">
+                    <span class="label label-danger">4 new</span>
+                </div>
+            </div>
+            <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
+                <a href="#" class="list-group-item">
+                    <div class="list-group-status status-online"></div>
+                    <img src="assets/images/users/user2.jpg" class="pull-left" alt="John Doe" />
+                    <span class="contacts-title">John Doe</span>
+                    <p>Praesent placerat tellus id augue condimentum</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <div class="list-group-status status-away"></div>
+                    <img src="assets/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk" />
+                    <span class="contacts-title">Dmitry Ivaniuk</span>
+                    <p>Donec risus sapien, sagittis et magna quis</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <div class="list-group-status status-away"></div>
+                    <img src="assets/images/users/user3.jpg" class="pull-left" alt="Nadia Ali" />
+                    <span class="contacts-title">Nadia Ali</span>
+                    <p>Mauris vel eros ut nunc rhoncus cursus sed</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <div class="list-group-status status-offline"></div>
+                    <img src="assets/images/users/user6.jpg" class="pull-left" alt="Darth Vader" />
+                    <span class="contacts-title">Darth Vader</span>
+                    <p>I want my money back!</p>
+                </a>
+            </div>
+            <div class="panel-footer text-center">
+                <a href="pages-messages.html">Show all messages</a>
+            </div>
+        </div>
+    </li>-->
+    <!-- END MESSAGES -->
+</ul>

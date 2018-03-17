@@ -1,0 +1,23 @@
+.formgroup.margin-custom,
+.margin-custom {
+    margin-top: 20px;
+}
+.formgroup.custom-multi-select select[multiple],
+.custom-multi-select select[multiple] {
+    height: 108px;
+}
+.panel-body {
+    .row .padding-left-0,
+    .padding-left-0 {
+        padding-left: 0;
+    }
+    .padding-right-0 {
+        padding-right: 0;
+    }
+    .row .segment-label {
+        padding-top: 5px; 
+    }
+    .margin-bottom-10 {
+        margin-bottom: 10px;
+    }
+}

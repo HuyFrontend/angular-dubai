@@ -1,0 +1,62 @@
+<form #resultForm="ngForm" novalidate>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><strong>Results Options</strong></h3>
+  </div>
+  <div class="panel-body">
+    <!--ID & Status -->
+    <div class="row">
+      <div class="col-md-5">
+        <radio-group 
+        [(ngModel)]="campaign.result.type"
+        [dataSource]="resultTypes"
+        name="type"
+        title="*Results Type"
+        guideText="Choose Results Type"
+        (radioGroupChange)="resultOptionChangeAction($event, true)"></radio-group>
+      </div>
+      <div class="col-md-5">
+          <radio-group 
+          [(ngModel)]="campaign.result.mode"
+          [dataSource]="resultModes"
+          name="mode"
+          title="*Mode"
+          guideText="Choose mode"></radio-group>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div style="border: solid 1px #E5E5E5; 
+                                margin-top: 10px;
+                                background-color: #F5F5F5;
+                                border-radius: 5px;
+                                text-align: center;
+                                width: 152px; height: 66px;">
+            <div style="top:11px;">
+              <label>Results</label>
+              <p style="font-size: 24px;"><strong>{{getRecommendationResults()}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-4">
+          <select-input [(ngModel)]="campaign.result.numberOfResultShow" name="numberOfResultShow" required title="*How many results do you want to Show?"
+            placeholder="Choose results you want to show" [datasource]="resultSelectOptions">
+          </select-input>
+        </div>
+        <div class="col-md-8"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</form>
+
+<mbc-confirmation #confirmChangeResultType
+  [message]="message.CONFIRM_CHANGE_CAMPAIGN_RECOMMENDATION_TYPE"
+  (yesAction)="changeResultOptionHandlerYes($event)" 
+  (noAction)="changeResultOptionHandlerNo($event)">
+</mbc-confirmation>

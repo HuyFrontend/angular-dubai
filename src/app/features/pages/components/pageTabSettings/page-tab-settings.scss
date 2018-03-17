@@ -1,0 +1,44 @@
+@import '~sass/conf/colors';
+.input-colors {
+    .color-wrap {
+      width: 50%;
+      position: relative;
+
+      + label {
+        padding-top: 5px;
+        clear: both;
+      }
+    }
+    input {
+        // width: 50%;
+        float: left;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -o-border-radius: 4px;
+        -ms-border-radius: 4px;
+    }
+    .sample {
+        width: 25px;
+        height: 25px;
+        float: left;
+        margin-left: 4px;
+        margin-top: 3px;
+        border: 1px solid $cl-border-input;
+        border-radius: 4px;
+        position: absolute;
+        top: 0px;
+        right: 2px;
+        z-index: 999;
+    }
+    .help-block {
+        width: 100%;
+        float: left;
+    }
+}
+
+.btn-reset-settings {
+  float: right;
+  margin: 5px 0 0;
+  padding: 2px 10px;
+}

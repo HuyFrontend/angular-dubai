@@ -1,0 +1,14 @@
+<div class="form-group"
+  [class.has-error]="model.errors && (model.dirty || model.touched)">
+  <label class="col-xs-12 control-label">&nbsp;</label>
+  <div class="col-xs-12">
+    <div class="col-md-1">
+        <input type="checkbox"
+        [(ngModel)]="value"/>   
+    </div>
+    <div>
+        <label>{{title}}</label> 
+    </div>
+    <span class="help-block">{{guideText}}</span>
+  </div>
+</div>

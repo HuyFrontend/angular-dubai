@@ -1,0 +1,39 @@
+<ul class="btn-area">
+    <li *ngIf="isEditing()">
+        <button type="button" class="btn btn-danger btn-block" (click)="onCopy()">Copy</button>
+    </li>
+    <li *ngIf="!showUnpublishCondition()">
+        <button class="btn btn-danger btn-block" (click)="onSave()">Save</button>
+    </li>
+    <li *ngIf="showUnpublishCondition()">
+        <button class="btn btn-danger btn-block" (click)="onSave()">Save And Publish</button>
+    </li>
+    <li class="" *ngIf="!isEditing() || showPublishCondition()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmSaveAndPublish($event)">Publish</button>
+    </li>
+    <li *ngIf="showPublishNowCondition()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmPublishNow()">Publish Now</button>
+    </li>
+    <li *ngIf="showCancelCondition()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmCacel()">Cancel Schedule</button>
+    </li>
+    <li *ngIf="showUnpublishCondition()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmUnPublish()">Un-publish</button>
+    </li>
+    <li *ngIf="campaign && campaign.id">
+      <button type="button" class="btn btn-danger btn-block" (click)="confirmDelete($event)" >Delete</button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmClose()">Close</button>
+    </li>
+</ul>
+
+<mbc-confirmation #confirmCopyPopup type="okOnly" message="{{message.CONFIRM_COPY}}" ></mbc-confirmation>
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onPublish()"></mbc-confirmation>
+<mbc-confirmation #confirmPublishNowPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onPublishNow()"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="onUnPublish()"></mbc-confirmation>
+<mbc-confirmation #confirmCancelPopup message="{{message.CONFIRM_CANCEL_SCHEDULE}}" (yesAction)="onCancel()"></mbc-confirmation>
+<mbc-confirmation #confirmEndDateInThePast type="okOnly" message="{{message.ERROR_CAMPAIGN_END_DATE_IN_PAST}}" ></mbc-confirmation>
+<mbc-confirmation #confirmSaveAndPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onSaveAndPublish()"></mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onDelete()"></mbc-confirmation>
+<mbc-confirmation #confirmClosePopup message="{{message.CONFIRM_CLOSE}}" (yesAction)="onClose()"></mbc-confirmation>

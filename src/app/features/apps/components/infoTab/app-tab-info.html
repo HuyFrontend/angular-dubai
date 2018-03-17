@@ -1,0 +1,122 @@
+<form #infoForm="ngForm" novalidate #formContent>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="form-group">
+        <text-input #appTitle="ngModel" [readOnly]="app.info.status === appStatus.PENDING" name="title" title="*Title" placeholder="Enter app title here"
+          required
+          [(ngModel)]="app.info.title"
+          [parentControl]="appTitle.control"
+          nospace
+          asyncExistValidator [entityType]="entityType" [originalValue]="originalName"
+          [requiredMessage]="'This field is required'"></text-input>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group" style="margin-top: 28px">
+        <label class="col-xs-12 control-label">Status:
+          <data-status [status]="app.info.status | pageStatus"> </data-status>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="form-group" [class.has-error]="appBehalf.hasError('required') && (appBehalf.dirty || appBehalf.touched || isFormSubmitted)">
+        <label class="col-xs-4 control-label">*Publish on behalf</label>
+        <div class="col-md-12">
+          <single-suggestion #appBehalf="ngModel" (ngModel)="app.info.publishOnBehalf" name="appBehalf" required
+            placeholder="Enter Page Name Here"
+            display="pageName" key="pageId"
+            [selectedValue]="appPublishOnBehalf"
+            (onQuery)="onQueryPage($event)"
+            (onSelectedChanged)="onPageChanged($event)"
+            (onClosed)="onPageChanged($event)"
+            [isReadOnly]="(app.info.status === appStatus.PENDING) || (app.info.status === appStatus.INACTIVE) ||  (app.info.status === appStatus.UPDATED) || (app.info.status === appStatus.LIVE)"
+            >
+          </single-suggestion>
+          <div><label class="error" *ngIf="appBehalf.hasError('required')">This field is required.</label></div>
+          <span class="help-block">Enter Page Name Here</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <div class="col-xs-12">
+          <select-input [(ngModel)]="app.info.type" name="type" required title="*Type"
+            guideText="Choose your app's type" [datasource]="appTypes" [requiredMessage]="'This field is required'"
+            [parentControl]="appType.control" #appType="ngModel" [isReadOnly]="app.info.status === appStatus.PENDING">
+          </select-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Interests</label>
+        <div class="col-md-12">
+          <mbc-multiple-suggestion placeholder="Enter Interest Here" display="value" key="id" [selectedValue]="listInterestsSelected"
+            (onRemoveItem)="onRemoveInterest($event)" (onAddedItem)="onAddedInterest($event)" (onQuery)="onQueryInterest($event)"
+            (onSelectedChanged)="onInterestSelectedChanged($event)" [isReadOnly]="app.info.status === appStatus.PENDING">
+          </mbc-multiple-suggestion>
+          <span class="help-block">Start Typing The Interest</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Tag to pages</label>
+        <div class="col-md-12">
+          <mbc-multiple-suggestion #suggestPage class="input-page" placeholder="Enter Page Name Here" display="displayName" key="entityId"
+            [selectedValue]="listPageSelected" (onRemoveItem)="onRemovePage($event)" (onAddedItem)="onAddedPage($event)" (onQuery)="onQueryTagPage($event)"
+            [isReadOnly]="app.info.status === appStatus.PENDING">
+          </mbc-multiple-suggestion>
+          <span class="help-block">Start Typing The Page Name</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <text-area [(ngModel)]="app.info.description" name="appDescription" title="Description" placeholder="Start Typing Description"
+          #appDescription="ngModel" nospace [isReadOnly]="app.info.status === appStatus.PENDING"></text-area>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-3">
+      <div class="form-group">
+        <button type="button" class="btn btn-danger btn-block">Generate App Key</button>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="form-group" style="float: right">
+        <input type="checkbox" id="participations" [attr.disabled]="app.info.status === appStatus.PENDING ? true : null"/>
+        <label for="participations">Report user participations on stream and notification</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="listOfComments.length > 0">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label class="col-xs-12 control-label">Rejection Note</label>
+        <div class="row page-list-data">
+          <data-table [records]="listOfComments" [loading]="false" [has-more]="false" (sort)="sort($event)" [hideCheckbox]="true">
+            <header title="Note" name="comment" [sortable]="true"></header>
+            <header title="Rejected Date" name="rejectedDate" [sortable]="true"></header>
+            <header title="Approver" name="approver" [sortable]="true"></header>
+            <column value="comment" tooltipContent="tooltipContent"></column>
+            <column value="rejectedDate" [formatter]="dateFormatter"></column>
+            <column></column>
+          </data-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

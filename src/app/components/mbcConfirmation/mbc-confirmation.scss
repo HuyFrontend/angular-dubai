@@ -1,0 +1,30 @@
+:host {
+  &.preview-popup-wrap {
+    .modal-dialog {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+
+      .modal-content {
+        .modal-body {
+          height: auto;
+          min-height: 100%;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}
+
+.confirm-comment{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.confirm-comment textarea{
+    width: 100%;
+    height: 60px;
+}
+.btn-none{
+    cursor: default;
+}
+

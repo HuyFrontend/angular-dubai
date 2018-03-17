@@ -1,0 +1,14 @@
+FROM ageofmobile/angular-builder:1.0.1
+
+ADD . /src
+
+WORKDIR /src
+VOLUME /build
+
+RUN npm install \
+    && npm run build \
+    && mv dist server/public \
+    && cd server \
+    && npm install \
+    && cd .. \
+    && mv server dist

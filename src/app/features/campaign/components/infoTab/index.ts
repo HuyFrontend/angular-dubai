@@ -1,0 +1,1 @@
+export * from './campaign-tab-info.component';

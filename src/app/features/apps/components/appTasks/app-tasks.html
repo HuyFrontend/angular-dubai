@@ -1,0 +1,34 @@
+<ul class="btn-area">
+    <li *ngIf="isEditing()">
+        <button type="button" class="btn btn-danger btn-block" (click)="onCopy()">Copy</button>
+    </li>
+    <li *ngIf="this.app && this.app.info && this.app.info.status !== appStatus.PENDING">
+        <button type="button" class="btn btn-danger btn-block" (click)="onSave()">Save</button>
+    </li>
+    <li *ngIf="showSavePublishCondition() || showPublishCondition()">
+      <button type="button" class="btn btn-danger btn-block" (click)="confirmSaveAndPublish($event)">Publish</button>
+    </li>
+    <li *ngIf="isShowUnpublishButton()">
+        <button type="button" class="btn btn-danger btn-block" (click)="onUnPublished()">Un-publish</button>
+    </li>
+    <li *ngIf="isEditing() && app.info.status === contentStatus.PENDING">
+        <button type="button" class="btn btn-danger btn-block" (click)="onModerate('approve')">Approve</button>
+    </li>
+    <li *ngIf="isEditing() && app.info.status === contentStatus.PENDING">
+        <button type="button" class="btn btn-danger btn-block" (click)="onModerate('reject')">Reject</button>
+    </li>
+    <li *ngIf="isEditing()">
+        <button class="btn btn-danger btn-block" (click)="onDelete()">Delete</button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmClose()">Close</button>
+    </li>
+</ul>
+
+<mbc-confirmation #confirmCopyPopup type="okOnly" message="{{message.CONFIRM_COPY}}" ></mbc-confirmation>
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_CONTENT_PUBLISH}}" (yesAction)="publishContent()"></mbc-confirmation>
+<mbc-confirmation #confirmSaveAndPublishPopup message="{{message.CONFIRM_CONTENT_PUBLISH}}" (yesAction)="onSaveAndPublish()"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="unPublishContent()"></mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="deleteContent()"></mbc-confirmation>
+<mbc-confirmation #confirmModeratePopup message="" (yesAction)="moderateContent($event)"></mbc-confirmation>
+<mbc-confirmation #confirmClosePopup message="{{message.CONFIRM_CLOSE}}" (yesAction)="onClose()"></mbc-confirmation>

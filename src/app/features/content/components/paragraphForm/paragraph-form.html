@@ -1,0 +1,94 @@
+<div class="row">
+    <p class="col-xs-12 control-label">Paragraphs - <span>Order of component dictates the order on the front-end</span></p>
+    <p class="col-xs-12"><span class="help-block">Click on button to add a paragraph</span></p>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('text')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Text</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('image')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Image</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('embed')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Link</button>
+        </div>
+        <div class="col-md-6 float-right">
+            <ul class="panel-controls" *ngIf="paragraphArrayToggle.length > 0">
+                <li>
+                    <a class="btn-paragraph" (click)="toggleAllParagraphs()" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                        <span class="fa" [class.fa-expand]="!hasOneExpanded()" [class.fa-compress]="hasOneExpanded()" [title]="hasOneExpanded() ? 'Collapse all' : 'Expand all'"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div *ngFor="let formGroup of paragraphFormArray.controls; let i = index;" class="ui-state-default ui-helper-clearfix">
+    <div  class="drop-paragraph" (onDrop)="dropParagraph($event, i)" pDroppable="paragraphs" (onDragEnd)="onDragEndParagraph($event)" (onDragOver)="onDragOverParagraph($event,i)" [ngClass]="{'ui-state-highlight-drap':draggedParagraph}" [class.current-hover]="currentDrop==i">
+        &nbsp;
+    </div>
+    <div ngFocusParagraph class="panel panel-default paragraph-headline" [class.panel-toggled]="!getDisplayParagraph(i)" (onDrop)="dropParagraph($event, i)" pDroppable="paragraphs" (onDragEnd)="onDragEndParagraph($event)" (onDragOver)="onDragOverParagraph($event,i)">
+        <div pDraggable="paragraphs" (onDragStart)="dragStartParagraph($event, i)" (onDragEnd)="dragEndParagraph($event)">
+                <div class="panel-heading heading-toggle" [formGroup]="formGroup" >
+                    <p class="panel-title">
+                        <span *ngIf="paragraphViewOption !== '0'">{{ getBullet(i) }}. </span>
+                        <span *ngIf="formGroup.controls.type.value === 'text'">Text Paragraph</span>
+                        <span *ngIf="formGroup.controls.type.value === 'image'">Image Paragraph</span>
+                        <span *ngIf="formGroup.controls.type.value === 'embed'">Link Paragraph</span>
+                        <span *ngIf="formGroup.controls.title.value"> - {{formGroup.controls.title.value}}</span>
+                    </p>
+                    <ul class="panel-controls">
+                        <li>
+                            <a class="btn-paragraph" (click)="toggleParagraph(i)" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                                <span class="fa" [class.fa-expand]="!getDisplayParagraph(i)" [class.fa-compress]="getDisplayParagraph(i)" title="Collapse/Expand"></span>
+                            </a>
+                        </li>
+                        <li *ngIf="(paragraphFormArray.controls.length > 1 && i > 0)">
+                            <a  class="btn-paragraph" (click)="moveParagraph(i, 'UP')" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                                <span class="fa fa-arrow-up" title="Up"></span>
+                            </a>
+                        </li>
+                        <li *ngIf="paragraphFormArray.controls.length > 1 && i < paragraphFormArray.controls.length - 1">
+                            <a  class="btn-paragraph" (click)="moveParagraph(i, 'DOWN')" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">
+                                <span class="fa fa-arrow-down" title="Down"></span>
+                            </a>
+                        </li>
+                        <li><a class="btn-paragraph" (click)="confimRemoveParagraph(i)" [style.pointerEvents]="isReadOnly? 'none' : 'auto'"><span class="glyphicon glyphicon-remove" title="Remove"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div [ngSwitch]="formGroup.controls.type.value">
+                    <ng-template ngSwitchCase="embed">
+                        <embedded-paragraph [idx]="i" [paragraph]="paragraphs[i]" [parent-form-group]="formGroup"  parentType="article" [isReadOnly]="isReadOnly"></embedded-paragraph>
+                    </ng-template>
+                    <ng-template ngSwitchCase="image">
+                        <image-paragraph [idx]="i" [paragraph]="paragraphs[i]" [parent-form-group]="formGroup" [isFormSubmitted]="isFormSubmitted"  parentType="article" [isReadOnly]="isReadOnly"></image-paragraph>
+                    </ng-template>
+                    <ng-template ngSwitchDefault>
+                        <text-paragraph [idx]="i" [paragraph]="paragraphs[i]" [parent-form-group]="formGroup" parentType="article" [isReadOnly]="isReadOnly"></text-paragraph>
+                    </ng-template>
+                </div>
+            </div>
+    </div>
+    <div style="clear:both;"></div>
+    <div *ngIf="i==paragraphFormArray.controls.length - 1" class="drop-paragraph drop-paragraph-end" (onDrop)="dropParagraph($event, i + 1)" pDroppable="paragraphs" (onDragEnd)="onDragEndParagraph($event)" (onDragOver)="onDragOverParagraph($event,i+1)" [ngClass]="{'ui-state-highlight-drap':draggedParagraph}" [class.current-hover]="currentDrop==(i+1)">
+        &nbsp;
+    </div>
+</div>
+<div class="row" *ngIf="paragraphFormArray.controls.length >= 3">
+    <p class="col-xs-12"><span class="help-block">Click on button to add a paragraph</span></p>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('text')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Text</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('image')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Image</button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default btn-block btn-rounded" (click)="addParagraphGroup('embed')" type="button" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Link</button>
+        </div>
+    </div>
+</div>
+
+<mbc-confirmation #confirmRemoveParagraphPopup message="Data will be removed. Do you want to continue?" (yesAction)="removeParagraph($event)"></mbc-confirmation>

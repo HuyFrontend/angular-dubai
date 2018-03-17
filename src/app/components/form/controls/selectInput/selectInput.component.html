@@ -1,0 +1,24 @@
+<div class="form-group"
+  [class.has-error]="(model.errors && (model.dirty || model.touched)) || (parentControl && parentControl.invalid && parentControl.dirty)">
+  <label class="col-xs-12 control-label">{{title}}</label>
+  <div class="col-xs-12">
+    <select 
+      class="form-control select"
+      [(ngModel)]="value"
+      (change)="onChange()"
+      [name] = "name"
+      [disabled]="isReadOnly">
+      <option value="" disabled selected *ngIf="placeholder">{{placeholder}}</option>
+      <option *ngFor="let item of datasource" [value]="item.value">
+              {{item.text}}
+      </option>
+    </select>
+    <validation
+      *ngIf="parentControl && parentControl.invalid"
+      [messages]="parentControl.errors"
+      [requiredMessage]="requiredMessage">
+    </validation>
+
+    <span class="help-block">{{guideText}}</span>
+  </div>
+</div>

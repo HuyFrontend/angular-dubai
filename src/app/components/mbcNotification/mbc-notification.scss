@@ -1,0 +1,203 @@
+.notification-container {
+  top: 15px;
+  left: 15px;
+  position: relative;
+  min-width: 310px;
+  height: auto;
+  margin: 0 0 15px;
+  padding: 0px;
+  list-style-type: none;
+  z-index: 10000000;
+
+  li {
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 7px;
+    color: rgb(255, 255, 255);
+    opacity: 1;
+    max-width: 50%;
+    cursor: pointer;
+    display: flex;
+  }
+}
+  .notification-success {
+    background: #95b75d;
+    border: 1px solid #95b75d;
+
+    .fa-check {
+        display: block;
+    }
+    &:hover {
+      .fa-check {
+          display: none;
+      }
+      .fa-times {
+          display: block;
+      }
+    }
+  }
+  .notification-error {
+    background: #d05857;
+    border: 1px solid #d05857;
+    color: rgb(255, 255, 255);
+
+    .fa-exclamation-triangle {
+      display: block;
+    }
+    &:hover {
+      .fa-exclamation-triangle {
+        display: none;
+      }
+      .fa-times {
+        display: block;
+      }
+    }
+  }
+  .notification-info {
+    background: #5bc0de;
+    border: 1px solid #5bc0de;
+    color: rgb(255, 255, 255);
+
+    .fa-info {
+      display: block;
+    }
+    &:hover {
+      .fa-info {
+        display: none;
+      }
+      .fa-times {
+        display: block;
+      }
+    }
+  }
+  .notification-warning {
+    background: #f0ad4e;
+    border: 1px solid #f0ad4e;
+    color: rgb(255, 255, 255);
+
+    .fa-exclamation {
+      display: block;
+    }
+    &:hover {
+      .fa-exclamation {
+        display: none;
+      }
+      .fa-times {
+        display: block;
+      }
+    }
+  }
+    .notification-item-header {
+      width: 35px;
+      height: 100%;
+      display: inline-flex;
+      cursor: pointer;
+
+      i {
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        font-size: 1.7em;
+        margin-top: -10px;
+        display: none;
+      }
+      .fa-times {
+        left: 8px;
+      }
+      .fa-info,
+      .fa-exclamation {
+        left: 13px;
+      }
+    }
+    .notification-item-message {
+      font-size: 13px;
+      line-height: 18px;
+      text-align: left;
+      padding: 12px 12px 10px;
+      width: 100%;
+      color: #000;
+      display: inline-flex;
+      position: relative;
+      background: rgba(250,250,250,1);
+      background: -moz-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(226,226,226,1) 100%);
+      background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(250,250,250,1)), color-stop(100%, rgba(226,226,226,1)));
+      background: -webkit-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(226,226,226,1) 100%);
+      background: -o-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(226,226,226,1) 100%);
+      background: -ms-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(226,226,226,1) 100%);
+      background: linear-gradient(to bottom, rgba(250,250,250,1) 0%, rgba(226,226,226,1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#e2e2e2', GradientType=0 );
+
+      p {
+        margin-bottom: 0;
+
+        &:last-child {
+          span {
+            margin-bottom: 0;
+          }
+        }
+      }
+        span {
+          display: block;
+          margin-bottom: 5px;
+        }
+    }
+
+  .ui-growl {
+    /*top: 52px;
+    right: 10px;*/
+    top: 45%;
+    right: 0;
+    width: 100%;
+    transform: translate(0, 0);
+  }
+    .ui-growl-item-container {
+      border-radius: 0;
+      padding: 15px 20px;
+      width: 50%;
+      margin: 0 auto;
+    }
+    .ui-growl-item-container.ui-state-highlight.ui-growl-message-success {
+      background-color: rgba(149, 183, 93, 0.9);
+      border-color: rgba(149, 183, 93, 0.9);
+    }
+    .ui-growl-item-container.ui-state-highlight.ui-growl-message-error {
+      background-color: rgba(182, 70, 69, 0.9);
+      border-color: rgba(182, 70, 69, 0.9);
+    }
+      .ui-growl-icon-close {
+        position: absolute;
+        top: -10px;
+        right: -1%;
+        font-size: 2em;
+      }
+      .ui-growl-image {
+        top: 0;
+        font-size: 3.5em;
+      }
+      .ui-growl-title {
+        display: none;
+      }
+      .ui-growl-message {
+        margin-left: 6em;
+
+        p span {
+          display: block;
+          margin-top: 5px;
+          font-size: 17px;
+        }
+      }
+
+@media only screen and (max-width: 1440px) {
+  .ui-growl-icon-close {
+    right: -2%;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .ui-growl-item-container {
+    width: 100%;
+  }
+    .ui-growl-message p span {
+      margin-top: 9px;
+      font-size: 15px;
+    }
+}

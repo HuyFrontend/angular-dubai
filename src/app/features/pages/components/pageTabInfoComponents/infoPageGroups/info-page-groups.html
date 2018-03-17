@@ -1,0 +1,36 @@
+<div class="row page-group-info">
+
+  <div class="col-md-4 width-40">
+    <text-input name="pageGroupID" title="Page Group" placeholder="Enter Label Here" [(ngModel)]="infoPageGroupComponent.pageGroup.displayName" [readOnly]="true" [hideHelpText]="true"></text-input>
+  </div>
+
+  <div class="col-md-4 width-40">
+    <text-input name="pageGroupLabel" title="Component Label" placeholder="Enter Label Here" [(ngModel)]="infoPageGroupComponent.label" (ngModelChange)="onInfoComponentChange($event)" [hideHelpText]="true"></text-input>
+  </div>
+  <div class="col-md-4 col-checkbox width-20">
+    <checkbox title="Show data on Stream" name="pageGroupShowData" [(ngModel)]="infoPageGroupComponent.showDataOnStream" (ngModelChange)="onInfoComponentChange($event)">
+    </checkbox>
+  </div>
+</div>
+
+<div class="row table">
+  <div class="panel-heading table-title">
+    <h3 class="panel-title"><strong>Linked Data</strong></h3>
+  </div>
+  <div class="row page-list-data">
+    <data-table [has-more]="false" name="placements" [loading]="false"
+      [item-remove]="false" [item-down]="true" [item-up]="true" [addNew]="false" [hideCheckbox]="true" [records]="infoPageGroupComponent.linkedData"
+
+      (querySuggestion)="onQuerySuggestion($event)" (addSuggestion)="onAddSuggestion($event)" (removeSuggestion)="onRemoveSuggestion($event)"
+      (moveUpItemHandler)="movePageHandler($event, -1)" (moveDownItemHandler)="movePageHandler($event, 1)">
+
+      <header title="Linked Page" name="site" [sortable]="false"></header>
+      <header title="Linked Metatada" name="site" [sortable]="false"></header>
+      <header title="" name="site" [sortable]="false"></header>
+
+      <column value="page.displayName"></column>
+      <column value="formatList" [defaultText]="'Enter Metadata Here'" type="multiple-suggestion"></column>
+      <column type="action"></column>
+    </data-table>
+  </div>
+</div>

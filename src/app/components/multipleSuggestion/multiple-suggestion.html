@@ -1,0 +1,26 @@
+<div [formGroup]="formGroup" class="input-field tagsinput">
+	<div class="tagsinput-selected">
+		<div *ngIf="listSelected.length > 0" class="tagged-input">
+			<span class="tag" *ngFor="let item of listSelected; let i = index">
+				<span>{{ item[display] }}</span> <a class="remove-item-selected"
+				(click)="onRemove(i, item)" title="Remove"></a>
+			</span>
+		</div>
+		<div class="multi-suggestion">
+			<input type="text" class="validate filter-input form-control"
+      [readOnly] = "isReadOnly || maxItem != undefined && listSelected.length >= maxItem"
+			formControlName="autoSuggestion" autocomplete="off"
+			placeholder="{{ maxItem != undefined && listSelected.length >= maxItem ? '' : placeholder }}"
+			(keydown)=inputElKeyHandler($event)
+			/>
+			<div class="suggestions bootstrap-select open"
+				*ngIf="isOpenSuggestion && !isQuerying && formGroup.controls.autoSuggestion.dirty">
+				<ul class="dropdown-menu">
+					<li *ngIf="suggestions.length === 0" class="no-found-record">No record found.</li>
+					<li *ngFor="let item of suggestions; let i = index" [class.selected]="selectedIdx === i"><a
+						(click)="onItemSelect(item)">{{ item[display] }}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

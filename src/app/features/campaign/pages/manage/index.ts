@@ -1,0 +1,1 @@
+export { ManageCampaignComponent } from './manage-campaign.component';

@@ -1,0 +1,144 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'channel'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Channel & Short Channel Name -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.channelName.invalid) || (subTypeGroup.controls.channelName.dirty && subTypeGroup.controls.channelName.invalid)">
+            <label class="col-xs-12 control-label">*Channel Name</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="channelName" placeholder="Enter Channel Name Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Channel Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.channelShortName.invalid) || (subTypeGroup.controls.channelShortName.dirty && subTypeGroup.controls.channelShortName.invalid)">
+            <label class="col-xs-12 control-label">*Channel Short Name</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="channelShortName" placeholder="Enter Channel Short Name Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Channel Short Name Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Region & Timezone List -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.regionList.invalid) || (subTypeGroup.controls.regionList.dirty && subTypeGroup.controls.regionList.invalid)">
+            <label class="col-xs-12 control-label">*Region List</label>
+            <div class="col-xs-12">
+              <select multiple class="form-control select" formControlName="regionList">
+                <option *ngFor="let region of listRegion" [value]="region.code">{{ region.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select Region</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.timezoneList.invalid) || (subTypeGroup.controls.timezoneList.dirty && subTypeGroup.controls.timezoneList.invalid)">
+            <label class="col-xs-12 control-label">*Timezone List</label>
+            <div class="col-xs-12">
+              <select multiple class="form-control" formControlName="timezoneList">
+                <option *ngFor="let timezone of listTimezone" [value]="timezone.code">{{ timezone.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select Timezone</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language & Genre -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.language.invalid) || (subTypeGroup.controls.language.dirty && subTypeGroup.controls.language.invalid)">
+            <label class="col-xs-12 control-label">*Language</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="language">
+                <option value="">Select</option>
+                <option *ngFor="let language of listLanguage" [value]="language.code">{{ language.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select Language</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.genre.invalid) || (subTypeGroup.controls.genre.dirty && subTypeGroup.controls.genre.invalid)">
+            <label class="col-xs-12 control-label">*Genre</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Genre Here"
+                display="names" key="code"
+                formControlName="genre"
+                [suggestionList]="listGenre"
+              ></single-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Provide Preferred Genre</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter About Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Social Media Network</label>
+            <div class="col-xs-12">
+              <social-network [socialNetworks]="subTypeGroup.controls.socialNetwork"></social-network>
+              <span class="help-block">Enter Social Media Network Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Channel Frequency & Radio Script -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.channelFrequency.invalid) || (subTypeGroup.controls.channelFrequency.dirty && subTypeGroup.controls.channelFrequency.invalid)">
+            <label class="col-xs-12 control-label">*Channel Frequency</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="channelFrequency" placeholder="Enter Channel Frequency Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Channel Frequency Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.radioScript.invalid) || (subTypeGroup.controls.radioScript.dirty && subTypeGroup.controls.radioScript.invalid)">
+            <label class="col-xs-12 control-label">*Radio Script</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="radioScript" placeholder="Enter Radio Script Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Radio Script Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

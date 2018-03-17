@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-4 col-lg-3">
+                <button type="button" class="btn btn-danger" (click)="createApp()">New App</button>
+                <bulk-action [bulkActions]="bulkActions" (onBulkAction)="doBulkAction($event)"></bulk-action>
+            </div>
+            <div class="col-sm-8 col-md-9">
+                <search-criteria
+                #searchCriteria
+                [filterFields]="filterFields" [filterOptions]="filterOptions"
+                (onChangeFilterField)="changeFilterField($event)"
+                (remoteSuggest) = "remoteSuggest($event)"
+                (onSearch)="newSearch($event)"
+                [isRemoteSuggestion] = "isRemoteSuggestion">
+                ></search-criteria>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+            <data-table [records]="apps" [loading]="loading" (sort)="sort($event)" (loadMore)="loadMore($event)" [has-more]="hasMore">
+                <!--<header title="Internal Unique Page Name" name="info.title"></header>-->
+                <header title="Title" name="info.title"></header>
+                <header title="Type" name="info.type"></header>
+                <header title="App photo" name="photo"></header>
+                <header title="Internal Unique Page Name" name="info.publishOnBehalf.displayName" [sortable]="false"></header>
+                <header title="Created Date" name="info.createdDateTime"></header>
+                <header title="Published Date" name="info.publishedDateTime"></header>
+                <header title="Status" name="info.status"></header>
+
+
+                <column value="info.title" type="link" [getLink]="getDetailUrl"></column>
+                <column value="info.type"></column>
+                <column type="image" imageUrl="photo"></column>
+                <column value="info.publishOnBehalf.displayName"></column>
+                <column value="info.createdDateTime" [formatter]="dateFormatter"></column>
+                <column value="info.publishedDateTime" [formatter]="dateFormatter"></column>
+                <column value="info.status" type="status"></column>
+
+
+                <table-action name="edit" title="Edit" (doAction)="editApp($event)"></table-action>
+                <table-action name="copy" title="Copy" (doAction)="copyApp($event)"></table-action>
+                <table-action name="publish" title="Publish" (doAction)="onPublished($event)" [condition]="canShowPublishing"></table-action>
+                <table-action name="unpublish" title="Up-publish" (doAction)="onUnPublished($event)" [condition]="isShowUnpublishButton"></table-action>
+                <table-action name="approve" title="Approve" (doAction)="onModerate($event, 'approve')" [condition]="canShowApproveOrReject"></table-action>
+                <table-action name="reject" title="Reject" (doAction)="onModerate($event, 'reject')" [condition]="canShowApproveOrReject"></table-action>
+                <table-action name="delete" title="Delete" (doAction)="onDelete($event)"></table-action>
+            </data-table>
+    </div>
+</div>
+
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_CONTENT_PUBLISH}}" (yesAction)="publishContent($event)"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="unPublishContent($event)"></mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="deleteContent($event)"></mbc-confirmation>
+<mbc-confirmation #confirmModeratePopup message="" (yesAction)="moderateContent($event)"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishBulkPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="unpublishBulkContents($event)"></mbc-confirmation>
+<mbc-confirmation #confirmDeleteBulkPopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onBulkDelete($event)"></mbc-confirmation>

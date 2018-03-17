@@ -1,0 +1,16 @@
+<div class="form-group">
+  <tabset>
+    <photo-album
+      [isFormSubmitted]="isFormSubmitted"
+      (albumChange)="onPhotoAlbumChange(parentFormGroup.controls.image, $event)"
+      [photoAlbumInfo]="parentFormGroup.controls.image.value"
+      [isRequiredAlbumTitle]="isRequiredAlbumTitle"
+      [featureOnStream]="featureOnStream"
+      (featureOnStreamChange)="onFeatureOnStreamChange($event)"
+      [isReadOnly]="isReadOnly"
+      >
+    </photo-album>
+  </tabset>
+  <mbc-confirmation #switchDataConfirmPopup message="Current value will be updated with this new value. Do you want to continue?"
+    (yesAction)="switchTab($event, true)" (noAction)="switchTab($event, false)"></mbc-confirmation>
+</div>

@@ -1,0 +1,299 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'show'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Arabic & English Title -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.arabicTitle.invalid) || (subTypeGroup.controls.arabicTitle.dirty && subTypeGroup.controls.arabicTitle.invalid)">
+            <label class="col-xs-12 control-label">*Arabic Title</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="arabicTitle" placeholder="Enter Arabic Title Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Arabic Title Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.englishTitle.invalid) || (subTypeGroup.controls.englishTitle.dirty && subTypeGroup.controls.englishTitle.invalid)">
+            <label class="col-xs-12 control-label">*English Title</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="englishTitle" placeholder="Enter English Title Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter English Title Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Show Language & Dialect -->
+      <div class="row" *ngIf="inputFields.showLanguage || inputFields.dialect">
+        <div class="col-md-6" *ngIf="inputFields.showLanguage">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.showLanguage.invalid) || (subTypeGroup.controls.showLanguage.dirty && subTypeGroup.controls.showLanguage.invalid)">
+            <label class="col-xs-12 control-label">*Original Language</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="showLanguage">
+                <option value="">Select</option>
+                <option *ngFor="let language of listShowLanguage" [value]="language.code">{{ language.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Original Language Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.dialect">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Dialect</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Dialect Here"
+                display="names" key="code"
+                formControlName="dialect"
+                [suggestionList]="listDialect"
+              ></single-suggestion>
+              <label class="error"
+                  fieldError="dialect" fieldErrorType="required">This field is required.</label>
+              <span class="help-block">Enter Dialect Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="inputFields.genre || inputFields.subGenre">
+        <div class="col-md-6" *ngIf="inputFields.genre">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.genre.invalid) || (subTypeGroup.controls.genre.dirty && subTypeGroup.controls.genre.invalid)">
+            <label class="col-xs-12 control-label">*Genre</label>
+            <div class="col-xs-12">
+              <single-suggestion
+                placeholder="Enter Genre Here"
+                display="names" key="code"
+                formControlName="genre"
+                [suggestionList]="listGenre"
+                (onSelectedChanged)="onChangeGenre($event)"
+              ></single-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Provide Preferred Genre</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.subGenre">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.subGenre.invalid) || (subTypeGroup.controls.subGenre.dirty && subTypeGroup.controls.subGenre.invalid)">
+            <label class="col-xs-12 control-label">*Subgenre</label>
+            <div class="col-xs-12">
+              <mbc-multiple-suggestion placeholder="Enter SubGenre Here" display="value" key="id" [selectedValue]="listSubGenreSelected"
+                (onRemoveItem)="onRemoveSubGenre($event)" (onAddedItem)="onAddedSubGenre($event)"
+                [suggestionList]="listSubGenre"
+              ></mbc-multiple-suggestion>
+              <label class="error">This field is required.</label>
+              <span class="help-block">Please Provide List Of Preferred Subgenre</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Censorship Class & Subtitling and dubbing -->
+      <div class="row" *ngIf="inputFields.censorshipClass || inputFields.subtitlingDubbing">
+        <div class="col-md-6" *ngIf="inputFields.censorshipClass">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Censorship Class</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="censorshipClass">
+                <option value="">Select</option>
+                <option *ngFor="let censorshipClass of listCensorshipClass" [value]="censorshipClass.code">{{ censorshipClass.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Censorship Class Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.subtitlingDubbing">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Subtitling and Dubbing</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="subtitlingDubbing">
+                <option value="">Select</option>
+                <option *ngFor="let subtitlingDubbing of listSubtitlingDubbing" [value]="subtitlingDubbing.code">{{ subtitlingDubbing.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Subtitling and Dubbing Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter More Information Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Country & City -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.country.invalid) || (subTypeGroup.controls.country.dirty && subTypeGroup.controls.country.invalid)">
+            <label class="col-xs-12 control-label">*Country (Production/Match Venue)</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="country">
+                <option value="">Select</option>
+                <option *ngFor="let country of listCountry" [value]="country.code">{{ country.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error">This field is required</label>
+              <span class="help-block">Select Production Country</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.city">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.city.invalid) || (subTypeGroup.controls.city.dirty && subTypeGroup.controls.city.invalid)">
+            <label class="col-xs-12 control-label">City (Match Venue)</label>
+            <div class="col-xs-12">
+              <select [attr.disabled]="!listCity || listCity.length == 0 ? true : null" multiple class="form-control" formControlName="city">
+                <option *ngIf="!isLoadingCityList && (!listCity || listCity.length == 0)">No records</option>
+                <option *ngIf="isLoadingCityList">Loading cities</option>
+                <option *ngFor="let city of listCity" [value]="city.code">{{ city.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Venue City</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stadium Name & Stadium Address - GPS Location -->
+      <div class="row" *ngIf="inputFields.stadiumName || inputFields.stadiumGPS">
+        <div class="col-md-6" *ngIf="inputFields.stadiumName">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Stadium Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Stadium Name Here" maxlength="250" type="text" class="form-control" formControlName="stadiumName" />
+              <span class="help-block">Enter Stadium Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.stadiumGPS">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Stadium Address - GPS Location</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Stadium Address Here" maxlength="250" type="text" class="form-control" formControlName="stadiumGPS" />
+              <span class="help-block">Enter Stadium Address Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live/Recorded & Duration -->
+      <div class="row" *ngIf="inputFields.liveRecorded || inputFields.duration">
+        <div class="col-md-6" *ngIf="inputFields.liveRecorded">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Live/Recorded</label>
+            <div class="col-xs-12">
+              <label>Live</label>
+              <input type="radio" name="liveRecorded" value="live" formControlName="liveRecorded">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label>Recorded</label>
+              <input type="radio" name="liveRecorded" value="recorded" formControlName="liveRecorded">
+              <span class="help-block help-block-gender">Select Programme Version</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.duration">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Duration</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="duration" placeholder="Hour : Second"/>
+              <span class="help-block">Enter Duration Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Season Number & Sequel Number -->
+      <div class="row" *ngIf="inputFields.seasonNumber || inputFields.sequelNumber">
+        <div class="col-md-6" *ngIf="inputFields.seasonNumber">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Season Number</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="seasonNumber" placeholder="Enter Season Number"/>
+              <span class="help-block">Enter Season Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.sequelNumber">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Sequel Number</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="sequelNumber" placeholder="Enter Sequel Number"/>
+              <span class="help-block">Enter Sequel Number Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Year Debuted & Expected Release Date -->
+      <div class="row" *ngIf="inputFields.yearDebuted || inputFields.expectedReleaseDate">
+        <div class="col-md-6" *ngIf="inputFields.yearDebuted">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.yearDebuted.errors && subTypeGroup.controls.yearDebuted.errors.invalidFormat) || (subTypeGroup.controls.yearDebuted.dirty && subTypeGroup.controls.yearDebuted.errors && subTypeGroup.controls.yearDebuted.errors.invalidFormat)">
+            <label class="col-xs-12 control-label">Year Debuted</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Input Deputed Year" *ngIf="subTypeData" [date]="subTypeData.yearDebuted" [fControl]="subTypeGroup.controls.yearDebuted"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.yearDebuted.errors && subTypeGroup.controls.yearDebuted.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select Deputed Year</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.expectedReleaseDate">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.expectedReleaseDate.invalid) || (subTypeGroup.controls.expectedReleaseDate.dirty && subTypeGroup.controls.expectedReleaseDate.invalid)">
+            <label class="col-xs-12 control-label">Expected Release Date</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Enter Exptected Release Date Here" *ngIf="subTypeData" [date]="subTypeData.expectedReleaseDate" [fControl]="subTypeGroup.controls.expectedReleaseDate"></mbc-datepicker>
+              <label class="error" *ngIf="subTypeGroup.controls.expectedReleaseDate.errors && subTypeGroup.controls.expectedReleaseDate.errors.invalidFormat">Please input the correct date format</label>
+              <span class="help-block">Select Expected Release Date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Social Media</label>
+            <div class="col-xs-12">
+              <social-network [socialNetworks]="subTypeGroup.controls.socialNetwork"></social-network>
+              <span class="help-block">Enter Social Media Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BCM ID & Shahid ID -->
+      <div class="row" >
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">BCM ID</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="bcmId" placeholder="Enter BCM ID Here"/>
+              <span class="help-block">Enter BCM ID Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Shahid ID</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="shahidId" placeholder="Enter Shahid ID Here"/>
+              <span class="help-block">Enter Shahid ID Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<form class="mbc-form" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <campaign-tasks [valid]="isValid()" [dirty]="isDirty()" #campaignTasks></campaign-tasks>
+            <div class="mbc-page-container tabs">
+                <tabset [justified]="true">
+                    <tab>
+                        <tab-header tabName="Information" [isShowRedFlag]="isShowInfoTabHeaderRedFlag()" ></tab-header>
+                        <campaign-tab-info #infoTab></campaign-tab-info>
+                    </tab>
+                     <tab>
+                        <tab-header tabName="Target Audience"></tab-header>
+                        <campaign-tab-target-audience></campaign-tab-target-audience>
+                    </tab>
+                     <tab>
+                        <tab-header tabName="Result" [isShowRedFlag]="isShowResultTabHeaderRedFlag()"></tab-header>
+                        <campaign-tab-result #resultTab [isSubmitting]="isSubmitting()"></campaign-tab-result>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</form>

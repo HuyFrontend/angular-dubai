@@ -1,0 +1,103 @@
+.quickSearchValue {
+  float: left;
+}
+.quick-search-btn{
+  float: left;
+  padding-left: 5px;
+  background: none;
+  border: none;
+  margin-left: -30px;
+  i {
+    font-size: 22px;
+  }
+}
+.quick-search-label{
+  padding-top: 7px;
+}
+
+.date-time-filter{
+  width: auto;
+  position: relative;
+
+  .btn {
+    margin-bottom: 3px;
+  }
+}
+.filter-date-range {
+  position: absolute;
+  background: #F5F5F5;
+  padding: 10px;
+  width: 211px;
+  z-index: 99;
+  left: -10px;
+  border: 1px solid #CCC;
+
+  .selectiongroup {
+    input {
+      height: 25px!important;
+    }
+    .selbtngroup {
+      height: 25px!important;
+    }
+  }
+  .form-group {
+    .control-label {
+      width: 30px;
+      padding-top: 5px;
+      float:left;
+    }
+    .picker {
+      width: 134px;
+      float: left;
+      margin-left: 20px;
+    }
+    .filter {
+      width: 134px;
+      float: left;
+    }
+    .filter button {
+      width: 100%;
+      margin-left: 20px;
+    }
+  }
+}
+.page-content-wrap form.form-inline .form-group select{
+    margin-top: 0px;
+}
+.page-content-wrap {
+  .filter-group {
+    .filter-label {
+      margin-right: 13px;
+    }
+    select {
+      width: 120px;
+    }
+  }
+}
+
+.filter-group {
+  .form-input-tag {
+    margin-bottom: 3px;
+  }
+
+}
+
+.search-group {
+  margin-top: 5px;
+
+  > .form-group {
+    margin-right: 5px;
+    display: inline-block;
+  }
+    .quickSearchValue {
+      width: 398px;
+    }
+    .quick-search-btn {
+      height: 30px;
+
+      i {
+        font-size: 18px;
+      }
+    }
+}
+

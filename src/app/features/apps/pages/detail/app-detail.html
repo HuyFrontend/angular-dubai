@@ -1,0 +1,30 @@
+<form class="mbc-form content-wrapper-rtl" novalidate>
+  <div class="row">
+    <div class="col-md-12">
+      <app-tasks #appTasks [valid]="isValid()" [dirty]="isDirty()"></app-tasks>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>App information</strong></h3>
+      </div>
+      <div class="panel-body">
+        <app-tab-info #infoTab></app-tab-info>
+      </div>
+    </div>
+
+    <app-photo #photoTab></app-photo>
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><strong>App options</strong></h3>
+        </div>
+        <div class="panel-body">
+          <app-options #optionsTab></app-options>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

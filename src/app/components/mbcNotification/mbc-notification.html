@@ -1,0 +1,25 @@
+<div class="notification-wrapper">
+  <ul class="notification-container" *ngIf="listStickyNotification && listStickyNotification.length > 0">
+    <li #notificationItem (click)="onHideNotificationHandler(notificationItem)" *ngFor="let notification of listStickyNotification"
+        attr.data-id="{{notification.id}}"
+        class="notification-item"
+        [class.notification-success]="notification.type === 'SUCCESS'"
+        [class.notification-error]="notification.type === 'ERROR'"
+        [class.notification-info]="notification.type === 'INFO'"
+        [class.notification-warning]="notification.type === 'WARN'">
+
+      <span class="notification-item-header">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-times" aria-hidden="true"></i>
+        <i class="fa fa-info" aria-hidden="true"></i>
+        <i class="fa fa-exclamation" aria-hidden="true"></i>
+      </span>
+      <div class="notification-item-message">
+        <p [innerHTML]="notification.message"></p>
+      </div>
+    </li>
+  </ul>
+
+  <p-growl life="2200" [(value)]="listNotifications"></p-growl>
+</div>

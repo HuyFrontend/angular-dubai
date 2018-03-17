@@ -1,0 +1,51 @@
+// color for bg, tab
+$cl-main-bg-white: #fff;
+$cl-main-bg: #33414e;
+$cl-main-bg-orange: #e34724;
+$cl-main-bg-text: #F0F4F9;
+$cl-menu-active: #3d4e5d;
+// background for notification
+$cl-bg-notification: #b64645;
+// text colors
+$cl-text-white: #fff;
+$cl-text-header: #333;
+$cl-text-main: #656C78;
+$cl-text-disabled: #777;
+$cl-text-error: #CC0000;
+$cl-text-help-block: #737373;
+$cl-border-input: #ccc;
+$cl-bg-input: #F9F9F9;
+$cl-button: #F44336;
+$cl-button-hover: #e0401d;
+$cl-boder-box: #d5d5d5;
+$cl-d4: #d4d4d4;
+$cl-d4: #d4d4d4;
+$cl-8c: #8c8c8c;
+$cl-f5: #F5F5F5;
+$cl-dd: #DDDDDD;
+$cl-e5: #E5E5E5;
+$cl-e9: #E9E9E9;
+$cl-f5: #f5f5f5;
+$cl-preview-embed: #656d78;
+$cl-text-editor: #999999;
+
+// overrite button btn-danger 
+.btn {
+  padding: 4px 16px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+}
+.btn-danger {
+  background-color: $cl-button;
+  border-color: $cl-button;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $cl-button-hover;
+    border-color: $cl-button-hover;
+  }
+}

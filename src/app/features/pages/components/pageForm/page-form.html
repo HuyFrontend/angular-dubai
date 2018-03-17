@@ -1,0 +1,72 @@
+<form (ngSubmit)="onSubmit()" class="mbc-form page-form" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <page-tasks [isFormValid]="isInfoValid" [pageStatus]="pageModel.status" [pageEntityId]="pageModel.entityId" [isFormChanged]="isFormChanged()"
+            (statusChanged)="onStatusChanged($event)" [isCreate]="!pageModel.entityId" (saveAndPublish)="onSaveAndPublish()">
+            </page-tasks>
+            <div class="mbc-page-container tabs">
+                <tabset [justified]="true">
+                    <tab>
+                        <tab-header [isShowRedFlag]="isFormSubmitted && pageStatus.info === 'INVALID'" tabName="Page information"></tab-header>
+                        <page-tab-info
+                            (modelChanged)="infoValueChanged($event)"
+                            (statusChanged)="infoStatusChanged($event)"
+                            [pageGroup]="pageModel.pageGroup"
+                            [info]="pageModel.info"
+
+                            [isFormSubmitted]="isFormSubmitted"
+                            [pageEntityId]="pageChanged.entityId"
+                            [pageStatus]="pageModel.status"
+                            [copyFromId]="copyFromId"
+                        ></page-tab-info>
+                    </tab>
+                    <tab>
+                        <tab-header [isShowRedFlag]="isFormSubmitted && pageStatus.meta === 'INVALID'" tabName="Page Details"></tab-header>
+                        <page-tab-metadata
+                            #pageTabMetadataComponent
+                            (modelChanged)="metaChanged($event)"
+                            (statusChanged)="metaStatusChanged($event)"
+                            [isFormSubmitted]="isFormSubmitted"
+                            [pageType]="pageChanged.info.type"
+                            [pageEntityId]="pageModel.entityId"
+                            [meta]="pageModel.meta"
+                            [pageStatus] = "pageModel.status"></page-tab-metadata>
+                    </tab>
+                    <tab heading="Info Components" [disabled]="!pageChanged.entityId">
+                        <div class="panel-body">
+                            <page-tab-infocomponents
+                              #pageTabInfocomponents
+                              *ngIf="pageModel.infoComponents"
+                              (modelChanged)="infoComponentsChanged($event)"
+                              [pageEntityId]="pageChanged.entityId"
+                              [info]="pageModel.info"
+                              [isFormSubmitted]="isFormSubmitted"
+                              [infoComponents]="pageModel.infoComponents"
+                              [pageGroup]="pageModel.pageGroup">
+                            </page-tab-infocomponents>
+                        </div>
+                    </tab>
+                    <tab heading="Playlists" disabled="true">
+                        <div class="panel-body">
+                            <h1>Under development!!!</h1>
+                        </div>
+                    </tab>
+                    <tab heading="Bundles" disabled="true">
+                        <div class="panel-body">
+                            <h1>Under development!!!</h1>
+                        </div>
+                    </tab>
+                    <tab heading="Admins" disabled="true">
+                        <div class="panel-body">
+                            <h1>Under development!!!</h1>
+                        </div>
+                    </tab>
+                    <tab>
+                        <tab-header tabName="Settings"></tab-header>
+                        <page-tab-settings (modelChanged)="settingsChanged($event)" (statusChanged)="settingsStatusChanged($event)" [isFormSubmitted]="isFormSubmitted" [settings]="pageModel.settings"></page-tab-settings>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</form>

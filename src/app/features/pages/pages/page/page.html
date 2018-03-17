@@ -1,0 +1,69 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+                <button type="submit" class="btn btn-danger" routerLink="/pages/create">Add New Page</button>
+                <bulk-action [bulkActions]="bulkActions" (onBulkAction)="doBulkAction($event)"></bulk-action>
+            </div>
+            <div class="col-sm-9 col-md-9">
+                <search-criteria
+                    #searchCriteria
+                    [filterFields]="filterFields" [filterOptions]="filterOptions"
+                    (onChangeFilterField)="changeFilterField($event)"
+                    (onSearch)="newSearch($event)"
+                    [isRemoteSuggestion] = "isRemoteSuggestion">
+                </search-criteria>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+      <data-table [records]="pages" (loadMore)="loadMore($event)" (sort)="sort($event)"
+            (itemSelectChange)="pageSelectedChange($event)" [loading]="loading" [has-more]="hasMore">
+        <header title="Site(s)" name="data.info.website" [sortable]="false"></header>
+        <header title="Internal Unique Page Name" name="data.info.internalUniquePageName"></header>
+        <header title="Page Image" name="data.info.logoURL" [sortable]="false"></header>
+        <header title="Type" name="data.info.type"></header>
+        <header title="Sub Type" name="data.meta.pageSubType"></header>
+        <header title="Creator" name="creator"></header>
+        <header title="Publish Date" name="publishedDate"></header>
+        <header title="Stats" name="stats"></header>
+        <header title="Status" name="status"></header>
+
+        <column value="data.info.website"></column>
+        <column value="data.info.internalUniquePageName" type="link" [getLink]="getDetailUrl"></column>
+        <column value="data.info.logoURL" type="image" imageUrl="imageUrl"></column>
+        <column value="data.info.type"></column>
+        <column value="data.meta.pageSubType"></column>
+        <column value="creator"></column>
+        <column value="publishedDate" [formatter]="dateFormatter"></column>
+        <column value="stats"></column>
+        <column value="status" type="status"></column>
+
+        <table-action name="publish" title="Publish" (doAction)="publishAPage($event)" [condition]="showPublishCondition"></table-action>
+        <table-action name="edit" title="Edit" (doAction)="editPage($event)"></table-action>
+        <table-action name="copy" title="Copy" (doAction)="copyPage($event)"></table-action>
+        <table-action name="unpublish" title="Un-publish" (doAction)="confirmUnpublishPage($event)" [condition]="showUnpublishCondition"></table-action>
+        <table-action name="delete" title="Delete" (doAction)="confirmDelete($event)"></table-action>
+      </data-table>
+    </div>
+</div>
+
+<mbc-confirmation #confirmPublishPopup
+  message="{{message.CONFIRM_PUBLISH}}"
+  (yesAction)="publishPages($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmUnpublishPopup
+  message="{{message.CONFIRM_UNPUBLISH}}"
+  (yesAction)="unpublishPage($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmDeletePopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDelete($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmDeleteBulkPopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDeleteBulk($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmUnpublishBulkPopup
+  message="{{message.CONFIRM_UNPUBLISH}}"
+  (yesAction)="unpublishPages($event)"></mbc-confirmation>

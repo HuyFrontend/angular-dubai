@@ -1,0 +1,1 @@
+export { CampaignTasksComponent } from './campaign-tasks.component';

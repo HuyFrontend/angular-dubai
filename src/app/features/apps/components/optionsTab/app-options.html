@@ -1,0 +1,18 @@
+<form #optionsForm="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <text-area [(ngModel)]="app.options.code" name="code" title="Code" #appCode="ngModel" placeholder="Enter Code Here"
+        [isReadOnly]="app.info.status === appStatus.PENDING"></text-area>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <text-input [(ngModel)]="app.options.link" name="link" title="Link" #appLink="ngModel" placeholder="Enter Code Here"
+        [parentControl]="appLink.control" [readOnly]="app.info.status === appStatus.PENDING" nospace></text-input>
+      </div>
+    </div>
+  </div>
+</form>

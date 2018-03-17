@@ -1,0 +1,10 @@
+<span>
+	<span *ngIf="tooltipContent" [tooltip]="toolTip" containerClass='tooltipContainer' class="{{cssClass}}">{{formatter(value, entry)}}
+	</span> 
+	<span *ngIf="!tooltipContent"
+		class="{{cssClass}}">{{formatter(value, entry)}}
+	</span> 
+	<ng-template #toolTip>
+		<div [innerHTML]="tooltipContent"></div>
+	</ng-template>
+</span>

@@ -1,0 +1,42 @@
+.btn-paragraph {
+    cursor: pointer;
+}
+.ui-state-highlight-drap{
+    border: none;
+    min-height: 50px
+}
+
+.ui-state-highlight-drap:hover {
+    background-color: #656d78
+}
+.drop-paragraph{
+    min-height:20px;
+}
+.drop-paragraph:focus{
+    border: 1px solid red;
+}
+.paragraph-headline .panel-heading:hover{
+    cursor:move;
+}
+.ui-helper-clearfix:after, .ui-helper-clearfix:before {
+    content: "";
+    display: table;
+}
+.ui-helper-clearfix:after {
+    clear: both;
+}
+.paragraph-headline .panel-heading{
+    position: relative;
+}
+.panel-toggled.current-hover, .drop-paragraph.current-hover{
+    border: none;
+    height: 50px;
+}
+.focus-paragraph {
+    -webkit-box-shadow:0 0 12px red; 
+    -moz-box-shadow: 0 0 12px red; 
+    box-shadow:0 0 12px red;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px; 
+}

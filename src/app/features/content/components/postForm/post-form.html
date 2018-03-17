@@ -1,0 +1,220 @@
+<form *ngIf="entityGroup" (ngSubmit)="onSubmit()" [formGroup]="entityGroup" class="mbc-form content-wrapper-rtl" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="btn-area">
+                <li *ngIf="isEditting()">
+                    <button type="button" class="btn btn-danger btn-block" (click)="onShowCopyModal()">Copy</button>
+                </li>
+                <li *ngIf="post.status !== contentStatus.PENDING">
+                    <button class="btn btn-danger btn-block" type="submit">Save</button>
+                </li>
+                <li class="" *ngIf="action!='edit' || canShowPublishing()">
+                    <button type="button" class="btn btn-danger btn-block" (click)="confirmSaveAndPublish($event)">Publish</button>
+                </li>
+                <li *ngIf="isShowUnpublishButton()">
+                    <button type="button" class="btn btn-danger btn-block" (click)="confirmUnpublish($event)">Un-publish</button>
+                </li>
+                <li *ngIf="action=='edit'">
+                    <button type="button" (click)="onPreview()" class="btn btn-danger btn-block">Preview</button>
+                </li>
+                <li *ngIf="isEditting() && post.status === contentStatus.PENDING">
+                    <button type="button" class="btn btn-danger btn-block" (click)="onModeratePopup('reject')">Reject</button>
+                </li>
+                <li *ngIf="isEditting() && post.status === contentStatus.PENDING">
+                    <button type="button" class="btn btn-danger btn-block" (click)="onModeratePopup('approve')">Approve</button>
+                </li>
+                <li *ngIf="post && post.entityId">
+                    <button type="button" class="btn btn-danger btn-block" (click)="confirmDelete($event)">Delete</button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-danger btn-block" (click)="onClose()">Close</button>
+                </li>
+            </ul>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>{{ isEditting() ? 'Edit Post' : 'New Post' }}</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-xs-12 control-label">Language</label>
+                                    <div class="col-xs-12">
+                                        <select class="form-control col-xs-12" formState="language" formControlName="language" [attr.disabled]="post.status === contentStatus.PENDING ? true : null">
+                                            <option value="ar">Arabic (Default)</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <span class="help-block">Select Language</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Post Information</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row" *ngIf="isEditting()">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label class="col-xs-12 control-label">UUID: {{post.entityId}}</label>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label class="col-xs-12 control-label">Status:
+                                      <data-status [status]="post.status"> </data-status>
+                                  </label>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" fieldHasError="title">
+                                    <label class="col-xs-12 control-label">*Internal Title</label>
+                                    <div class="col-xs-12">
+                                        <input type="text" placeholder="Enter Title Here" maxlength="250" class="form-control"
+                                            (onLostFocus)="onValidateTitle($event)" formState="title" formControlName="title" [attr.readonly]="post.status === contentStatus.PENDING ? true : null"/>
+                                        <label class="error"
+                                            fieldError="title" fieldErrorType="required">This field is required.</label>
+                                        <label class="error"
+                                            fieldError="title" fieldErrorType="existsTitle">
+                                            Title is being used. Please choose another.</label>
+                                        <span class="help-block">Enter Post Title</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" [formGroup]="relationshipGroup"
+                                  fieldHasError="publishOnBehalf">
+                                  <label class="col-xs-12 control-label">*Publish on behalf</label>
+                                  <div class="col-xs-12">
+                                      <single-suggestion
+                                          [isReadOnly] = "isInactive() || post.status === contentStatus.PENDING"
+                                          placeholder="Enter Authoring Page Name Here"
+                                          display="displayName" key="entityId"
+                                          formControlName="publishOnBehalf"
+                                          (onQuery)="onQueryPublishOnBehalf($event)"
+                                          (onClosed)="onPublishOnBehalfChanged($event)">
+                                      </single-suggestion>
+                                      <label class="error" fieldError="publishOnBehalf" fieldErrorType="required">
+                                        This field is required.</label>
+                                      <span class="help-block">Enter page name</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                  <label class="col-xs-12 control-label">*Website(s)</label>
+                                  <div class="col-xs-12">
+                                      <mbc-select-box
+                                          [disable]="true"
+                                          display="displayName" key="entityId"
+                                          [dataSource]="listWebsite"
+                                          [fControl]="relationshipGroup.controls.websites"
+                                      ></mbc-select-box>
+                                      <span class="help-block">Select websites</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-xs-12 control-label">Label</label>
+                                    <div class="col-xs-12">
+                                      <input type="text" placeholder="Add Label Here" maxlength="250" class="form-control"
+                                          formState="label" formControlName="label" [attr.disabled]="post.status === contentStatus.PENDING ? true: null"/>
+                                      <span class="help-block">Add Label</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                              <div class="form-group">
+                                <label class="col-xs-12 control-label">Interest</label>
+                                <div class="col-xs-12">
+                                    <mbc-multiple-suggestion
+                                        placeholder="Enter Interest Here"
+                                        display="value" key="id"
+                                        [selectedValue]="listInterestsSelected"
+                                        (onRemoveItem)="onRemoveInterest($event)"
+                                        (onAddedItem)="onAddedInterest($event)"
+                                        (onQuery)="onQueryInterest($event)"
+                                        (onSelectedChanged)="onInterestSelectedChanged($event)"
+                                        [isReadOnly]="post.status === contentStatus.PENDING"
+                                        >
+                                    </mbc-multiple-suggestion>
+                                    <span class="help-block">Enter Pages</span>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                  <label class="col-xs-12 control-label">Tag Pages</label>
+                                  <div class="col-xs-12">
+                                      <mbc-multiple-suggestion
+                                          placeholder="Enter Pages Name Here"
+                                          display="displayName" key="entityId"
+                                          [selectedValue]="post.tagToPages"
+                                          (onRemoveItem)="onRemovePageTag($event)"
+                                          (onAddedItem)="onAddedTagToPage($event)"
+                                          (onQuery)="onQueryTagToPages($event)"
+                                          (onSelectedChanged)="onTagPagesSelectedChanged($event)"
+                                          [isReadOnly]="post.status === contentStatus.PENDING"
+                                          >
+                                      </mbc-multiple-suggestion>
+                                      <span class="help-block">Enter Pages</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="listOfComments.length > 0">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                  <label class="col-xs-12 control-label">Rejection Note</label>
+                                  <div class="row page-list-data">
+                                    <data-table [records]="listOfComments" [loading]="false" [has-more]="false" (sort)="sort($event)" [hideCheckbox]="true">
+                                        <header title="Note" name="comment" [sortable]="true"></header>
+                                        <header title="Rejected Date" name="rejectedDate" [sortable]="true"></header>
+                                        <header title="Approver" name="approver" [sortable]="true"></header>
+                                        <column value="comment" tooltipContent="tooltipContent"></column>
+                                        <column value="rejectedDate" [formatter]="dateFormatter"></column>
+                                        <column ></column>
+                                    </data-table>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>{{getPostTypeLabel()}}</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <single-paragraph-form #paragraphComponent [post]="post" [isFormSubmitted]="isFormSubmitted" [isRequiredAlbumTitle]="isRequiredAlbumTitle" [isReadOnly]="post.status === contentStatus.PENDING"></single-paragraph-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<mbc-confirmation #confirmClose message="Data will not be saved. Do you want to continue?" (yesAction)="onReturnListPage()"></mbc-confirmation>
+<mbc-confirmation #confirmCopy type="okOnly" message="You have updated some values that are not yet saved. Please save it before copying." ></mbc-confirmation>
+<mbc-confirmation #confirmPublishPopup message="{{message.CONFIRM_CONTENT_PUBLISH}}" (yesAction)="publishContent()"></mbc-confirmation>
+<mbc-confirmation #confirmUnpublishPopup message="{{message.CONFIRM_UNPUBLISH}}" (yesAction)="onUnpublish()"></mbc-confirmation>
+<mbc-confirmation #confirmDeletePopup message="{{message.CONFIRM_REMOVE}}" (yesAction)="onDelete()"></mbc-confirmation>
+<mbc-confirmation #confirmModeratePopup message="" (yesAction)="onModerate($event)"></mbc-confirmation>
+<mbc-confirmation #confirmSaveAndPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onSaveAndPublish()"></mbc-confirmation>
+<mbc-confirmation #showPreview type="okOnly" title="Preview" class="preview-popup-wrap" [message]="safePreviewUrl"></mbc-confirmation>

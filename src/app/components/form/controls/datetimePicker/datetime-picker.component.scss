@@ -1,0 +1,43 @@
+label {
+  cursor: pointer;
+}
+
+.dp-popup {
+  padding: 15px 20px 10px 20px !important;
+}
+  .dp-material .dp-calendar-nav-container {
+    border: 0 !important;
+  }
+    .dp-nav-header {
+      font-size: 17px !important;
+      color: #33414e !important;
+    }
+    .dp-material .dp-nav-header-btn {
+      width: 90px !important;
+      height: 30px !important;
+    }
+  .dp-material  .dp-calendar-wrapper {
+    border: 0 !important;
+  }
+    .dp-weekdays {
+      font-size: 15px !important;
+      margin-bottom: 5px !important;
+      padding-bottom: 10px !important;
+      border-bottom: 1px solid #ccc !important;
+    }
+      .dp-material .dp-calendar-weekday {
+        height: 25px !important;
+        width: 40px !important;
+        padding: 5px !important;
+        color: #ed4832 !important;
+      }
+      .dp-calendar-day {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+  .dp-material dp-time-select {
+    border: 0 !important;
+    border-top: 1px solid #ccc !important;
+    margin-top: 3px !important;
+  }

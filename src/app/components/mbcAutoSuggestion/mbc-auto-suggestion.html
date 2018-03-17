@@ -1,0 +1,39 @@
+<div class="input-field" [class.inlineMode]="inlineMode">
+    <div class="tagsinput" *ngIf="selected.length && inlineMode">
+        <span class="tag" *ngFor="let item of selected; let i = index">
+            <span>{{item.value}}</span>
+            <a (click)="remove(i)" title="Remove"></a>
+        </span>
+    </div>
+    <div class="form-group form-input-tag">
+      <input
+          id="country"
+          type="text"
+          class="validate filter-input form-control"
+          [(ngModel)]=query
+          (keyup)=filter($event)
+          (keydown)=inputElKeyHandler($event)
+          autocomplete="off"
+          placeholder="{{placeholderText}}"
+      />
+      <div class="suggestions bootstrap-select open" *ngIf="filteredList.length > 0">
+          <ul class="dropdown-menu">
+                  <li *ngFor="let item of filteredList; let i = index" [class.selected]="selectedIdx === i" >
+                      <a (click)="select(item)">{{item.value}}</a>
+                  </li>
+              </ul>
+      </div>
+      <div class="suggestions bootstrap-select open" *ngIf="filteredList.length == 0 && query && !acceptUserInput">
+          <ul class="dropdown-menu">
+              <li class="dropdown-header" (click)="closeNotFound()"><span >{{noMatchFoundText}}</span></li>
+          </ul>
+      </div>
+    </div>
+
+</div>
+<div class="tagsinput" *ngIf="selected.length && !inlineMode">
+    <span class="tag" *ngFor="let item of selected; let i = index">
+        <span>{{item.value}}</span>
+        <a (click)="remove(i)" title="Remove"></a>
+    </span>
+</div>

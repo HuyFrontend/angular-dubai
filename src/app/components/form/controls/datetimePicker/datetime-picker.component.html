@@ -1,0 +1,28 @@
+<div class="form-group" [class.has-error]="parentControl && parentControl.invalid && (model.dirty || model.touched)">
+  <label class="col-xs-12 control-label">{{title}}</label>
+  <div class="col-xs-12">
+    <div class="input-group date">
+      <input class="form-control"
+        [id]="id"
+        [name]="name"
+        [(ngModel)]="value"
+        [placeholder]="placeholder"
+        [disabled]="isDisabled"
+        [mode]="mode"
+        [theme]="theme"
+        [dpDayPicker]="config"
+        (keypress)="onKeyPressed($event)">
+      <label for="{{id}}" class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></label>
+    </div>
+
+    <validation
+      *ngIf="parentControl && parentControl.invalid"
+      [messages]="parentControl.errors">
+    </validation>
+
+    <span class="help-block" *ngIf="!isHideGuideText">{{guideText}}</span>
+  </div>
+</div>
+
+
+

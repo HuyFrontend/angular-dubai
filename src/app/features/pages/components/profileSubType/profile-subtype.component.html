@@ -1,0 +1,369 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'profile'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+      <!--ID & Status-->
+      <div class="row" *ngIf="inputFields.fullName || inputFields.nickName">
+        <div class="col-md-6" *ngIf="inputFields.fullName">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.fullName.invalid) || (subTypeGroup.controls.fullName.dirty && subTypeGroup.controls.fullName.invalid)">
+            <label class="col-xs-12 control-label">*Full Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Name Here" maxlength="250" type="text" class="form-control" formControlName="fullName" />
+              <label class="error" for="fullName">This field is required.</label>
+              <span class="help-block">Enter Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.playerNickName">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Player Nick Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Nick Name Here" maxlength="250" type="text" class="form-control" formControlName="playerNickName" />
+              <span class="help-block">Enter Nick Name Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.occupations || inputFields.class">
+        <div class="col-md-6" *ngIf="inputFields.class">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Star Class</label>
+            <div class="col-xs-12">
+              <select class="form-control col-xs-12" formControlName="class">
+                <option value="">Select</option>
+                <option *ngFor="let starClass of listStarClass" [value]="starClass.code">{{  starClass.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Star Class</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.occupations.invalid) || (subTypeGroup.controls.occupations.dirty && subTypeGroup.controls.occupations.invalid)">
+            <label class="col-xs-12 control-label">*Occupations</label>
+            <div class="col-xs-12">
+              <mbc-multiple-suggestion placeholder="Enter Occupations Here" display="value" key="id" [selectedValue]="listOccupationSelected"
+                (onRemoveItem)="onRemoveOccupation($event)" (onAddedItem)="onAddedOccupation($event)" (onQuery)="onQueryOccupation($event)">
+              </mbc-multiple-suggestion>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter Occupations Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.title">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Title</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="title" placeholder="Enter Title Here"/>
+              <span class="help-block">Enter page title</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-date-of-birth" *ngIf="inputFields.dateOfBirth || inputFields.ripDate">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Date Of Birth</label>
+            <div class="col-xs-12" [class.has-error]="subTypeGroup.controls.dateOfBirth.invalid">
+              <mbc-datepicker placeholder="Enter Date Of Birth Here" *ngIf="subTypeData" [date]="subTypeData.dateOfBirth" [fControl]="subTypeGroup.controls.dateOfBirth"></mbc-datepicker>
+              <span class="help-block">Enter Date Of Birth Here</span>
+              <label class="error" *ngIf="subTypeGroup.controls.dateOfBirth && subTypeGroup.controls.dateOfBirth.errors && subTypeGroup.controls.dateOfBirth.errors.invalidValue">
+                Date Of Birth date should be before RIP date
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.ripDate">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">RIP Date</label>
+            <div class="col-xs-12" [class.has-error]="subTypeGroup.controls.ripDate.invalid">
+              <mbc-datepicker placeholder="Enter RIP Date Here" *ngIf="subTypeData" [date]="subTypeData.ripDate" [fControl]="subTypeGroup.controls.ripDate"></mbc-datepicker>
+              <span class="help-block">Enter RIP Date Here</span>
+              <label class="error" *ngIf="subTypeGroup.controls.ripDate && subTypeGroup.controls.ripDate.errors && subTypeGroup.controls.ripDate.errors.invalidValue">
+                RIP date should be after DOB date
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.age || inputFields.horoscope">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Age</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Age Here" type="text" class="form-control" formControlName="age" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Horoscope</label>
+            <div class="col-xs-12">
+              <input type="text" class="form-control" formControlName="horoscope" />
+              <span class="help-block">Enter Horoscope Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.hideYearAndAge || inputFields.gender">
+        <div class="col-md-6" *ngIf="inputFields.hideYearAndAge">
+          <div class="col-md-6 form-group">
+            <label class="col-xs-12 control-label">Hide Year And Age</label>
+            <div class="col-xs-12">
+              <label class="check">
+                <input type="checkbox" formControlName="hideYearAndAge" />
+                <span class="label-text">Hide Year And Age</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 left-border">
+            <p>Choosing Hide Year and Age will result in hiding Age and Year of Birth of this profile on Front End</p>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.gender">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.gender.invalid) || (subTypeGroup.controls.gender.dirty && subTypeGroup.controls.gender.invalid)">
+            <label class="col-xs-12 control-label">*Gender</label>
+            <div class="col-xs-12">
+              <label>Male</label>
+              <input type="radio" name="gender" value="male" formControlName="gender">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label>Female</label>
+              <input type="radio" name="gender" value="female" formControlName="gender">
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block help-block-gender">Select Gender</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.city || inputFields.country">
+        <div class="col-md-6" *ngIf="inputFields.country">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Place of Resident</label>
+            <div class="col-xs-12">
+              <select class="form-control col-xs-12" formControlName="country">
+                <option value="">Select</option>
+                <option *ngFor="let country of listCountry" [value]="country.code">{{  country.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select Country</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.city">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">City</label>
+            <div class="col-xs-12">
+              <select class="form-control col-xs-12" formControlName="city">
+                <option value="">Select</option>
+                <option *ngFor="let city of listCity" [value]="city.code">{{  city.names | pageTypeByLang }}</option>
+              </select>
+              <span class="help-block">Select City</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.nationalities">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.nationalities.invalid) || (subTypeGroup.controls.nationalities.dirty && subTypeGroup.controls.nationalities.invalid)">
+            <label class="col-xs-12 control-label">*Nationality</label>
+            <div class="col-xs-12">
+              <select multiple class="form-control" formControlName="nationalities">
+                <option *ngFor="let nationality of listNationality" [value]="nationality.code">{{  nationality.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter Nationality Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.realName">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Full Real Name</label>
+            <div class="col-xs-12">
+              <input maxlength="250" type="text" class="form-control" formControlName="realName" placeholder="Enter Full Real Name Here">
+              <span class="help-block">Enter Full Real Name Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.socialNetwork">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Social Media</label>
+            <div class="col-xs-12">
+              <social-network [socialNetworks]="subTypeGroup.controls.socialNetwork"></social-network>
+              <span class="help-block">Enter Social Media Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter About Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.weight || inputFields.height">
+        <div class="col-md-6" *ngIf="inputFields.weight">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Weight</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Weight Here" type="text" class="form-control" maxlength="20" formControlName="weight" />
+              <span class="help-block">Enter Weight Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.height">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Height</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Height Here" type="text" class="form-control" maxlength="20" formControlName="height" />
+              <span class="help-block">Enter Height Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.skillLevel || inputFields.sportType || inputFields.sportTypes">
+        <div class="col-md-6" *ngIf="inputFields.skillLevel">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.skillLevel.invalid) || (subTypeGroup.controls.skillLevel.dirty && subTypeGroup.controls.skillLevel.invalid)">
+            <label class="col-xs-12 control-label">*Skill Level</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="skillLevel">
+                <option value="">Select</option>
+                <option *ngFor="let skillLevel of listSkillLevel" [value]="skillLevel.code">{{  skillLevel.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Select Skill Level Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.sportTeam">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.sportTeam.invalid) || (subTypeGroup.controls.sportTeam.dirty && subTypeGroup.controls.sportTeam.invalid)">
+            <label class="col-xs-12 control-label">*Sport Team</label>
+            <div class="col-xs-12">
+              <div>
+                <label>National Team</label>
+                <input type="radio" name="sportTeam" value="nationalTeam" formControlName="sportTeam">&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>Club Team</label>
+                <input type="radio" name="sportTeam" value="clubTeam" formControlName="sportTeam">
+                <label class="error" for="title">This field is required.</label>
+              </div>
+              <span class="help-block">Select Sport Team Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.sportTypes">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.sportTypes.invalid) || (subTypeGroup.controls.sportTypes.dirty && subTypeGroup.controls.sportTypes.invalid)">
+            <label class="col-xs-12 control-label">*Sport Types</label>
+            <div class="col-xs-12">
+              <select multiple class="form-control" formControlName="sportTypes">
+                <option value="">Select</option>
+                <option *ngFor="let sportType of listSportType" [value]="sportType.code">{{  sportType.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Select Sport Types Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.sportType">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.sportType.invalid) || (subTypeGroup.controls.sportType.dirty && subTypeGroup.controls.sportType.invalid)">
+            <label class="col-xs-12 control-label">*Sport Type</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="sportType">
+                <option value="">Select</option>
+                <option *ngFor="let sportType of listSportType" [value]="sportType.code">{{  sportType.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error" for="title">This field is required.</label>
+            </div>
+            <span class="help-block">Select Sport Type Here</span>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.votingNumber">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.votingNumber.invalid) || (subTypeGroup.controls.votingNumber.dirty && subTypeGroup.controls.votingNumber.invalid)">
+            <label class="col-xs-12 control-label">*Voting Number</label>
+            <div class="col-xs-12">
+              <input only-number placeholder="Enter Voting Number Here" maxlength="250" type="number" class="form-control" formControlName="votingNumber" />
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter Voting Number Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.establishedYear">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.establishedYear.invalid) || (subTypeGroup.controls.establishedYear.dirty && subTypeGroup.controls.establishedYear.invalid)">
+            <label class="col-xs-12 control-label"><span *ngIf="type !== 'sportTeam'">*</span>Established Year</label>
+            <div class="col-xs-12">
+              <mbc-datepicker placeholder="Enter Established Year Here" *ngIf="subTypeData" [date]="subTypeData.establishedYear" [fControl]="subTypeGroup.controls.establishedYear"></mbc-datepicker>
+              <span class="help-block">Enter Established Year Here</span>
+              <label *ngIf="type !== 'sportTeam'" class="error" for="title">This field is required.</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.musicType">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.musicType.invalid) || (subTypeGroup.controls.musicType.dirty && subTypeGroup.controls.musicType.invalid)">
+            <label class="col-xs-12 control-label">*Music Type</label>
+            <div class="col-xs-12">
+              <select class="form-control" formControlName="musicType">
+                <option value="">Select</option>
+                <option *ngFor="let musicType of listMusicType" [value]="musicType.code">{{  musicType.names | pageTypeByLang }}</option>
+              </select>
+              <label class="error" for="title">This field is required.</label>
+            </div>
+            <span class="help-block">Select Music Type Here</span>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.stadiumName || inputFields.stadiumGPS">
+        <div class="col-md-6" *ngIf="inputFields.stadiumName">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Stadium Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Stadium Name Here" maxlength="250" type="text" class="form-control" formControlName="stadiumName" />
+              <span class="help-block">Enter Stadium Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.stadiumGPS">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Stadium Address - GPS Location</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Stadium Address - GPS Location Here" maxlength="250" type="text" class="form-control" formControlName="stadiumGPS" />
+              <span class="help-block">Enter Stadium Address - GPS Location Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="inputFields.captainName || inputFields.coachName">
+        <div class="col-md-6" *ngIf="inputFields.captainName">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Captain Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Captain Name Here" maxlength="250" type="text" class="form-control" formControlName="captainName" />
+              <span class="help-block">Enter Captain Name Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="inputFields.coachName">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Coach Name</label>
+            <div class="col-xs-12">
+              <input placeholder="Enter Coach Name Here" maxlength="250" type="text" class="form-control" formControlName="coachName" />
+              <span class="help-block">Enter Coach Name Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+@import '~sass/conf/colors';
+
+.slash {
+    float: left;
+    transform: translate(50%,40%);
+}
+
+.custom-url {
+    width: calc(100% - 10px);
+    float: right;
+}

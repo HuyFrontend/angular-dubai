@@ -1,0 +1,79 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-3 col-lg-3">
+                <button type="submit" class="btn btn-danger" routerLink="/content/article">New Article</button>
+                <button type="submit" class="btn btn-danger" routerLink="/content/post">New Post</button>
+                <bulk-action [bulkActions]="bulkActions" (onBulkAction)="doBulkAction($event)"></bulk-action>
+            </div>
+            <div class="col-md-9 col-lg-9">
+                <search-criteria
+                    #searchCriteria
+                    [filterFields]="filterFields" [filterOptions]="filterOptions"
+                    (onChangeFilterField)="changeFilterField($event)"
+                    (remoteSuggest) = "remoteSuggest($event)"
+                    (onSearch)="newSearch($event)"
+                    [isRemoteSuggestion] = "isRemoteSuggestion">
+                </search-criteria>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <data-table [records]="pages" (loadMore)="loadMore($event)" (sort)="sort($event)"
+                (itemSelectChange)="itemSelectedChange($event)" [loading]="loading" [has-more]="hasMore">
+            <header title="Site(s)" name="sites" [sortable]="false"></header>
+            <header title="Internal Unique Page Name" name="publish.internalUniquePageName"></header>
+            <header title="Title" name="data.title"></header>
+            <header title="Content Image" name="image" [sortable]="false"></header>
+            <header title="Type" name="type"></header>
+            <header title="Editor" name="editor"></header>
+            <header title="Publish Date" name="publishedDate"></header>
+            <header title="I.P Queue" name="IPQueue" [sortable]="false"></header>
+            <header title="Stats" name="stats" [sortable]="false"></header>
+            <header title="Status" name="status"></header>
+
+            <column value="website"></column>
+            <column value="publishOnBehalf"></column>
+            <column value="data.title" type="link" [getLink]="getDetailUrl"></column>
+            <column value="image" type="image" imageUrl="imageUrl"></column>
+            <column value="type" css-class="text-capitalize"></column>
+            <column value="editor"></column>
+            <column value="publishedDate" [formatter]="dateFormatter"></column>
+            <column value="IPQueue"></column>
+            <column value="stats"></column>
+            <column value="status" type="status"></column>
+
+            <table-action name="publish" title="Publish" (doAction)="publishAContent($event)" [condition]="showPublishCondition"></table-action>
+            <table-action name="Approve" title="Approve" (doAction)="onModerateContentPopup($event, 'approve')" [condition]="showModerateCondition"></table-action>
+            <table-action name="Reject" title="Reject" (doAction)="onModerateContentPopup($event, 'reject')" [condition]="showModerateCondition"></table-action>
+            <table-action name="edit" title="Edit" (doAction)="editContent($event)"></table-action>
+            <table-action name="copy" title="Copy" (doAction)="copyContent($event)"></table-action>
+            <table-action name="unpublish" title="Un-publish" (doAction)="confirmUnpublishContent($event)" [condition]="showUnpublishCondition"></table-action>
+            <table-action name="delete" title="Delete" (doAction)="confirmDelete($event)"></table-action>
+        </data-table>
+
+    </div>
+</div>
+<mbc-confirmation #confirmPublishPopup
+  message="{{message.CONFIRM_CONTENT_PUBLISH}}"
+  (yesAction)="publishContent($event)"></mbc-confirmation>
+
+  <mbc-confirmation #confirmUnpublishContentPopup
+  message="{{message.CONFIRM_UNPUBLISH}}"
+  (yesAction)="unpublishContent($event)"></mbc-confirmation>
+
+ <mbc-confirmation #confirmModeratePopup
+  message=""
+  (yesAction)="onModerateContent($event)"></mbc-confirmation>
+
+  <mbc-confirmation #confirmUnpublishBulkPopup
+  message="{{message.CONFIRM_UNPUBLISH}}"
+  (yesAction)="unpublishBulkContents($event)"></mbc-confirmation>
+
+  <mbc-confirmation #confirmDeletePopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDelete($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmDeleteBulkPopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onBulkDelete($event)"></mbc-confirmation>

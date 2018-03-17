@@ -1,0 +1,73 @@
+<div class="form-group" [formGroup]="parentFormGroup">
+	<div *ngIf="showTitle" class="row">
+		<div class="col-md-6">
+			<div class="form-group" [class.has-error]="parentFormGroup.controls.title.dirty && parentFormGroup.controls.title.invalid">
+				<label class="control-label">Paragraph Title</label>
+				<input maxlength="250" type="text" class="form-control" placeholder="Enter Title Here" (onLostFocus)="onTextParagraphChanged($event)"
+					formArrayState="paragraphs" [idx]="idx" idxField="title" formControlName="title" [attr.readonly]="isReadOnly ? true : null"/>
+				<span class="help-block">Enter Title Here</span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group" [class.has-error]="parentFormGroup.controls.codeSnippet.dirty && parentFormGroup.controls.codeSnippet.invalid">
+				<label class="control-label">*Code or Link</label>
+				<textarea maxlength="2500" placeholder="Enter Embed Script Here" type="text" class="form-control" rows="7"
+					formControlName="codeSnippet" formArrayState="paragraphs" idxField="codeSnippet"
+					[idx]="idx" (onLostFocus)="onTextParagraphChanged($event)" (ngModelChange)="codeSubject.next($event)"
+					[readonly]="isReadOnly"
+				></textarea>
+				<label class="error">This field is required.</label>
+				<div class="row description-delete">
+					<div class="col-xs-9 text-left">
+						<span class="help-block">Enter script here. Maximum 2500 characters</span>
+					</div>
+					<div class="col-xs-3 text-right">
+						<a class="delete-embedded" title="Delete the content of the embedded" (click)="deleteEmbedded()" [style.pointerEvents]="isReadOnly? 'none' : 'auto'">Delete</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-md-12">
+			<div class="form-group group-review-embed">
+        <label class="control-label">Preview Embed / Source from:</label>
+        <span class="help-block text-right text-preview">{{parentFormGroup.controls.sourceName.value}}</span>
+				<div class="codeEmbeddedWrapper codeEmbeddedWrapperNoAvailable text-preview" *ngIf="!trustedUrl && !trustedHTML && parentFormGroup.controls.codeSnippet.value">
+					Preview Embed / Source from: Content Not Available
+				</div>
+				<div class="preview-embedded-wrap">
+					<div class="codeEmbeddedWrapper" *ngIf="trustedUrl || trustedHTML">
+            <div *ngIf="loading" class="loading-wrapper">
+              <loading text="processing embed code"></loading>
+            </div>
+            <div class="social-snippet" [hidden]="loading" [innerHTML]="trustedHTML"></div>
+						<iframe [hidden]="loading" *ngIf="trustedUrl" (load)="iframeSubject.next($event)" width="640" height="390" [src]="trustedUrl" frameborder="0" allowfullscreen></iframe>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group" [class.has-error]="parentFormGroup.controls.description.dirty && parentFormGroup.controls.description.invalid">
+				<label class="control-label">Description</label>
+				<p-editor #quillEditor type="editor" placeholder="Enter Description Here" formControlName="description" [readonly]="isReadOnly"
+					(onTextChange)="editorChanged($event)" (onLostFocus)="onTextParagraphChanged($event)" [style]="{'height':'240px'}">
+					<p-header>
+							<span class="ql-formats">
+									<button class="ql-underline" *ngIf="parentType == 'article'"></button>
+									<button class="ql-bold" *ngIf="parentType == 'article'"></button>
+									<button class="ql-italic" *ngIf="parentType == 'article'"></button>
+									<button class="ql-link"></button>
+									<button class="ql-list" value="bullet" *ngIf="parentType == 'article'"></button>
+							</span>
+					</p-header>
+				</p-editor>
+				<span class="help-block">Enter Description</span>
+			</div>
+		</div>
+	</div>
+</div>

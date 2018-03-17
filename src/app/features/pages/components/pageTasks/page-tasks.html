@@ -1,0 +1,85 @@
+<ul class="btn-area">
+    <li class="hide">
+        <button type="button" class="btn btn-danger btn-block">Delete</button>
+    </li>
+    <li *ngIf="!isCreate">
+        <button type="button" (click)="onCopy()" class="btn btn-danger btn-block">Copy</button>
+    </li>
+    <li *ngIf="pageStatus !== 'ready'">
+        <button class="btn btn-danger btn-block" type="submit">Save</button>
+    </li>
+    <li class="" *ngIf="isCreate || isShowPublish()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmSaveAndPublish($event)">Publish</button>
+    </li>
+    <li *ngIf="isShowUnpublishButton()">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmUnpublishPage($event)" >Un-publish</button>
+    </li>
+    <li *ngIf="pageEntityId">
+        <button type="button" class="btn btn-danger btn-block" (click)="confirmDelete($event)" >Delete</button>
+    </li>
+    <li class="hide">
+        <button type="button" [class.disabled]="true" class="btn btn-danger btn-block">Preview</button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-danger btn-block" (click)="onBeforeClose()">Close</button>
+    </li>
+</ul>
+
+<mbc-confirmation #confirmUnpublishPopup
+  message="{{message.CONFIRM_UNPUBLISH}}"
+  (yesAction)="onUnpublish()"></mbc-confirmation>
+
+<mbc-confirmation #confirmDeletePopup
+  message="{{message.CONFIRM_REMOVE}}"
+  (yesAction)="onDelete()"></mbc-confirmation>
+
+<div class="modal page-confirmation fade" bsModal #confirmationCancel="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                Data will not be saved. Do you want to continue?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onClose()">Yes</button>
+                <button type="button" class="btn btn-primary" (click)="confirmationCancel.hide()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal page-confirmation fade" bsModal #warningPopup="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Warning</h4>
+            </div>
+            <div class="modal-body">
+                You have updated some values that are not yet saved. Please save it before copying.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="warningPopup.hide()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal page-confirmation fade" bsModal #publishConfirmation="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                {{message.CONFIRM_PUBLISH}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onPublish()">Yes</button>
+                <button type="button" class="btn btn-primary" (click)="publishConfirmation.hide()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<mbc-confirmation #confirmSaveAndPublishPopup message="{{message.CONFIRM_PUBLISH}}" (yesAction)="onSaveAndPublish()"></mbc-confirmation>

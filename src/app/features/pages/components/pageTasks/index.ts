@@ -1,0 +1,1 @@
+export { PageTasksComponent } from './page-tasks.component';

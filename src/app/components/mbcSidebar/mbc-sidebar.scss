@@ -1,0 +1,59 @@
+.xn-logo {
+    a:first-child {
+        background-position: center center;
+        background-size: auto;
+    }
+}
+
+:host-context(.sidebar-collapsed) .page-sidebar {
+    width: 50px;
+    .x-navigation {
+        width: 50px;
+        li {
+            width: 100%;
+            a {
+                padding: 15px 10px;
+                text-align: center;
+            }
+            a.fa {
+                margin: 0;
+            }
+        }
+        li.xn-profile {
+            padding: 0;
+            border-bottom: 1px solid #273541;
+            .profile-mini {
+                display: block;
+            }
+            .profile {
+                display: none;
+            }
+        }
+        li.xn-title {
+            display: none;
+        }
+        .xn-text {
+            display: none;
+        }
+    }
+    .xn-logo {
+        a:first-child {
+            background-size: contain;
+        }
+    }
+}
+
+.btn-create-new {
+    position: relative;
+}
+
+.ui-navigation-modal {
+    position: absolute;
+    top: 10px;
+    left: 100%;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    padding: 0 0 0;
+    background-color: #33414e;
+}

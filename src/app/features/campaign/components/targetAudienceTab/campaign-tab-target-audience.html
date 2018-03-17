@@ -1,0 +1,153 @@
+<form #audienceForm="ngForm" novalidate>
+  <div class="panel-body">
+    <!-- Demographics block -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>Demographics</strong></h3>
+      </div>
+      <div class="panel-body">
+        <!--Login status, Gender and Segment -->
+        <div class="row">
+          <div class="col-md-5 padding-left-0">
+            <div class="form-group">
+              <div class="col-md-6">
+                <label class="col-xs-12 control-label">Logged in</label>
+                <select-input [(ngModel)]="loginStatus" name="login" title=""
+                  placeholder="" [datasource]="loginSelectOptions"
+                  (ngModelChange)="changeLoginStatus()">
+                </select-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group" [class.hidden]="!isShowElement">
+              <div class="col-md-6">
+                <label class="col-xs-12 control-label">Gender</label>
+                <select-input [(ngModel)]="genderStatus" name="gender" title=""
+                  placeholder="" [datasource]="genderType"
+                  (ngModelChange)="changeGender()">
+                </select-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <div style="border: solid 1px #E5E5E5;
+                  margin-top: 10px;
+                  background-color: #F5F5F5;
+                  border-radius: 5px;
+                  text-align: center;
+                  width: 147px; height: 66px;">
+                <div style="top:11px;">
+                  <label class="segment-label">Segment Size</label>
+                  <p style="font-size: 24px;"><strong>{{0}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Login status, Gender and Segment -->
+        <!-- Locations, Nalinalities and Age -->
+        <div class="row" style="border-bottom: none;">
+          <div class="col-md-5 padding-right-0">
+            <div class="form-group">
+              <div class="col-md-12 padding-left-0 padding-right-0">
+                <label class="col-xs-12 control-label">Location</label>
+                <select-input [(ngModel)]="campaign.targetAudience.location" 
+                  name="slocation" title=""
+                  placeholder="" [datasource]="locationSelectOption"
+                  (ngModelChange)="changeLocationType()">
+                </select-input>
+              </div>
+            </div>
+            <div class="form-group col-md-12 margin-custom padding-left-0 padding-right-0">
+              <label class="col-xs-12 control-label" *ngIf="campaign.targetAudience.location=='regions' else labelCountry">Region</label>
+              <ng-template #labelCountry><label class="col-xs-12 control-label">Country</label></ng-template>
+              <div class="col-md-12">
+                <mbc-multiple-suggestion
+                  #location
+                  placeholder="Enter Locations Here"
+                  display="name" key= "name"
+                  (onQuery)="onQueryLocation($event)"
+                  [selectedValue] = "locationList"
+                  (onRemoveItem)="onRemoveLocationItem($event)"
+                  (onAddedItem)="onAddLocationItem($event)">
+                </mbc-multiple-suggestion>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12" [class.hidden]="!isShowElement">
+              <div class="form-group custom-multi-select">
+                <label class="col-xs-12 control-label margin-bottom-10">Nationality</label>
+                <div class="col-xs-12">
+                  <select multiple class="form-control" [(ngModel)]="campaign.targetAudience.nationalities" name="nationalities">
+                    <option *ngFor="let nationality of nationalities" [value]="nationality.code">{{  nationality.names | pageTypeByLang }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group custom-multi-select" [class.hidden]="!isShowElement">
+              <label class="col-xs-12 control-label margin-bottom-10">Age</label>
+              <div class="col-xs-12">
+                <select [(ngModel)]="campaign.targetAudience.ageGroups" multiple class="form-control col-xs-12" name="ageRange" >
+                  <option *ngFor="let item of ageGroupSelectOptopn" data-value="{{item.value}}">{{item.text}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Locations, Nalinalities and Age -->
+      </div>
+    </div>
+    <!-- End Demographics block -->
+
+    <!--  User Interactions block-->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>User Interactions</strong></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12 padding-right-0 padding-left-0">
+            <!-- Interests -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-xs-12 control-label">Interests</label>
+                <div class="col-md-12">
+                  <mbc-multiple-suggestion
+                    placeholder="Start Type the Interest Name"
+                    display="value" key= "id"
+                    (onQuery)="onQueryInterest($event)"
+                    (onAddedItem)="onAddedInterest($event)"
+                    [selectedValue]="interestList"
+                    (onRemoveItem)="onRemoveInterest($event)">
+                  </mbc-multiple-suggestion>
+                </div>
+              </div>
+            </div>
+            <!-- Page followed -->
+             <div class="col-md-12 margin-custom">
+              <div class="form-group" [class.hidden]="!isShowElement">
+                <label class="col-xs-12 control-label">Page Followed</label>
+                <div class="col-md-12">
+                  <mbc-multiple-suggestion
+                    placeholder="Start Type the Page"
+                    display="displayName" key= "entityId"
+                    (onQuery)="onQueryPage($event)"
+                    (onAddedItem)="onAddedPageTag($event)"
+                    [selectedValue]="pageList"
+                    (onRemoveItem)="onRemovePageTag($event)">
+                  </mbc-multiple-suggestion>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!--  End User Interactions block-->
+  </div>
+</form>

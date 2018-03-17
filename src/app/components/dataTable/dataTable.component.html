@@ -1,0 +1,175 @@
+<ng-content *ngIf="false"></ng-content>
+<div class="table-responsive">
+<table class="table table-bordered table-striped table-actions" *ngIf="records && records.length > 0;">
+  <thead>
+    <tr>
+      <th *ngIf="!hideCheckbox"></th>
+      <ng-template ngFor let-header [ngForOf]="headers">
+        <th *ngIf="header.sortable" class="{{getSortingClass(header)}}" (click)="sortHandler(header.name)">{{header.title}}</th>
+        <th *ngIf="!header.sortable" class="{{getSortingClass(header)}}">{{header.title}}</th>
+      </ng-template>
+      <th *ngIf="actions && actions.length">Actions</th>
+    </tr>
+  </thead>
+  <ng-container *ngIf="dragable; else notdragable">
+    <tbody [dragula]='"first-bag"' [dragulaModel]='records'>
+      <ng-container *ngTemplateOutlet="tbody"></ng-container>
+    </tbody>
+  </ng-container>
+</table>
+
+<div *ngIf="records && records.length === 0 && !loading">
+		<div class="panel panel-default">
+			<div class="panel-body" *ngIf="!addNew">
+				No records found.
+      </div>
+      <div *ngIf="addNew" class="add-new">
+          <a (click)="addNewHandler.emit()"> Add New </a>
+      </div>
+    </div>
+</div>
+
+	<p *ngIf="totalItems > 0 && records" class="text-right">{{records.length}} of {{totalItems}} records</p>
+	<div *ngIf="loading && records && records.length > 0">
+		<loading text="Loading more"></loading>
+	</div>
+	<div *ngIf="loading && records && records.length === 0">
+		<loading text="Loading"></loading>
+	</div>
+	<p class="text-center" *ngIf="!loading && hasMore" >
+    <a (click)="doLoadMore($event)">Click here to load more</a>
+  </p>
+</div>
+
+
+<ng-template #notdragable>
+  <tbody>
+    <ng-container *ngTemplateOutlet="tbody"></ng-container>
+  </tbody>
+</ng-template>
+
+<ng-template #tbody>
+  <ng-template ngFor let-row let-i="index" [ngForOf]="records">
+    <tr [id]="i" *ngIf="row">
+
+      <td class="check" *ngIf="!hideCheckbox">
+        <input type="checkbox" [(ngModel)]="row.checked" value="{{row.entityId}}" (change)="checkboxSelectChange(row)" />
+      </td>
+      <ng-template ngFor let-column [ngForOf]="columns">
+        <td [ngSwitch]="column.type">
+          <link-cell *ngSwitchCase="'link'"
+            [formatter]="column.formatter"
+            [value]="getValue(row, column.value)"
+            [entry]="row"
+            [getLink]="column.getLink"
+            [cssClass]="column.cssClass">
+          </link-cell>
+          <status-cell *ngSwitchCase="'status'"
+            [formatter]="column.formatter"
+            [value]="getValue(row, column.value)"
+            [entry]="row"
+            [cssClass]="column.cssClass">
+          </status-cell>
+          <mixed-image-cell *ngSwitchCase="'mixedImage'"
+            [formatter]="column.formatter"
+            [value]="getValue(row, column.value)"
+            [entry]="row" [getLink]="column.getLink"
+            [imageUrl]="getValue(row, column.imageUrl)"
+            [cssClass]="column.cssClass">
+          </mixed-image-cell>
+          <image-cell *ngSwitchCase="'image'"
+            [formatter]="column.formatter"
+            [value]="getValue(row, column.value)"
+            [entry]="row"
+            [imageUrl]="getValue(row, column.imageUrl)"
+            [cssClass]="column.cssClass">
+          </image-cell>
+          <action-cell *ngSwitchCase="'action'"
+            [remove]="itemRemove"
+            [up]="itemUp && i > 0 "
+            [down]="itemDown && i < (records.length-1)"
+            [default]="itemDefault"
+            [is-default]="row.isDefaultRelationship"
+            [display-loader]="displayLoader"
+            (removeAction)="removeActionHandler(row)"
+            (moveUpAction)="moveUpActionHandler(i)"
+            (moveDownAction)="moveDownActionHandler(i)"
+            (defaultAction)="defaultActionHandler(row)">
+          </action-cell>
+          <checkbox-cell *ngSwitchCase="'checkbox'"
+            [value]="getValue(row, column.value)"
+            [disabled] = "column.disabled"
+            [(ngModel)]="row[column.value]"
+            [name]="column.value"
+            (handleDataChanges)="handleCellValueChanges($event)"
+            >
+          </checkbox-cell>
+          <selectbox-cell *ngSwitchCase="'selectbox'"
+            [isHaveDefault]="column.isHaveDefault"
+            [value]="getValue(row, column.value)"
+            [defaultValue]="column.defaultValue"
+            [defaultText]="column.defaultText"
+            [datasource] = "column.datasource"
+            [disabled] = "column.disabled"
+            [(ngModel)]="row[column.value]"
+            [name]="column.value"
+            (itemSelectChange)="onSelectboxChange($event, row)"
+            (handleDataChanges)="handleCellValueChanges($event)"
+            >
+          </selectbox-cell>
+          <textbox-cell *ngSwitchCase="'textbox'"
+            [(ngModel)]="row[column.value]"
+            [name]="column.value"
+            (handleDataChanges)="handleCellValueChanges($event)"
+            >
+          </textbox-cell>
+          <text-cell *ngSwitchDefault
+            [formatter]="column.formatter"
+            [value]="getValue(row, column.value)"
+            [tooltipContent]="getValue(row, column.tooltipContent)"
+            [entry]="row"
+            [cssClass]="column.cssClass">
+          </text-cell>
+          <mbc-multiple-suggestion *ngSwitchCase="'multiple-suggestion'"
+            placeholder="{{column.defaultText}}"
+            [display]="column.display"
+            [key]="column.key"
+            (onQuery)="onQuerySuggestion($event, row)"
+            [selectedValue] = "getValue(row, column.value)"
+            (onRemoveItem)="onRemoveSuggestionItem($event, row)"
+            (onAddedItem)="onAddSuggestionItem($event, row)"
+          >
+          </mbc-multiple-suggestion>
+          <single-suggestion *ngSwitchCase="'single-suggestion'"
+            [selectedValue]="getValue(row, column.value)"
+            placeholder="{{column.defaultText}}"
+            [display]="column.display"
+            [key]="column.key"
+            (onQuery)="onQuerySingleSuggestion($event, row)"
+            (onSelectedChanged)="onSingleSuggestionChanged($event, row)"
+            (onClosed)="onSingleSugesstionClosed($event, row)">
+          </single-suggestion>
+
+        </td>
+        <td *ngIf="content">
+          {{content}}
+        </td>
+      </ng-template>
+      <td *ngIf="actions.length" class="action">
+        <select class="form-control select" (change)="actionHandler($event, row)">
+            <option value="" selected>Select</option>
+            <option
+              *ngFor="let action of actions"
+              [class.hidden]="action.condition && !action.condition(row)"
+              value="{{action.name}}"
+            >{{action.title}}</option>
+        </select>
+      </td>
+    </tr>
+  </ng-template>
+  <tr *ngIf="addNew && headers">
+      <td [attr.colspan]="headers.length + 1"  class="add-new">
+          <a (click)="addNewHandler.emit()"> Add New </a>
+      </td>
+    </tr>
+</ng-template>

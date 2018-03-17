@@ -1,0 +1,34 @@
+<div class="form-group" [formGroup]="parentFormGroup">
+	<div *ngIf="showTitle" class="row">
+		<div class="col-md-6">
+
+			<div class="form-group">
+				<label class="control-label">Paragraph Title</label>
+				<input maxlength="250" type="text" class="form-control" placeholder="Enter Title Here" (onLostFocus)="onTextParagraphChanged($event)"
+					formArrayState="paragraphs" [idx]="idx" idxField="title" formControlName="title" [attr.readonly]="isReadOnly ? true : null" />
+				<span class="help-block">Enter Paragraph Title</span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group" [class.has-error]="parentFormGroup.controls.description.dirty && parentFormGroup.controls.description.invalid">
+				<label class="control-label">*Description</label>
+				<p-editor #quillEditor idx="idx" idxField="description" placeholder="Enter Description Here" type="editor" [style]="{'height':'240px'}" (onTextChange)="editorChanged($event)" (onLostFocus)="onTextParagraphChanged($event)"
+					formControlName="description">
+					<p-header>
+						<span class="ql-formats">
+							<button class="ql-underline" *ngIf="parentType == 'article'"></button>
+              <button class="ql-bold" *ngIf="parentType == 'article'"></button>
+              <button class="ql-italic" *ngIf="parentType == 'article'"></button>
+              <button class="ql-link"></button>
+              <button class="ql-list" value="bullet" *ngIf="parentType == 'article'"></button>
+						</span>
+					</p-header>
+				</p-editor>
+				<label class="error">This field is required.</label>
+				<span class="help-block">Enter Description</span>
+			</div>
+		</div>
+	</div>
+</div>

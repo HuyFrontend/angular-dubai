@@ -1,0 +1,30 @@
+auto-suggesstion {
+    display: block;
+    position: relative;
+}
+
+.suggestions {
+    position: absolute;
+    top: 27px;
+    left: 10px;
+    z-index: 1;
+    width: 100%;
+}
+.dropdown-menu > li.selected > a {
+    background-color: #f5f5f5;
+}
+
+.inlineMode {
+  .suggestions {
+    left: 0;
+  }
+  .tagsinput {
+    float: left;
+    width: auto;
+    padding: 0 2px 0 0;
+  }
+
+  .form-input-tag {
+    position: relative;
+  }
+}

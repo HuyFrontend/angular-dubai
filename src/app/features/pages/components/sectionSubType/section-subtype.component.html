@@ -1,0 +1,73 @@
+<div [formGroup]="subTypeGroup" *ngIf="subTypeGroup != null && pageType === 'section'">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>{{subTypeText}}</strong></h3>
+    </div>
+    <div class="panel-body">
+
+      <!-- Title & Email -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.title.invalid) || (subTypeGroup.controls.title.dirty && subTypeGroup.controls.title.invalid)">
+            <label class="col-xs-12 control-label">*Title</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="title" placeholder="Enter Title Here"/>
+              <label class="error">This field is required</label>
+              <span class="help-block">Enter Title Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Email</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="email" placeholder="Enter Email Here"/>
+              <span class="help-block">Enter Email Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Website</label>
+            <div class="col-xs-12">
+              <input type="text" maxlength="250" class="form-control" formControlName="website" placeholder="Enter Website Here"/>
+              <span class="help-block">Enter Website Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" [class.has-error]="(isFormSubmitted && subTypeGroup.controls.about.invalid) || (subTypeGroup.controls.about.dirty && subTypeGroup.controls.about.invalid)">
+            <label class="col-xs-12 control-label">*About</label>
+            <div class="col-xs-12">
+              <textarea placeholder="Enter About Here" maxlength="500" rows="10" class="form-control" formControlName="about"></textarea>
+              <label class="error" for="title">This field is required.</label>
+              <span class="help-block">Enter About Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-xs-12 control-label">Social Media</label>
+            <div class="col-xs-12">
+              <social-network [socialNetworks]="subTypeGroup.controls.socialNetwork"></social-network>
+              <span class="help-block">Enter Social Media Here</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

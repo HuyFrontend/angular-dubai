@@ -1,0 +1,78 @@
+<form #resultForm="ngForm" novalidate>
+<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>Recommendation</strong></h3>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group"><br>
+                    <label class="col-xs-12 control-label">What would like to recommended?</label>
+                    <div class="col-xs-12 btn-input-page-container">
+                        <div class="col-md-2">
+                            <select-input *ngIf="campaign.result.type=='CONTENT'"
+                                [(ngModel)]="campaign.result.recommend" name="recommend"
+                                (selectInputChange) = "targetRecommendationChange($event)"
+                                [datasource]="recommendContent">
+                            </select-input>
+                            <select-input *ngIf="campaign.result.type=='PAGE'"
+                                [(ngModel)]="campaign.result.recommend" name="recommend"
+                                (selectInputChange) = "targetRecommendationChange($event)"
+                                [datasource]="recommendPage">
+
+                            </select-input>
+                        </div>
+                        <div class="col-md-8" style="margin-top:7px;">
+                            <mbc-multiple-suggestion #suggestPage class="input-page"
+                                    placeholder="Enter Pages Name Here"
+                                    display="displayName" key="entityId"
+                                    [selectedValue]="listPageSelected"
+                                    (onRemoveItem)="onRemovePage($event)"
+                                    (onAddedItem)="onAddedPage($event)"
+                                    (onQuery)="onQueryPage($event)">
+                            </mbc-multiple-suggestion>
+                        </div>
+                        <div class="col-md-2"  style="margin-top:7px;">
+                            <button type="button" class="btn btn-danger btn-block btn-page" (click)="addPageToCampaign()">Add to Campaign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row page-list-data">
+            <data-table [records]="campaign.result.recommendationsDetail" [has-more]="false"
+                        [loading]="false" [item-remove] = "true" [item-up] = "true" [item-down] = "true"
+                        (removeItemHandler)="removeRecommedation($event)"
+                        (moveUpItemHandler)="movePageHandler($event, -1)"
+                        (moveDownItemHandler)="movePageHandler($event, 1)"
+                        [dragable] = "true"
+                        (movedItemsHandler)="movedItemsHandler($event)">
+                <header title="Site (s)" name="site" [sortable]="false"></header>
+                <header title="Published On Behalf" name="publishedOnBehalf" [sortable]="false" *ngIf="isTargetContent()"></header>
+                <header title="Title" name="title" [sortable]="false" *ngIf="isTargetContent()"></header>
+                <header title="Internal Page Name" name="internalUniquePageName" [sortable]="false" *ngIf="campaign.result.recommend==RECOMMENDATION_TARGET.PAGE"></header>
+                <header title="Publish Date" name="publishDate" [sortable]="false"></header>
+                <header title="Status" name="status" [sortable]="false"></header>
+                <header title="Actions" name="action" [sortable]="false"></header>
+
+            <input type="checkbox">
+            <column value="site"></column>
+            <column value="publishedOnBehalf" *ngIf="isTargetContent()"></column>
+            <column value="title" *ngIf="isTargetContent()"></column>
+            <column value="internalUniquePageName" *ngIf="campaign.result.recommend==RECOMMENDATION_TARGET.PAGE"></column>
+            <column value="publishedDate" [formatter]="dateFormatter"></column>
+            <column value="status" type="status"></column>
+            <column type="action">
+            </column>
+          </data-table>
+        </div>
+</div>
+</form>
+<mbc-confirmation #confirmDelete
+message="{{message.CONFIRM_REMOVE}}"
+(yesAction)="removeRecommedationHandler($event)"></mbc-confirmation>
+
+<mbc-confirmation #confirmChangeResultType
+[message]="message.CONFIRM_CHANGE_CAMPAIGN_RECOMMENDATION_TYPE"
+(yesAction)="changeResultOptionHandlerYes($event)"
+(noAction)="changeResultOptionHandlerNo($event)">
+</mbc-confirmation>

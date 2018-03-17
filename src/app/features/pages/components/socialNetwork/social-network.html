@@ -1,0 +1,37 @@
+<div class="table-responsive social-network-management">
+    <div class="row add-item">
+        <div class="form-group" [class.has-error]="socialNetworks.invalid">
+            <input maxlength="250" (ngModelChange)="onTextChange()" class="accountId form-control col-xs-12 col-md-9" [(ngModel)]="socialNetwork.accountId" placeholder="Enter Social Profile URL" />
+            <div class="col-xs-12 col-md-3">
+                <select class="col-md-7" [(ngModel)]="socialNetwork.name">
+                    <option value="">Select Social</option>
+                    <option *ngFor="let socialNetwork of socialNetworkSugestions; let i = index" value="{{socialNetwork.name}}">{{socialNetwork.displayName}}</option>
+                </select>
+                <button type="button" class="btn btn-danger btn-block col-md-5" (click)="onAdd()">Add</button>
+            </div>
+            <label class="error" *ngIf="socialNetworks.errors && socialNetworks.errors.invalid">Incorrect profile URL format. Please retry!</label>
+            <label class="error" *ngIf="socialNetworks.errors && socialNetworks.errors.required">Please enter social profile url</label>
+            <label class="error" *ngIf="socialNetworks.errors && socialNetworks.errors.requiredSocialType">Please select social type</label>
+        </div>
+    </div>
+    <div class="table-responsive" *ngIf="listSocialNetwork && listSocialNetwork.length > 0">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>SNS Name</th>
+                    <th>Link</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let socialNetwork of listSocialNetwork; let i = index">
+                    <td class="cell-social-name">{{displaySocialName(socialNetwork.socialNetworkName)}}</td>
+                    <td class="cell-social-account-id">{{socialNetwork.accountId}}</td>
+                    <td class="cell-social-button text-center">
+                        <button type="button" class="btn btn-danger btn-rounded btn-condensed btn-sm" (click)="onRemove(i)"><span class="fa fa-times"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
